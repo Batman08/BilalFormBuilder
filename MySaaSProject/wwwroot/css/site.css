@@ -35,6 +35,19 @@ body {
         border-top: 1px solid #520dc2;
     }
 
+    .formElementWrapper:not(.isPassive) {
+        cursor: move;
+    }
+
+        .formElementWrapper:not(.isPassive):hover {
+            background-color: #13795b;
+        }
+
+            .formElementWrapper:not(.isPassive):hover .formElementIcon, .formElementWrapper:not(.isPassive):hover .formElementIcon {
+                background: #20c997;
+            }
+
+
 .bg-indigo-500 {
     background-color: #6610f2;
 }
@@ -63,7 +76,7 @@ body {
     width: 54px;
 }
 
-    .formElementIcon>span {
+    .formElementIcon > span {
         display: inline-block;
         font-size: 28px;
         line-height: 54px !important;
