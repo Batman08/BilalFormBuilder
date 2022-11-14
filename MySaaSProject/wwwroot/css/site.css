@@ -95,3 +95,7 @@ body {
     vertical-align: middle;
     color: white;
 }
+
+.pad15 {
+    padding: 15px;
+}

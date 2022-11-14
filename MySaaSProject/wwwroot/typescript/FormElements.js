@@ -7,7 +7,6 @@ class FormElements {
         };
     }
     FindFormElementToCreate(formElementToCreate) {
-        debugger;
         const prefix = formElementToCreate.substring(0, 11);
         if (prefix === "formElement") {
             const elementType = formElementToCreate.substring(11);
@@ -16,7 +15,6 @@ class FormElements {
         return null;
     }
     FormElementHeading() {
-        debugger;
         const divHeadingWrapper = document.createElement("div");
         divHeadingWrapper.classList.add("formElementHeadingWrapper");
         const h2Heading = document.createElement("h2");
@@ -26,17 +24,32 @@ class FormElements {
         return divHeadingWrapper;
     }
     FormElementFullName() {
-        debugger;
-        const divHeadingWrapper = document.createElement("div");
-        divHeadingWrapper.classList.add("formElementHeadingWrapper");
-        const h2Heading = document.createElement("h2");
-        h2Heading.innerText = "Full Name";
-        divHeadingWrapper.appendChild(h2Heading);
-        console.log("created header");
-        return divHeadingWrapper;
+        const divFullNameWrapper = document.createElement("div");
+        divFullNameWrapper.classList.add("pad15");
+        const divFullNameRow = document.createElement("div");
+        divFullNameRow.classList.add("row");
+        divFullNameWrapper.appendChild(divFullNameRow);
+        const divFirstNameColumn = document.createElement("div");
+        divFirstNameColumn.classList.add("col-md-6");
+        divFullNameRow.appendChild(divFirstNameColumn);
+        const inputFirstName = document.createElement("input");
+        inputFirstName.type = "text";
+        inputFirstName.classList.add("form-control");
+        inputFirstName.placeholder = "First Name";
+        inputFirstName.ariaLabel = "First Name";
+        divFirstNameColumn.appendChild(inputFirstName);
+        const divLastNameColumn = document.createElement("div");
+        divLastNameColumn.classList.add("col-md-6");
+        divFullNameRow.appendChild(divLastNameColumn);
+        const inputLastName = document.createElement("input");
+        inputLastName.type = "text";
+        inputLastName.classList.add("form-control");
+        inputLastName.placeholder = "Last Name";
+        inputLastName.ariaLabel = "Last Name";
+        divLastNameColumn.appendChild(inputLastName);
+        return divFullNameWrapper;
     }
     FormElementEmail() {
-        debugger;
         const divHeadingWrapper = document.createElement("div");
         divHeadingWrapper.classList.add("formElementHeadingWrapper");
         const h2Heading = document.createElement("h2");

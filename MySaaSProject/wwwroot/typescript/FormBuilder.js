@@ -10,7 +10,6 @@ class FormBuilder {
         this._formElements.forEach((element) => {
             if (element != null) {
                 element.onclick = (ev) => {
-                    debugger;
                     //get attribute value
                     const retrievedElementType = element.getAttribute("data-element-type");
                     if (retrievedElementType === null) {
