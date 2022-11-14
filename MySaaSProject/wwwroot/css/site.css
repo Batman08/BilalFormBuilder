@@ -17,13 +17,16 @@ body {
     margin-bottom: 60px;
 }
 
+
+
+/*bilal-styles: */
+
 .formElementList {
     list-style: none;
     padding: 0;
 }
 
 .formElementWrapper {
-    /*background-color: #545f6f;*/
     display: table;
     transition-duration: .3s;
     transition-property: all;
@@ -64,7 +67,6 @@ body {
     background-position: 50%;
     background-repeat: no-repeat;
     background-size: contain;
-    /*background-color: #37404a;*/
     display: table-cell;
     height: 54px;
     overflow: hidden;

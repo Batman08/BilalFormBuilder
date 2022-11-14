@@ -15,23 +15,23 @@
     <div class="offcanvas-body">
         <div class="formElementsCategory">
             <ul class="formElementList bg-indigo-500">
-                <li class="formElementWrapper bg-indigo-500">
+                <li role="button" class="formElementWrapper bg-indigo-500" data-element-type="formElementHeading">
                     <div class="formElementIcon bg-indigo-700">
                         <span><i class="fas fa-heading fa-sm"></i></span>
                     </div>
                     <div class="formElementName">Heading</div>
                 </li>
-                <li class="formElementWrapper bg-indigo-500">
+                <li role="button" class="formElementWrapper bg-indigo-500" data-element-type="formElementFullName">
                     <div class="formElementIcon bg-indigo-700">
-                        <span><i class="fas fa-heading fa-sm"></i></span>
+                        <span><i class="fas fa-user-circle fa-sm"></i></span>
                     </div>
-                    <div class="formElementName">Heading</div>
+                    <div class="formElementName">Full Name</div>
                 </li>
-                <li class="formElementWrapper bg-indigo-500">
+                <li role="button" class="formElementWrapper bg-indigo-500" data-element-type="formElementEmail">
                     <div class="formElementIcon bg-indigo-700">
-                        <span><i class="fas fa-heading fa-sm"></i></span>
+                        <span><i class="far fa-envelope fa-sm"></i></span>
                     </div>
-                    <div class="formElementName">Heading</div>
+                    <div class="formElementName">Email</div>
                 </li>
             </ul>
         </div>
@@ -61,6 +61,7 @@
     </div>
 </div>
 
+<script src="/typescript/FormElements.js"></script>
 <script src="/typescript/FormBuilder.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
