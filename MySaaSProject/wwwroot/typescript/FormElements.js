@@ -8,7 +8,6 @@ class FormElements {
     }
     FindFormElementToCreate(formElementToCreate) {
         debugger;
-        //extract Heading string from formElementHeading
         const prefix = formElementToCreate.substring(0, 11);
         if (prefix === "formElement") {
             const elementType = formElementToCreate.substring(11);

@@ -1,17 +1,16 @@
 ﻿class FormElements {
-    private _allFormElements = {
+    private _allFormElements: formElements = {
         Heading: this.FormElementHeading(),
         FullName: this.FormElementFullName(),
         Email: this.FormElementEmail()
     };
 
     constructor() {
-
+        
     }
 
     public FindFormElementToCreate(formElementToCreate: string): string | null {
         debugger
-        //extract Heading string from formElementHeading
         const prefix: string = formElementToCreate.substring(0, 11);
 
         if (prefix === "formElement") {
