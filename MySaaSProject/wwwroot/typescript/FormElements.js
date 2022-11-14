@@ -16,7 +16,7 @@ class FormElements {
     }
     FormElementHeading() {
         const divHeadingWrapper = document.createElement("div");
-        divHeadingWrapper.classList.add("formElementHeadingWrapper");
+        divHeadingWrapper.classList.add("headingWrapper", "pad15");
         const h2Heading = document.createElement("h2");
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
@@ -25,22 +25,32 @@ class FormElements {
     }
     FormElementFullName() {
         const divFullNameWrapper = document.createElement("div");
-        divFullNameWrapper.classList.add("pad15");
+        divFullNameWrapper.classList.add("fullNameWrapper", "pad15");
         const divFullNameRow = document.createElement("div");
         divFullNameRow.classList.add("row");
         divFullNameWrapper.appendChild(divFullNameRow);
+        /*First Name*/
         const divFirstNameColumn = document.createElement("div");
-        divFirstNameColumn.classList.add("col-md-6");
+        divFirstNameColumn.classList.add("col-md-6", "text-start");
         divFullNameRow.appendChild(divFirstNameColumn);
+        const labelFirstName = document.createElement("label");
+        labelFirstName.classList.add("form-label");
+        labelFirstName.innerText = "First Name";
+        divFirstNameColumn.appendChild(labelFirstName);
         const inputFirstName = document.createElement("input");
         inputFirstName.type = "text";
         inputFirstName.classList.add("form-control");
         inputFirstName.placeholder = "First Name";
         inputFirstName.ariaLabel = "First Name";
         divFirstNameColumn.appendChild(inputFirstName);
+        /*Last Name*/
         const divLastNameColumn = document.createElement("div");
-        divLastNameColumn.classList.add("col-md-6");
+        divLastNameColumn.classList.add("col-md-6", "text-start");
         divFullNameRow.appendChild(divLastNameColumn);
+        const labelLastName = document.createElement("label");
+        labelLastName.classList.add("form-label");
+        labelLastName.innerText = "Last Name";
+        divLastNameColumn.appendChild(labelLastName);
         const inputLastName = document.createElement("input");
         inputLastName.type = "text";
         inputLastName.classList.add("form-control");
@@ -50,13 +60,25 @@ class FormElements {
         return divFullNameWrapper;
     }
     FormElementEmail() {
-        const divHeadingWrapper = document.createElement("div");
-        divHeadingWrapper.classList.add("formElementHeadingWrapper");
-        const h2Heading = document.createElement("h2");
-        h2Heading.innerText = "Email";
-        divHeadingWrapper.appendChild(h2Heading);
-        console.log("created header");
-        return divHeadingWrapper;
+        const divEmailWrapper = document.createElement("div");
+        divEmailWrapper.classList.add("emailWrapper", "pad15");
+        const divEmailRow = document.createElement("div");
+        divEmailRow.classList.add("row");
+        divEmailWrapper.appendChild(divEmailRow);
+        const divEmailColumn = document.createElement("div");
+        divEmailColumn.classList.add("col-md-6", "text-start");
+        divEmailRow.appendChild(divEmailColumn);
+        const labelEmail = document.createElement("label");
+        labelEmail.classList.add("form-label");
+        labelEmail.innerText = "Email";
+        divEmailColumn.appendChild(labelEmail);
+        const inputEmail = document.createElement("input");
+        inputEmail.type = "email";
+        inputEmail.classList.add("form-control");
+        inputEmail.placeholder = "Email";
+        inputEmail.ariaLabel = "Wmaili";
+        divEmailColumn.appendChild(inputEmail);
+        return divEmailWrapper;
     }
 }
 //# sourceMappingURL=FormElements.js.map

@@ -20,9 +20,11 @@
         return null;
     }
 
+    
     public FormElementHeading(): HTMLDivElement {
         const divHeadingWrapper = document.createElement("div") as HTMLDivElement;
-        divHeadingWrapper.classList.add("formElementHeadingWrapper");
+        divHeadingWrapper.classList.add("headingWrapper", "pad15");
+
         const h2Heading = document.createElement("h2") as HTMLHeadingElement
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
@@ -32,16 +34,22 @@
 
     public FormElementFullName(): HTMLDivElement {
         const divFullNameWrapper = document.createElement("div") as HTMLDivElement;
-        divFullNameWrapper.classList.add("pad15");
-        
+        divFullNameWrapper.classList.add("fullNameWrapper", "pad15");
+
         const divFullNameRow = document.createElement("div") as HTMLDivElement;
         divFullNameRow.classList.add("row");
         divFullNameWrapper.appendChild(divFullNameRow);
 
+        /*First Name*/
         const divFirstNameColumn = document.createElement("div") as HTMLDivElement;
-        divFirstNameColumn.classList.add("col-md-6");
+        divFirstNameColumn.classList.add("col-md-6", "text-start");
         divFullNameRow.appendChild(divFirstNameColumn);
 
+        const labelFirstName = document.createElement("label") as HTMLLabelElement;
+        labelFirstName.classList.add("form-label");
+        labelFirstName.innerText = "First Name";
+        divFirstNameColumn.appendChild(labelFirstName);
+        
         const inputFirstName = document.createElement("input") as HTMLInputElement;
         inputFirstName.type = "text";
         inputFirstName.classList.add("form-control");
@@ -49,10 +57,16 @@
         inputFirstName.ariaLabel = "First Name";
         divFirstNameColumn.appendChild(inputFirstName);
 
+        /*Last Name*/
         const divLastNameColumn = document.createElement("div") as HTMLDivElement;
-        divLastNameColumn.classList.add("col-md-6");
+        divLastNameColumn.classList.add("col-md-6", "text-start");
         divFullNameRow.appendChild(divLastNameColumn);
 
+        const labelLastName = document.createElement("label") as HTMLLabelElement;
+        labelLastName.classList.add("form-label");
+        labelLastName.innerText = "Last Name";
+        divLastNameColumn.appendChild(labelLastName);
+        
         const inputLastName = document.createElement("input") as HTMLInputElement;
         inputLastName.type = "text";
         inputLastName.classList.add("form-control");
@@ -64,12 +78,29 @@
     }
 
     public FormElementEmail(): HTMLDivElement {
-        const divHeadingWrapper = document.createElement("div") as HTMLDivElement;
-        divHeadingWrapper.classList.add("formElementHeadingWrapper");
-        const h2Heading = document.createElement("h2") as HTMLHeadingElement
-        h2Heading.innerText = "Email";
-        divHeadingWrapper.appendChild(h2Heading);
-        console.log("created header");
-        return divHeadingWrapper;
+        const divEmailWrapper = document.createElement("div") as HTMLDivElement;
+        divEmailWrapper.classList.add("emailWrapper", "pad15");
+
+        const divEmailRow = document.createElement("div") as HTMLDivElement;
+        divEmailRow.classList.add("row");
+        divEmailWrapper.appendChild(divEmailRow);
+
+        const divEmailColumn = document.createElement("div") as HTMLDivElement;
+        divEmailColumn.classList.add("col-md-6", "text-start");
+        divEmailRow.appendChild(divEmailColumn);
+
+        const labelEmail = document.createElement("label") as HTMLLabelElement;
+        labelEmail.classList.add("form-label");
+        labelEmail.innerText = "Email";
+        divEmailColumn.appendChild(labelEmail);
+        
+        const inputEmail = document.createElement("input") as HTMLInputElement;
+        inputEmail.type = "email";
+        inputEmail.classList.add("form-control");
+        inputEmail.placeholder = "Email";
+        inputEmail.ariaLabel = "Wmaili";
+        divEmailColumn.appendChild(inputEmail);
+
+        return divEmailWrapper;
     }
 }
