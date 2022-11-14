@@ -1,18 +1,82 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+.formElementList {
+    list-style: none;
+    padding: 0;
+}
+
+.formElementWrapper {
+    /*background-color: #545f6f;*/
+    display: table;
+    transition-duration: .3s;
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    width: 100%;
+}
+
+    .formElementWrapper + .formElementWrapper {
+        border-top: 1px solid #520dc2;
+    }
+
+.bg-indigo-500 {
+    background-color: #6610f2;
+}
+
+.bg-indigo-700 {
+    background-color: #3d0a91;
+}
+
+.text-indigo-500 {
+    color: #6610f2;
+}
+
+.formElementIcon {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    /*background-color: #37404a;*/
+    display: table-cell;
+    height: 54px;
+    overflow: hidden;
+    text-align: center !important;
+    transition-duration: .3s;
+    transition-property: all;
+    transition-timing-function: ease-in-out;
+    vertical-align: middle;
+    width: 54px;
+}
+
+    .formElementIcon>span {
+        display: inline-block;
+        font-size: 28px;
+        line-height: 54px !important;
+        color: white;
+    }
+
+.formElementName {
+    display: table-cell;
+    font-size: 15px;
+    line-height: 18px;
+    padding-left: 18px;
+    padding-right: 18px;
+    position: relative;
+    vertical-align: middle;
+    color: white;
 }

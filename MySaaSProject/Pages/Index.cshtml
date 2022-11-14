@@ -4,7 +4,66 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@*add form element section*@
+<button class="btn btn-primary rounded-pill" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Add Form Element</button>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Form Elements</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="formElementsCategory">
+            <ul class="formElementList bg-indigo-500">
+                <li class="formElementWrapper bg-indigo-500">
+                    <div class="formElementIcon bg-indigo-700">
+                        <span><i class="fas fa-heading fa-sm"></i></span>
+                    </div>
+                    <div class="formElementName">Heading</div>
+                </li>
+                <li class="formElementWrapper bg-indigo-500">
+                    <div class="formElementIcon bg-indigo-700">
+                        <span><i class="fas fa-heading fa-sm"></i></span>
+                    </div>
+                    <div class="formElementName">Heading</div>
+                </li>
+                <li class="formElementWrapper bg-indigo-500">
+                    <div class="formElementIcon bg-indigo-700">
+                        <span><i class="fas fa-heading fa-sm"></i></span>
+                    </div>
+                    <div class="formElementName">Heading</div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
+
+@*form designer/elemment properties*@
+<button class="btn btn-primary rounded-pill" type="button" style="float:right" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        ...
+    </div>
+</div>
+
+<div class="text-center">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div id="customFormWrapper" style="border-radius: 3px; box-shadow: 0 4px 4px rgb(87 100 126 / 21%);">
+                <div id="customFormSection" style="min-height: 64px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/typescript/FormBuilder.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        const formBuilder = new FormBuilder();
+    });
+</script>
