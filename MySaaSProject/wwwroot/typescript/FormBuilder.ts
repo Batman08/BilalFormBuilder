@@ -14,9 +14,16 @@ class FormBuilder {
             if (element != null) {
                 element.onclick = (ev: MouseEvent) => {
                     debugger
-                    const formElement = new FormElements();
+                    //get attribute value
+                    const retrievedElementType = element.getAttribute("data-element-type") as string;
+                    if (retrievedElementType === null) {
+                        alert("missing components, please refresh the page!!!");
+                        return;
+                    }
+
+                    const formElement: FormElements = new FormElements();
                     ev.preventDefault();
-                    const divHeadingWrapper = formElement.FindFormElementToCreate("formElementFullName");
+                    const divHeadingWrapper = formElement.FindFormElementToCreate(retrievedElementType);
 
                     if (divHeadingWrapper != null) {
                         this._customFormSection.append(divHeadingWrapper);

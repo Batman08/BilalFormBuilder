@@ -4,6 +4,7 @@
         FullName: this.FormElementFullName(),
         Email: this.FormElementEmail()
     };
+
     constructor() {
 
     }
