@@ -99,3 +99,24 @@ body {
 .pad15 {
     padding: 15px;
 }
+
+
+/*Draggable Styles*/
+.draggableChosen {
+}
+
+.draggableGhost {
+    min-height: 110px;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+.emptyPlaceholderLine.stage-DraggableChosen:not(.stage-Invisible) {
+    display: none !important;
+    left: -9999px !important;
+    opacity: 0 !important;
+    position: fixed !important;
+    top: -9999px !important;
+    visibility: none !important;
+}

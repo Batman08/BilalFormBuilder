@@ -14,7 +14,7 @@
     </div>
     <div class="offcanvas-body">
         <div class="formElementsCategory">
-            <ul class="formElementList bg-indigo-500">
+            <ul id="formElements" class="formElementList bg-indigo-500">
                 <li role="button" class="formElementWrapper bg-indigo-500" data-element-type="formElementHeading">
                     <div class="formElementIcon bg-indigo-700">
                         <span><i class="fas fa-heading fa-sm"></i></span>
@@ -63,8 +63,26 @@
 
 <script src="/typescript/FormElements.js"></script>
 <script src="/typescript/FormBuilder.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         const formBuilder = new FormBuilder();
+
+        //todo: somehow try and make this append the form element and not the actual button itself
+        new Sortable(formElements, {
+            group: {
+                name: 'shared',
+                pull: 'clone',
+                put: false // Do not allow items to be put into this list
+            },
+            animation: 150,
+            sort: false // To disable sorting: set sort to false
+        });
+
+        //Change order of form elements
+        new Sortable(customFormSection, {
+            group: 'shared',
+            animation: 150
+        });
     });
 </script>
