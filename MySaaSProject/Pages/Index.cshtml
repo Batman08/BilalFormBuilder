@@ -47,7 +47,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        ...
+        <textarea id="default-editor">
+        <p><em>Hello</em>, <span style="text-decoration: underline;"><strong>World!</strong></span></p>
+</textarea>
     </div>
 </div>
 
@@ -61,14 +63,20 @@
     </div>
 </div>
 
-<script src="/typescript/FormElements.js"></script>
-<script src="/typescript/FormBuilder.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.2.0/tinymce.min.js"></script>
+
+<script src="/typescript/FormElements.js"></script>
+<script src="/typescript/Utilities.js"></script>
+<script src="/typescript/FormBuilder.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
-        const formBuilder = new FormBuilder();
+        tinymce.init({
+            selector: 'textarea#default-editor'
+        });
 
-        //todo: somehow try and make this append the form element and not the actual button itself
+        const formBuilder = new FormBuilder(tinymce);
+
         new Sortable(formElements, {
             group: {
                 name: 'shared',
@@ -80,12 +88,13 @@
         });
 
         //Change order of form elements
-        new Sortable(customFormSection, { //add hover/ghost class
+        new Sortable(customFormSection, {
             group: 'shared',
             animation: 150,
             onAdd: function (evt) {
                 formBuilder.AddElementFromDrag(evt.item);
             },
+            ghostClass: 'draggableGhost'
         });
     });
 </script>

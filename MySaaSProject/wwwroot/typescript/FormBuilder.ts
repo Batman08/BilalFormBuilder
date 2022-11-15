@@ -1,11 +1,22 @@
 ﻿/// <reference types="./FormBuilder" />
 /// <reference path="./FormElements.ts" />
+/// <reference path="./Utilities.ts" />
+
+//import { Editor} from "tinymce";
 
 class FormBuilder {
     private _customFormSection = document.querySelector("#customFormSection") as HTMLDivElement;
-    /*private readonly _formElements = document.querySelectorAll(".formElementWrapper") as NodeListOf<HTMLDivElement>;*/
+    
+    /*private _tinymce: Editor;*/
+    private _tinymce: any;
+    private _editor = document.querySelector("#default-editor") as HTMLSelectElement;
 
-    constructor() {
+    private _utils = new Utilities();
+    private _formElements = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
+    private _formDesigner = this._utils.BTSP_GetOffCanvas('#offcanvasRight');
+
+    constructor(tinymce: any) {
+        this._tinymce = tinymce;
         this.AddFormElement();
     }
 
@@ -28,10 +39,11 @@ class FormBuilder {
 
                 const formElement: FormElements = new FormElements();
                 ev.preventDefault();
-                const divHeadingWrapper = formElement.FindFormElementToCreate(retrievedElementType);
+                const createFormElement = formElement.FindFormElementToCreate(retrievedElementType) as HTMLDivElement;
 
-                if (divHeadingWrapper != null) {
-                    this._customFormSection.append(divHeadingWrapper);
+                if (createFormElement != null) {
+                    createFormElement.onclick = (ev: MouseEvent) => this.EditFormElement(createFormElement);
+                    this._customFormSection.append(createFormElement);
                 }
             };
         }
@@ -55,5 +67,34 @@ class FormBuilder {
 
         element.remove();
         this.AddFormElement();
+    }
+
+
+    public EditFormElement(element: HTMLDivElement): void {
+        console.log(this._tinymce);
+        //remove key up event listner from _tinymce
+        this._tinymce.activeEditor.getBody().onkeyup = null;
+
+        this._utils.BTSP_CloseOffCanvas(this._formElements);
+        this._utils.BTSP_OpenOffCanvas(this._formDesigner);
+
+        const formElementData = element.innerHTML;
+        this._tinymce.activeEditor.setContent(formElementData);
+        //this._tinymce.setContent(formElementData);
+
+        //add new key up event listner for _tinymce
+        this._tinymce.activeEditor.getBody().onkeyup = (ev: KeyboardEvent) => {
+            if (ev.target) {
+                //do something
+                this.UpdateFormElement(element, ev)
+            }
+        };
+    }
+
+    public UpdateFormElement(element: HTMLDivElement, ev: KeyboardEvent): void {
+        debugger
+        ev.preventDefault();
+        console.log(element);
+        element.innerHTML = this._tinymce.activeEditor.getContent();
     }
 }

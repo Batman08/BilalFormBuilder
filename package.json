@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@types/bootstrap": "^5.2.6",
+    "@types/tinymce": "^4.6.5"
+  }
+}

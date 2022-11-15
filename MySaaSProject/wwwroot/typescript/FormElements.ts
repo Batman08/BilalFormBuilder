@@ -9,7 +9,7 @@
 
     }
 
-    public FindFormElementToCreate(formElementToCreate: string): string | null {
+    public FindFormElementToCreate(formElementToCreate: string): HTMLDivElement | null {
         const prefix: string = formElementToCreate.substring(0, 11);
 
         if (prefix === "formElement") {

@@ -5,6 +5,7 @@
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
+    "moduleResolution": "node",
     "target": "ES6",
     "outDir": "wwwroot/typescript"
   },
