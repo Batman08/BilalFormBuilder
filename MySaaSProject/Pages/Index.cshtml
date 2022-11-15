@@ -80,9 +80,12 @@
         });
 
         //Change order of form elements
-        new Sortable(customFormSection, {
+        new Sortable(customFormSection, { //add hover/ghost class
             group: 'shared',
-            animation: 150
+            animation: 150,
+            onAdd: function (evt) {
+                formBuilder.AddElementFromDrag(evt.item);
+            },
         });
     });
 </script>
