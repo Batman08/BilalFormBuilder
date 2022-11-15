@@ -56,8 +56,18 @@ class FormBuilder {
         this.AddFormElement();
     }
     EditFormElement(element) {
-        //set the current 
-        this._currentSelectFormElement = element;
+        if (this._currentSelectedFormElement !== undefined) {
+            console.log(this._currentSelectedFormElement);
+            debugger;
+            console.log(this._currentSelectedFormElement.querySelector('#selectedFormElementControl'));
+            this._currentSelectedFormElement.querySelector('#selectedFormElementControl').remove();
+        }
+        //set new current form element
+        this._currentSelectedFormElement = element;
+        console.log(this._currentSelectedFormElement);
+        const formElement = new FormElements();
+        const btnControls = formElement.FormElementControls();
+        element.appendChild(btnControls);
         this.AddEditDesign(element);
         this.ResetTinymceListeners();
         this._utils.BTSP_CloseOffCanvas(this._formElements);

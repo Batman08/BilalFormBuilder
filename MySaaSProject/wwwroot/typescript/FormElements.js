@@ -14,8 +14,9 @@ class FormElements {
         }
         return null;
     }
-    FormmElementControls() {
+    FormElementControls() {
         const divSelectedControls = document.createElement("div");
+        divSelectedControls.id = "selectedFormElementControl";
         divSelectedControls.classList.add("selectedControls");
         const btnProperty = document.createElement("button");
         btnProperty.classList.add("btn", "btn-secondary", "blahBtn");
@@ -29,18 +30,16 @@ class FormElements {
     }
     FormElementHeading() {
         const divHeadingWrapper = document.createElement("div");
-        divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15");
+        divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15", "position-relative");
         const h2Heading = document.createElement("h2");
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
         console.log("created header");
-        const btnControls = this.FormmElementControls();
-        divHeadingWrapper.appendChild(btnControls);
         return divHeadingWrapper;
     }
     FormElementFullName() {
         const divFullNameWrapper = document.createElement("div");
-        divFullNameWrapper.classList.add("createdFormElement", "fullNameWrapper", "pad15");
+        divFullNameWrapper.classList.add("createdFormElement", "fullNameWrapper", "pad15", "position-relative");
         const divFullNameRow = document.createElement("div");
         divFullNameRow.classList.add("row");
         divFullNameWrapper.appendChild(divFullNameRow);
@@ -76,7 +75,7 @@ class FormElements {
     }
     FormElementEmail() {
         const divEmailWrapper = document.createElement("div");
-        divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15");
+        divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15", "position-relative");
         const divEmailRow = document.createElement("div");
         divEmailRow.classList.add("row");
         divEmailWrapper.appendChild(divEmailRow);

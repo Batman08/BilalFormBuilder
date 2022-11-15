@@ -20,8 +20,9 @@
         return null;
     }
 
-    private FormmElementControls(): HTMLDivElement {
+    public FormElementControls(): HTMLDivElement {
         const divSelectedControls = document.createElement("div") as HTMLDivElement;
+        divSelectedControls.id = "selectedFormElementControl";
         divSelectedControls.classList.add("selectedControls");
 
         const btnProperty = document.createElement("button") as HTMLButtonElement;
@@ -40,22 +41,19 @@
     
     public FormElementHeading(): HTMLDivElement {
         const divHeadingWrapper = document.createElement("div") as HTMLDivElement;
-        divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15");
+        divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15", "position-relative");
 
         const h2Heading = document.createElement("h2") as HTMLHeadingElement
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
         console.log("created header");
 
-        const btnControls = this.FormmElementControls();
-        divHeadingWrapper.appendChild(btnControls);
-
         return divHeadingWrapper;
     }
 
     public FormElementFullName(): HTMLDivElement {
         const divFullNameWrapper = document.createElement("div") as HTMLDivElement;
-        divFullNameWrapper.classList.add("createdFormElement", "fullNameWrapper", "pad15");
+        divFullNameWrapper.classList.add("createdFormElement", "fullNameWrapper", "pad15", "position-relative");
 
         const divFullNameRow = document.createElement("div") as HTMLDivElement;
         divFullNameRow.classList.add("row");
@@ -100,7 +98,7 @@
 
     public FormElementEmail(): HTMLDivElement {
         const divEmailWrapper = document.createElement("div") as HTMLDivElement;
-        divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15");
+        divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15", "position-relative");
 
         const divEmailRow = document.createElement("div") as HTMLDivElement;
         divEmailRow.classList.add("row");

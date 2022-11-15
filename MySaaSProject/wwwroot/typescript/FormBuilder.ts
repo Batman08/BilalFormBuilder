@@ -4,7 +4,7 @@
 
 class FormBuilder {
     private _customFormSection = document.querySelector("#customFormSection") as HTMLDivElement;
-    private _currentSelectFormElement: HTMLDivElement;
+    private _currentSelectedFormElement: HTMLDivElement;
 
     private _tinymce: any;
 
@@ -75,8 +75,19 @@ class FormBuilder {
 
 
     private EditFormElement(element: HTMLDivElement): void {
-        //set the current 
-        this._currentSelectFormElement = element;
+        if (this._currentSelectedFormElement !== undefined) {
+            console.log(this._currentSelectedFormElement);
+            debugger
+            console.log(this._currentSelectedFormElement.querySelector('#selectedFormElementControl'));
+            this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')!.remove();
+        }
+
+        //set new current form element
+        this._currentSelectedFormElement = element;
+        console.log(this._currentSelectedFormElement);
+        const formElement: FormElements = new FormElements();
+        const btnControls = formElement.FormElementControls();
+        element.appendChild(btnControls);
 
         this.AddEditDesign(element);
 

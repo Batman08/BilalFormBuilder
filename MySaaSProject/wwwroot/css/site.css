@@ -170,7 +170,8 @@ body {
     bottom: auto;
     box-shadow: none;
     height: auto;
-    left: auto;
+    /*left: auto;*/
+    left: 103%;
     min-width: 36px;
     position: absolute;
     right: -44px;
