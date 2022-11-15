@@ -20,6 +20,23 @@
         return null;
     }
 
+    private FormmElementControls(): HTMLDivElement {
+        const divSelectedControls = document.createElement("div") as HTMLDivElement;
+        divSelectedControls.classList.add("selectedControls");
+
+        const btnProperty = document.createElement("button") as HTMLButtonElement;
+        btnProperty.classList.add("btn", "btn-secondary", "blahBtn");
+        btnProperty.innerHTML = '<i class="fas fa-cog"></i>';
+        divSelectedControls.appendChild(btnProperty);
+
+        const btnDelete = document.createElement("button") as HTMLButtonElement;
+        btnDelete.classList.add("btn", "btn-danger", "blahBtn");
+        btnDelete.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        divSelectedControls.appendChild(btnDelete);
+
+        return divSelectedControls;
+    }
+
     
     public FormElementHeading(): HTMLDivElement {
         const divHeadingWrapper = document.createElement("div") as HTMLDivElement;
@@ -29,6 +46,10 @@
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
         console.log("created header");
+
+        const btnControls = this.FormmElementControls();
+        divHeadingWrapper.appendChild(btnControls);
+
         return divHeadingWrapper;
     }
 

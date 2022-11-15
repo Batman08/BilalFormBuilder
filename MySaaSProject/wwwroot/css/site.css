@@ -27,6 +27,11 @@ body {
 }
 
 .formElementWrapper {
+    margin: 0 -38px;
+    padding: 2.5em 52px;
+}
+
+.listAddFormElementWrapper {
     display: table;
     transition-duration: .3s;
     transition-property: all;
@@ -34,19 +39,20 @@ body {
     width: 100%;
 }
 
-    .formElementWrapper + .formElementWrapper {
+
+    .listAddFormElementWrapper + .listAddFormElementWrapper {
         border-top: 1px solid #520dc2;
     }
 
-    .formElementWrapper:not(.isPassive) {
+    .listAddFormElementWrapper:not(.isPassive) {
         cursor: move;
     }
 
-        .formElementWrapper:not(.isPassive):hover {
+        .listAddFormElementWrapper:not(.isPassive):hover {
             background-color: #13795b;
         }
 
-            .formElementWrapper:not(.isPassive):hover .formElementIcon, .formElementWrapper:not(.isPassive):hover .formElementIcon {
+            .listAddFormElementWrapper:not(.isPassive):hover .formElementIcon, .listAddFormElementWrapper:not(.isPassive):hover .formElementIcon {
                 background: #20c997;
             }
 
@@ -59,8 +65,13 @@ body {
     cursor: move;
 }
 
+
 .bg-indigo-500 {
     background-color: #6610f2;
+}
+
+.bg-indigo-300 {
+    background-color: #a370f7;
 }
 
 .bg-indigo-700 {
@@ -128,4 +139,43 @@ body {
     position: fixed !important;
     top: -9999px !important;
     visibility: none !important;
+}
+
+
+/*Element Buttons*/
+
+.blahBtn {
+    border-radius: 50%;
+    padding: 0;
+    margin-bottom: 8px;
+    /*    width: 2.8125rem;
+    height: 2.8125rem;*/
+    width: 2.5125rem;
+    height: 2.5125rem;
+    text-align: center;
+}
+
+    .blahBtn > i {
+        width: 2.0125rem;
+        line-height: 2.0125rem;
+        line-height: 2.0125rem;
+        /*        width: 2.3125rem;
+        line-height: 2.3125rem;
+        line-height: 2.3125rem;*/
+    }
+
+.selectedControls {
+    background-color: transparent;
+    border-radius: 4px;
+    bottom: auto;
+    box-shadow: none;
+    height: auto;
+    left: auto;
+    min-width: 36px;
+    position: absolute;
+    right: -44px;
+    text-align: right;
+    top: -6%;
+    width: 36px;
+    z-index: 2;
 }

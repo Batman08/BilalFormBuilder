@@ -15,19 +15,19 @@
     <div class="offcanvas-body">
         <div class="formElementsCategory">
             <ul id="formElements" class="formElementList bg-indigo-500">
-                <li role="button" class="formElementWrapper bg-indigo-500" data-element-type="formElementHeading">
+                <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementHeading">
                     <div class="formElementIcon bg-indigo-700">
                         <span><i class="fas fa-heading fa-sm"></i></span>
                     </div>
                     <div class="formElementName">Heading</div>
                 </li>
-                <li role="button" class="formElementWrapper bg-indigo-500" data-element-type="formElementFullName">
+                <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementFullName">
                     <div class="formElementIcon bg-indigo-700">
                         <span><i class="fas fa-user-circle fa-sm"></i></span>
                     </div>
                     <div class="formElementName">Full Name</div>
                 </li>
-                <li role="button" class="formElementWrapper bg-indigo-500" data-element-type="formElementEmail">
+                <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementEmail">
                     <div class="formElementIcon bg-indigo-700">
                         <span><i class="far fa-envelope fa-sm"></i></span>
                     </div>
@@ -55,10 +55,23 @@
 
 <div class="text-center">
     <div class="row">
-        <div class="col-md-6 mx-auto">
+        <div id="customFormArea" class="col-md-6 mx-auto">
             <div id="customFormWrapper" style="border-radius: 3px; box-shadow: 0 4px 4px rgb(87 100 126 / 21%);">
-                <div id="customFormSection" style="min-height: 64px"></div>
+                <div id="customFormSection" class="position-relative" style="min-height: 64px"></div>
             </div>
+
+            @*            <div class="createdFormElement headingWrapper pad15 formElementSelected position-relative" draggable="false">
+            <h2>Heading</h2>
+
+            <div class="selectedControls">
+            <button type="button" class="btn btn-secondary blahBtn">
+            <i class="fas fa-cog"></i>
+            </button>
+            <button type="button" class="btn btn-danger blahBtn">
+            <i class="fas fa-trash-alt"></i>
+            </button>
+            </div>
+            </div>*@
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@
 
 class FormBuilder {
     private _customFormSection = document.querySelector("#customFormSection") as HTMLDivElement;
+    private _currentSelectFormElement: HTMLDivElement;
 
     private _tinymce: any;
 
@@ -17,7 +18,7 @@ class FormBuilder {
     }
 
     private AddFormElement(): void {
-        const _formElements = document.querySelectorAll(".formElementWrapper") as NodeListOf<HTMLDivElement>;
+        const _formElements = document.querySelectorAll(".listAddFormElementWrapper") as NodeListOf<HTMLDivElement>;
         _formElements.forEach((element) => {
             this.AddFormClick(element);
         });
@@ -39,6 +40,13 @@ class FormBuilder {
 
                 if (createFormElement != null) {
                     createFormElement.onclick = (ev: MouseEvent) => this.EditFormElement(createFormElement);
+                    createFormElement.onblur = (ev: FocusEvent) => this.RemoveSelectedFormElementStyle();
+
+                    /*need to look at this again*/
+                    createFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
+                    createFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
+
+
                     this._customFormSection.append(createFormElement);
                 }
             };
@@ -66,18 +74,10 @@ class FormBuilder {
     }
 
 
-    private AddEditDesign(element: HTMLDivElement): void {
-        //remove createdFormElement class from all elements
-        const createdFormElements = document.querySelectorAll(".createdFormElement") as NodeListOf<HTMLDivElement>;
-        createdFormElements.forEach((element) => {
-            element.classList.remove("formElementSelected");
-        });
-
-        //add createdFormElement class to the element
-        element.classList.add("formElementSelected");
-    }
-    
     private EditFormElement(element: HTMLDivElement): void {
+        //set the current 
+        this._currentSelectFormElement = element;
+
         this.AddEditDesign(element);
 
         this.ResetTinymceListeners();
@@ -91,7 +91,21 @@ class FormBuilder {
         this.AddTinymceListeners(element);
     }
 
-    
+    private AddEditDesign(element: HTMLDivElement): void {
+        this.RemoveSelectedFormElementStyle();
+
+        //add createdFormElement class to the element
+        element.classList.add("formElementSelected");
+    }
+
+    private RemoveSelectedFormElementStyle(): void {
+        const createdFormElements = document.querySelectorAll(".createdFormElement") as NodeListOf<HTMLDivElement>;
+        createdFormElements.forEach((element) => {
+            element.classList.remove("formElementSelected");
+        });
+    }
+
+
     private UpdateFormElement(element: HTMLDivElement, ev: Event): void {
         ev.preventDefault();
         console.log(element);
