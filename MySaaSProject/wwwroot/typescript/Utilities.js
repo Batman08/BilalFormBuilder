@@ -5,11 +5,9 @@ class Utilities {
         return new bootstrap.Offcanvas(offCanvasElement);
     }
     BTSP_OpenOffCanvas(offCanvas) {
-        debugger;
         offCanvas.show();
     }
     BTSP_CloseOffCanvas(offCanvas) {
-        debugger;
         offCanvas.hide();
     }
 }

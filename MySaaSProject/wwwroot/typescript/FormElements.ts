@@ -23,7 +23,7 @@
     
     public FormElementHeading(): HTMLDivElement {
         const divHeadingWrapper = document.createElement("div") as HTMLDivElement;
-        divHeadingWrapper.classList.add("headingWrapper", "pad15");
+        divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15");
 
         const h2Heading = document.createElement("h2") as HTMLHeadingElement
         h2Heading.innerText = "Heading";
@@ -34,7 +34,7 @@
 
     public FormElementFullName(): HTMLDivElement {
         const divFullNameWrapper = document.createElement("div") as HTMLDivElement;
-        divFullNameWrapper.classList.add("fullNameWrapper", "pad15");
+        divFullNameWrapper.classList.add("createdFormElement", "fullNameWrapper", "pad15");
 
         const divFullNameRow = document.createElement("div") as HTMLDivElement;
         divFullNameRow.classList.add("row");
@@ -79,7 +79,7 @@
 
     public FormElementEmail(): HTMLDivElement {
         const divEmailWrapper = document.createElement("div") as HTMLDivElement;
-        divEmailWrapper.classList.add("emailWrapper", "pad15");
+        divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15");
 
         const divEmailRow = document.createElement("div") as HTMLDivElement;
         divEmailRow.classList.add("row");

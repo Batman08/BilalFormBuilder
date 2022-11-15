@@ -7,12 +7,10 @@
     }
 
     public BTSP_OpenOffCanvas(offCanvas: bootstrap.Offcanvas): void {
-        debugger
         offCanvas.show();
     }
 
     public BTSP_CloseOffCanvas(offCanvas: bootstrap.Offcanvas): void {
-        debugger
         offCanvas.hide();
     }
 }

@@ -16,7 +16,7 @@ class FormElements {
     }
     FormElementHeading() {
         const divHeadingWrapper = document.createElement("div");
-        divHeadingWrapper.classList.add("headingWrapper", "pad15");
+        divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15");
         const h2Heading = document.createElement("h2");
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
@@ -25,7 +25,7 @@ class FormElements {
     }
     FormElementFullName() {
         const divFullNameWrapper = document.createElement("div");
-        divFullNameWrapper.classList.add("fullNameWrapper", "pad15");
+        divFullNameWrapper.classList.add("createdFormElement", "fullNameWrapper", "pad15");
         const divFullNameRow = document.createElement("div");
         divFullNameRow.classList.add("row");
         divFullNameWrapper.appendChild(divFullNameRow);
@@ -61,7 +61,7 @@ class FormElements {
     }
     FormElementEmail() {
         const divEmailWrapper = document.createElement("div");
-        divEmailWrapper.classList.add("emailWrapper", "pad15");
+        divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15");
         const divEmailRow = document.createElement("div");
         divEmailRow.classList.add("row");
         divEmailWrapper.appendChild(divEmailRow);

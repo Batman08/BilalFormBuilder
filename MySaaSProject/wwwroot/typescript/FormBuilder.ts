@@ -2,14 +2,10 @@
 /// <reference path="./FormElements.ts" />
 /// <reference path="./Utilities.ts" />
 
-//import { Editor} from "tinymce";
-
 class FormBuilder {
     private _customFormSection = document.querySelector("#customFormSection") as HTMLDivElement;
-    
-    /*private _tinymce: Editor;*/
+
     private _tinymce: any;
-    private _editor = document.querySelector("#default-editor") as HTMLSelectElement;
 
     private _utils = new Utilities();
     private _formElements = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
@@ -70,18 +66,39 @@ class FormBuilder {
     }
 
 
-    public EditFormElement(element: HTMLDivElement): void {
-        console.log(this._tinymce);
-        //remove key up event listner from _tinymce
-        this._tinymce.activeEditor.getBody().onkeyup = null;
+    private AddEditDesign(element: HTMLDivElement): void {
+        //remove createdFormElement class from all elements
+        const createdFormElements = document.querySelectorAll(".createdFormElement") as NodeListOf<HTMLDivElement>;
+        createdFormElements.forEach((element) => {
+            element.classList.remove("formElementSelected");
+        });
+
+        //add createdFormElement class to the element
+        element.classList.add("formElementSelected");
+    }
+    
+    private EditFormElement(element: HTMLDivElement): void {
+        this.AddEditDesign(element);
+
+        this.ResetTinymceListeners();
 
         this._utils.BTSP_CloseOffCanvas(this._formElements);
         this._utils.BTSP_OpenOffCanvas(this._formDesigner);
 
         const formElementData = element.innerHTML;
         this._tinymce.activeEditor.setContent(formElementData);
-        //this._tinymce.setContent(formElementData);
 
+        this.AddTinymceListeners(element);
+    }
+
+    
+    private UpdateFormElement(element: HTMLDivElement, ev: Event): void {
+        ev.preventDefault();
+        console.log(element);
+        element.innerHTML = this._tinymce.activeEditor.getContent();
+    }
+
+    private AddTinymceListeners(element: HTMLDivElement): void {
         //add new key up event listner for _tinymce
         this._tinymce.activeEditor.getBody().onkeyup = (ev: KeyboardEvent) => {
             if (ev.target) {
@@ -89,12 +106,18 @@ class FormBuilder {
                 this.UpdateFormElement(element, ev)
             }
         };
+
+        this._tinymce.activeEditor.getContentAreaContainer().onmousedown = (ev: MouseEvent) => {
+            if (ev.target) {
+                //do something
+                this.UpdateFormElement(element, ev)
+            }
+        };
     }
 
-    public UpdateFormElement(element: HTMLDivElement, ev: KeyboardEvent): void {
-        debugger
-        ev.preventDefault();
-        console.log(element);
-        element.innerHTML = this._tinymce.activeEditor.getContent();
+    private ResetTinymceListeners(): void {
+        //remove key up event listner from _tinymce
+        this._tinymce.activeEditor.getBody().onkeyup = null;
+        this._tinymce.activeEditor.getContentAreaContainer().onmousedown = null;
     }
 }
