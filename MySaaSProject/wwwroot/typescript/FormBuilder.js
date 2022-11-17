@@ -32,8 +32,8 @@ class FormBuilder {
                     createFormElement.onclick = (ev) => this.EditFormElement(createFormElement);
                     createFormElement.onblur = (ev) => this.RemoveSelectedFormElementStyle();
                     /*need to look at this again*/
-                    createFormElement.onmouseenter = (ev) => { createFormElement.removeAttribute("dataindex"); };
-                    createFormElement.onmouseleave = (ev) => { createFormElement.setAttribute("dataindex", "1"); };
+                    //createFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
+                    //createFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
                     this._customFormSection.append(createFormElement);
                 }
             };
@@ -56,6 +56,8 @@ class FormBuilder {
         this.AddFormElement();
     }
     EditFormElement(element) {
+        //const selectedControls = this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')! as HTMLDivElement;
+        /*this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')!.onclick = (ev: MouseEvent) => null;*/
         if (this._currentSelectedFormElement !== undefined) {
             console.log(this._currentSelectedFormElement);
             debugger;
@@ -70,11 +72,21 @@ class FormBuilder {
         element.appendChild(btnControls);
         this.AddEditDesign(element);
         this.ResetTinymceListeners();
-        this._utils.BTSP_CloseOffCanvas(this._formElements);
-        this._utils.BTSP_OpenOffCanvas(this._formDesigner);
-        const formElementData = element.innerHTML;
-        this._tinymce.activeEditor.setContent(formElementData);
-        this.AddTinymceListeners(element);
+        const selectedControls = this._currentSelectedFormElement.querySelector('#selectedFormElementControl');
+        selectedControls.onclick = (ev) => {
+            this._utils.BTSP_CloseOffCanvas(this._formElements);
+            this._utils.BTSP_OpenOffCanvas(this._formDesigner);
+            const formElementData = element.innerHTML;
+            this._tinymce.activeEditor.setContent(formElementData);
+            this.AddTinymceListeners(element);
+        };
+        //if designer already open then show form element value in tinymce field
+        const designer = document.querySelector('#offcanvasRight');
+        if (designer.classList.contains("show")) {
+            const formElementData = element.innerHTML;
+            this._tinymce.activeEditor.setContent(formElementData);
+            this.AddTinymceListeners(element);
+        }
     }
     AddEditDesign(element) {
         this.RemoveSelectedFormElementStyle();
