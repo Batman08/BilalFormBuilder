@@ -29,7 +29,7 @@ class FormBuilder {
                 ev.preventDefault();
                 const createFormElement = formElement.FindFormElementToCreate(retrievedElementType);
                 if (createFormElement != null) {
-                    createFormElement.onclick = (ev) => this.EditFormElement(createFormElement);
+                    createFormElement.onclick = (ev) => { console.log("elmeent click"); this.EditFormElement(createFormElement); };
                     createFormElement.onblur = (ev) => this.RemoveSelectedFormElementStyle();
                     /*need to look at this again*/
                     //createFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
@@ -56,8 +56,6 @@ class FormBuilder {
         this.AddFormElement();
     }
     EditFormElement(element) {
-        //const selectedControls = this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')! as HTMLDivElement;
-        /*this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')!.onclick = (ev: MouseEvent) => null;*/
         if (this._currentSelectedFormElement !== undefined) {
             console.log(this._currentSelectedFormElement);
             debugger;
@@ -72,13 +70,18 @@ class FormBuilder {
         element.appendChild(btnControls);
         this.AddEditDesign(element);
         this.ResetTinymceListeners();
-        const selectedControls = this._currentSelectedFormElement.querySelector('#selectedFormElementControl');
-        selectedControls.onclick = (ev) => {
+        const selectedControlBtnProperty = this._currentSelectedFormElement.querySelector('#selectedControlBtnProperty');
+        selectedControlBtnProperty.onclick = (ev) => {
             this._utils.BTSP_CloseOffCanvas(this._formElements);
             this._utils.BTSP_OpenOffCanvas(this._formDesigner);
             const formElementData = element.innerHTML;
             this._tinymce.activeEditor.setContent(formElementData);
             this.AddTinymceListeners(element);
+        };
+        const selectedControlDeleteBtn = this._currentSelectedFormElement.querySelector('#selectedControlBtnDelete');
+        selectedControlDeleteBtn.onclick = (ev) => {
+            this.RemoveFormElement(element);
+            this._utils.BTSP_CloseOffCanvas(this._formDesigner);
         };
         //if designer already open then show form element value in tinymce field
         const designer = document.querySelector('#offcanvasRight');
@@ -123,6 +126,9 @@ class FormBuilder {
         //remove key up event listner from _tinymce
         this._tinymce.activeEditor.getBody().onkeyup = null;
         this._tinymce.activeEditor.getContentAreaContainer().onmousedown = null;
+    }
+    RemoveFormElement(element) {
+        element.remove();
     }
 }
 //# sourceMappingURL=FormBuilder.js.map

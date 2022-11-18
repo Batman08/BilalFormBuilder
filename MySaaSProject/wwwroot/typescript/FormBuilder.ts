@@ -39,7 +39,7 @@ class FormBuilder {
                 const createFormElement = formElement.FindFormElementToCreate(retrievedElementType) as HTMLDivElement;
 
                 if (createFormElement != null) {
-                    createFormElement.onclick = (ev: MouseEvent) => this.EditFormElement(createFormElement);
+                    createFormElement.onclick = (ev: MouseEvent) => { console.log("elmeent click"); this.EditFormElement(createFormElement) };
                     createFormElement.onblur = (ev: FocusEvent) => this.RemoveSelectedFormElementStyle();
 
                     /*need to look at this again*/
@@ -75,9 +75,6 @@ class FormBuilder {
 
 
     private EditFormElement(element: HTMLDivElement): void {
-        //const selectedControls = this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')! as HTMLDivElement;
-        /*this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')!.onclick = (ev: MouseEvent) => null;*/
-
         if (this._currentSelectedFormElement !== undefined) {
             console.log(this._currentSelectedFormElement);
             debugger
@@ -98,8 +95,8 @@ class FormBuilder {
 
         this.ResetTinymceListeners();
 
-        const selectedControls = this._currentSelectedFormElement.querySelector('#selectedFormElementControl') as HTMLDivElement;
-        selectedControls.onclick = (ev: MouseEvent) => {
+        const selectedControlBtnProperty = this._currentSelectedFormElement.querySelector('#selectedControlBtnProperty') as HTMLDivElement;
+        selectedControlBtnProperty.onclick = (ev: MouseEvent) => {
             this._utils.BTSP_CloseOffCanvas(this._formElements);
             this._utils.BTSP_OpenOffCanvas(this._formDesigner);
 
@@ -107,6 +104,12 @@ class FormBuilder {
             this._tinymce.activeEditor.setContent(formElementData);
 
             this.AddTinymceListeners(element);
+        }
+
+        const selectedControlDeleteBtn = this._currentSelectedFormElement.querySelector('#selectedControlBtnDelete') as HTMLDivElement;
+        selectedControlDeleteBtn.onclick = (ev: MouseEvent) => {
+            this.RemoveFormElement(element);
+            this._utils.BTSP_CloseOffCanvas(this._formDesigner);
         }
 
         //if designer already open then show form element value in tinymce field
@@ -161,5 +164,9 @@ class FormBuilder {
         //remove key up event listner from _tinymce
         this._tinymce.activeEditor.getBody().onkeyup = null;
         this._tinymce.activeEditor.getContentAreaContainer().onmousedown = null;
+    }
+
+    private RemoveFormElement(element: HTMLDivElement): void {
+        element.remove();
     }
 }
