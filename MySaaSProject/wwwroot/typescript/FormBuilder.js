@@ -27,14 +27,14 @@ class FormBuilder {
                 }
                 const formElement = new FormElements();
                 ev.preventDefault();
-                const createFormElement = formElement.FindFormElementToCreate(retrievedElementType);
-                if (createFormElement != null) {
-                    createFormElement.onclick = (ev) => { console.log("elmeent click"); this.EditFormElement(createFormElement); };
-                    createFormElement.onblur = (ev) => this.RemoveSelectedFormElementStyle();
+                const createdFormElement = formElement.FindFormElementToCreate(retrievedElementType);
+                if (createdFormElement != null) {
+                    createdFormElement.onclick = (ev) => { console.log("elmeent click"); this.EditFormElement(createdFormElement); };
+                    createdFormElement.onblur = (ev) => this.RemoveSelectedFormElementStyle();
                     /*need to look at this again*/
-                    //createFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
-                    //createFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
-                    this._customFormSection.append(createFormElement);
+                    //createdFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
+                    //createdFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
+                    this._customFormSection.append(createdFormElement);
                 }
             };
         }
@@ -48,9 +48,14 @@ class FormBuilder {
             return;
         }
         const formElement = new FormElements();
-        const divHeadingWrapper = formElement.FindFormElementToCreate(element.getAttribute("data-element-type"));
-        if (divHeadingWrapper != null) {
-            element.after(divHeadingWrapper);
+        const createdFormElement = formElement.FindFormElementToCreate(element.getAttribute("data-element-type"));
+        if (createdFormElement != null) {
+            createdFormElement.onclick = (ev) => { console.log("elmeent click"); this.EditFormElement(createdFormElement); };
+            createdFormElement.onblur = (ev) => this.RemoveSelectedFormElementStyle();
+            /*need to look at this again*/
+            //createFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
+            //createFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
+            element.after(createdFormElement);
         }
         element.remove();
         this.AddFormElement();
