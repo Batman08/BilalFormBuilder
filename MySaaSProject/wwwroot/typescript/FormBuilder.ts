@@ -17,6 +17,7 @@ class FormBuilder {
         this.AddFormElement();
     }
 
+    //Create
     private AddFormElement(): void {
         const _formElements = document.querySelectorAll(".listAddFormElementWrapper") as NodeListOf<HTMLDivElement>;
         _formElements.forEach((element) => {
@@ -27,60 +28,54 @@ class FormBuilder {
     private AddFormClick(element: any): void {
         if (element != null) {
             element.onclick = (ev: MouseEvent) => {
-                //get attribute value
-                const retrievedElementType = element.getAttribute("data-element-type") as string;
-                if (retrievedElementType === null) {
-                    alert("missing components, please refresh the page!!!");
-                    return;
-                }
-
-                const formElement: FormElements = new FormElements();
-                ev.preventDefault();
-                const createdFormElement = formElement.FindFormElementToCreate(retrievedElementType) as HTMLDivElement;
-
-                if (createdFormElement != null) {
-                    createdFormElement.onclick = (ev: MouseEvent) => { console.log("elmeent click"); this.EditFormElement(createdFormElement) };
-                    createdFormElement.onblur = (ev: FocusEvent) => this.RemoveSelectedFormElementStyle();
-
-                    /*need to look at this again*/
-                    //createdFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
-                    //createdFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
-
-
-                    this._customFormSection.append(createdFormElement);
-                }
+                this.AppendCreatedFormElement(element, false);
             };
         }
     }
 
     public AddElementFromDrag(element: any): void {
+        this.AppendCreatedFormElement(element, true);
+    }
+
+    private AppendCreatedFormElement(element: any, shouldInsert: boolean): void {
         //get attribute value
         const retrievedElementType = element.getAttribute("data-element-type") as string;
         if (retrievedElementType === null) {
             alert("missing components, please refresh the page!!!");
-            element.remove();
+            if (shouldInsert) {
+                element.remove();
+            }
             return;
         }
 
         const formElement: FormElements = new FormElements();
-        const createdFormElement = formElement.FindFormElementToCreate(element.getAttribute("data-element-type") as string);
+        //ev.preventDefault();
+        const createdFormElement = formElement.FindFormElementToCreate(retrievedElementType) as HTMLDivElement;
 
         if (createdFormElement != null) {
-            createdFormElement.onclick = (ev: MouseEvent) => { console.log("elmeent click"); this.EditFormElement(createdFormElement) };
+            createdFormElement.onclick = (ev: MouseEvent) => { console.log("element click"); this.EditFormElement(createdFormElement) };
             createdFormElement.onblur = (ev: FocusEvent) => this.RemoveSelectedFormElementStyle();
 
             /*need to look at this again*/
-            //createFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
-            //createFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
+            //createdFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
+            //createdFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
 
-            element.after(createdFormElement);
+
+            if (shouldInsert) {
+                element.after(createdFormElement);
+            }
+            else if (!shouldInsert) {
+                this._customFormSection.append(createdFormElement);
+            }
         }
 
-        element.remove();
-        this.AddFormElement();
+        if (shouldInsert) {
+            element.remove();
+        }
     }
 
 
+    //Edit
     private EditFormElement(element: HTMLDivElement): void {
         if (this._currentSelectedFormElement !== undefined) {
             console.log(this._currentSelectedFormElement);
@@ -144,6 +139,7 @@ class FormBuilder {
     }
 
 
+    //Update
     private UpdateFormElement(element: HTMLDivElement, ev: Event): void {
         ev.preventDefault();
         console.log(element);
@@ -171,7 +167,7 @@ class FormBuilder {
         //remove key up event listner from _tinymce
         this._tinymce.activeEditor.getBody().onkeyup = null;
         this._tinymce.activeEditor.getContentAreaContainer().onmousedown = null;
-    }
+    } //todo: reset form desginer when opened from button click
 
     private RemoveFormElement(element: HTMLDivElement): void {
         element.remove();
