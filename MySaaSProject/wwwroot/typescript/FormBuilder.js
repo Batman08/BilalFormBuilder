@@ -78,6 +78,7 @@ class FormBuilder {
             this._utils.BTSP_CloseOffCanvas(this._formElements);
             this._utils.BTSP_OpenOffCanvas(this._formDesigner);
             const formElementData = element.innerHTML;
+            /*const formElementData = element.querySelectorAll('[data-element-value]') as NodeListOf<HTMLElement>;*/ //todo: need to change all attributes of elements
             this._tinymce.activeEditor.setContent(formElementData);
             this.AddTinymceListeners(element);
         };
@@ -89,7 +90,7 @@ class FormBuilder {
         //if designer already open then show form element value in tinymce field
         const designer = document.querySelector('#offcanvasRight');
         if (designer.classList.contains("show")) {
-            const formElementData = element.innerHTML;
+            const formElementData = element.innerHTML; //todo: need to change all attributes of elements
             this._tinymce.activeEditor.setContent(formElementData);
             this.AddTinymceListeners(element);
         }

@@ -46,6 +46,7 @@
         divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15", "position-relative");
 
         const h2Heading = document.createElement("h2") as HTMLHeadingElement
+        h2Heading.setAttribute("data-element-value", "");
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
         console.log("created header");
@@ -72,6 +73,7 @@
         divFirstNameColumn.appendChild(labelFirstName);
         
         const inputFirstName = document.createElement("input") as HTMLInputElement;
+        inputFirstName.setAttribute("data-element-value", "");
         inputFirstName.type = "text";
         inputFirstName.classList.add("form-control");
         inputFirstName.placeholder = "First Name";
@@ -89,6 +91,7 @@
         divLastNameColumn.appendChild(labelLastName);
         
         const inputLastName = document.createElement("input") as HTMLInputElement;
+        inputLastName.setAttribute("data-element-value", "");
         inputLastName.type = "text";
         inputLastName.classList.add("form-control");
         inputLastName.placeholder = "Last Name";
@@ -117,6 +120,7 @@
         
         const inputEmail = document.createElement("input") as HTMLInputElement;
         inputEmail.type = "email";
+        inputEmail.setAttribute("data-element-value", "");
         inputEmail.classList.add("form-control");
         inputEmail.placeholder = "Email";
         inputEmail.ariaLabel = "Wmaili";
