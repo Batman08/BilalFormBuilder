@@ -180,3 +180,8 @@ body {
     width: 36px;
     z-index: 2;
 }
+
+
+.hideElement {
+    display: none
+}

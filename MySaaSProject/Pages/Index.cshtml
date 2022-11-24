@@ -47,9 +47,59 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <textarea id="default-editor">
-        <p><em>Hello</em>, <span style="text-decoration: underline;"><strong>World!</strong></span></p>
-</textarea>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                <div id="propertiesDesigner">
+                    <h1>Heading Properties</h1>
+
+                    <br />
+
+                    <div class="mb-3">
+                        <label for="txtHeading" class="form-label">Heading Texts</label>
+                        <input type="text" class="form-control" id="txtHeading" data-reference aria-describedby="Heading Text">
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtSubHeading" class="form-label">Subheading Text</label>
+                        <input type="text" class="form-control" id="txtSubHeading">
+                    </div>
+                </div>
+
+                <div id="fullNameDesigner" class="hideElement">
+                    <h1>Full Name</h1>
+
+                    <br />
+
+                    <div class="mb-3">
+                        <label for="txtHeading" class="form-label">Heading Texts</label>
+                        <input type="text" class="form-control" id="txtHeading" data-reference aria-describedby="Heading Text">
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtSubHeading" class="form-label">Subheading Text</label>
+                        <input type="text" class="form-control" id="txtSubHeading">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <h1>Advanced</h1>
+            </div>
+            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+        </div>
     </div>
 </div>
 
@@ -59,36 +109,20 @@
             <div id="customFormWrapper" style="border-radius: 3px; box-shadow: 0 4px 4px rgb(87 100 126 / 21%);">
                 <div id="customFormSection" style="min-height: 64px"></div>
             </div>
-
-            @*            <div class="createdFormElement headingWrapper pad15 formElementSelected position-relative" draggable="false">
-            <h2>Heading</h2>
-
-            <div class="selectedControls">
-            <button type="button" class="btn btn-secondary blahBtn">
-            <i class="fas fa-cog"></i>
-            </button>
-            <button type="button" class="btn btn-danger blahBtn">
-            <i class="fas fa-trash-alt"></i>
-            </button>
-            </div>
-            </div>*@
         </div>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.2.0/tinymce.min.js"></script>
 
 <script src="/typescript/FormElements.js"></script>
+<script src="/typescript/FormElementProperties.js"></script>
 <script src="/typescript/Utilities.js"></script>
 <script src="/typescript/FormBuilder.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
-        tinymce.init({
-            selector: 'textarea#default-editor'
-        });
 
-        const formBuilder = new FormBuilder(tinymce);
+        const formBuilder = new FormBuilder();
 
         new Sortable(formElements, {
             group: {

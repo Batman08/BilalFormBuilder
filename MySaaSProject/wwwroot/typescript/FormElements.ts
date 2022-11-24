@@ -40,13 +40,35 @@
         return divSelectedControls;
     }
 
-    
+    private GetFormElementId(elementName: string): string {
+        const allElementsWithWrapperClass = document.querySelectorAll(`[name=${elementName}]`);
+        console.log(allElementsWithWrapperClass);
+
+        //find the highest number from ids
+        let highestNumber = 0;
+        allElementsWithWrapperClass.forEach((element: Element) => {
+            const elementNumber = parseInt(element.id.replace(elementName, ''));
+            if (elementNumber > highestNumber) {
+                highestNumber = elementNumber;
+            }
+        });
+
+        return `${elementName}${highestNumber + 1}` as string;
+    }
+
+    //Form Elements
     public FormElementHeading(): HTMLDivElement {
         const divHeadingWrapper = document.createElement("div") as HTMLDivElement;
-        divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15", "position-relative");
+        divHeadingWrapper.classList.add("createdFormElement", "pad15", "position-relative");
+        divHeadingWrapper.setAttribute("data-wrapper-type", "headingWrapper");
 
         const h2Heading = document.createElement("h2") as HTMLHeadingElement
-        h2Heading.setAttribute("data-element-value", "");
+        const formElementName = "heading" as string;
+        const formId = this.GetFormElementId(formElementName) as string;
+
+        h2Heading.id = formId;
+        h2Heading.setAttribute("name", formElementName)
+        h2Heading.setAttribute("data-property-reference", "txtHeading");
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
         console.log("created header");
@@ -56,7 +78,8 @@
 
     public FormElementFullName(): HTMLDivElement {
         const divFullNameWrapper = document.createElement("div") as HTMLDivElement;
-        divFullNameWrapper.classList.add("createdFormElement", "fullNameWrapper", "pad15", "position-relative");
+        divFullNameWrapper.classList.add("createdFormElement", "pad15", "position-relative");
+        divFullNameWrapper.setAttribute("data-wrapper-type", "fullNameWrapper");
 
         const divFullNameRow = document.createElement("div") as HTMLDivElement;
         divFullNameRow.classList.add("row");
@@ -71,7 +94,7 @@
         labelFirstName.classList.add("form-label");
         labelFirstName.innerText = "First Name";
         divFirstNameColumn.appendChild(labelFirstName);
-        
+
         const inputFirstName = document.createElement("input") as HTMLInputElement;
         inputFirstName.setAttribute("data-element-value", "");
         inputFirstName.type = "text";
@@ -89,7 +112,7 @@
         labelLastName.classList.add("form-label");
         labelLastName.innerText = "Last Name";
         divLastNameColumn.appendChild(labelLastName);
-        
+
         const inputLastName = document.createElement("input") as HTMLInputElement;
         inputLastName.setAttribute("data-element-value", "");
         inputLastName.type = "text";
@@ -117,7 +140,7 @@
         labelEmail.classList.add("form-label");
         labelEmail.innerText = "Email";
         divEmailColumn.appendChild(labelEmail);
-        
+
         const inputEmail = document.createElement("input") as HTMLInputElement;
         inputEmail.type = "email";
         inputEmail.setAttribute("data-element-value", "");

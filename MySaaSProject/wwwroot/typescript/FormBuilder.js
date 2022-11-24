@@ -2,15 +2,15 @@
 /// <reference path="./FormElements.ts" />
 /// <reference path="./Utilities.ts" />
 class FormBuilder {
-    constructor(tinymce) {
+    constructor() {
         this._customFormSection = document.querySelector("#customFormSection");
         this._utils = new Utilities();
         this._formElements = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
         this._formDesigner = this._utils.BTSP_GetOffCanvas('#offcanvasRight');
-        this._tinymce = tinymce;
+        this._tabContent = document.querySelector("#myTabContent");
         this.AddFormElement();
     }
-    //Create
+    /* Create */
     AddFormElement() {
         const _formElements = document.querySelectorAll(".listAddFormElementWrapper");
         _formElements.forEach((element) => {
@@ -57,43 +57,50 @@ class FormBuilder {
             element.remove();
         }
     }
-    //Edit
+    /* Edit */
     EditFormElement(element) {
         if (this._currentSelectedFormElement !== undefined) {
             console.log(this._currentSelectedFormElement);
-            debugger;
             console.log(this._currentSelectedFormElement.querySelector('#selectedFormElementControl'));
             this._currentSelectedFormElement.querySelector('#selectedFormElementControl').remove();
         }
         //set new current form element
         this._currentSelectedFormElement = element;
-        console.log(this._currentSelectedFormElement);
         const formElement = new FormElements();
         const btnControls = formElement.FormElementControls();
         element.appendChild(btnControls);
         this.AddEditDesign(element);
-        this.ResetTinymceListeners();
+        //if designer already open then show form properties in designer
+        const designer = document.querySelector('#offcanvasRight');
+        if (designer.classList.contains("show")) {
+            const formElementProperties = new FormElementProperties(element.getAttribute("data-wrapper-type"), element);
+            element.querySelectorAll("[data-element-value]").forEach((element) => {
+                const editHeadingText = document.querySelector("#txtHeading");
+                if (editHeadingText.id === element.getAttribute("data-property-reference")) {
+                    editHeadingText.setAttribute("data-element-reference", element.id);
+                    editHeadingText.value = element.textContent;
+                }
+            });
+        }
+        /* edit buttons */
         const selectedControlBtnProperty = this._currentSelectedFormElement.querySelector('#selectedControlBtnProperty');
         selectedControlBtnProperty.onclick = (ev) => {
             this._utils.BTSP_CloseOffCanvas(this._formElements);
             this._utils.BTSP_OpenOffCanvas(this._formDesigner);
-            const formElementData = element.innerHTML;
-            /*const formElementData = element.querySelectorAll('[data-element-value]') as NodeListOf<HTMLElement>;*/ //todo: need to change all attributes of elements
-            this._tinymce.activeEditor.setContent(formElementData);
-            this.AddTinymceListeners(element);
+            //get all closest elements
+            element.querySelectorAll("[data-element-value]").forEach((element) => {
+                const editHeadingText = document.querySelector("#txtHeading");
+                if (editHeadingText.id === element.getAttribute("data-element-value")) {
+                    editHeadingText.setAttribute("data-reference", element.id);
+                    editHeadingText.value = element.textContent;
+                }
+            });
         };
         const selectedControlDeleteBtn = this._currentSelectedFormElement.querySelector('#selectedControlBtnDelete');
         selectedControlDeleteBtn.onclick = (ev) => {
             this.RemoveFormElement(element);
             this._utils.BTSP_CloseOffCanvas(this._formDesigner);
         };
-        //if designer already open then show form element value in tinymce field
-        const designer = document.querySelector('#offcanvasRight');
-        if (designer.classList.contains("show")) {
-            const formElementData = element.innerHTML; //todo: need to change all attributes of elements
-            this._tinymce.activeEditor.setContent(formElementData);
-            this.AddTinymceListeners(element);
-        }
     }
     AddEditDesign(element) {
         this.RemoveSelectedFormElementStyle();
@@ -106,32 +113,28 @@ class FormBuilder {
             element.classList.remove("formElementSelected");
         });
     }
-    //Update
-    UpdateFormElement(element, ev) {
-        ev.preventDefault();
+    /* Update */
+    UpdateFormElement(element) {
+        //ev.preventDefault();
         console.log(element);
-        element.innerHTML = this._tinymce.activeEditor.getContent();
+        //element.innerHTML = this._tinymce.activeEditor.getContent();
     }
-    AddTinymceListeners(element) {
-        //add new key up event listner for _tinymce
-        this._tinymce.activeEditor.getBody().onkeyup = (ev) => {
+    AddTabContentListeners(element) {
+        //add new key up event listner for designer tabs
+        this._tabContent.onkeyup = (ev) => {
             if (ev.target) {
                 //do something
-                this.UpdateFormElement(element, ev);
+                this.UpdateFormElement(element);
             }
         };
-        this._tinymce.activeEditor.getContentAreaContainer().onmousedown = (ev) => {
+        this._tabContent.onmousedown = (ev) => {
             if (ev.target) {
                 //do something
-                this.UpdateFormElement(element, ev);
+                this.UpdateFormElement(element);
             }
         };
     }
-    ResetTinymceListeners() {
-        //remove key up event listner from _tinymce
-        this._tinymce.activeEditor.getBody().onkeyup = null;
-        this._tinymce.activeEditor.getContentAreaContainer().onmousedown = null;
-    } //todo: reset form desginer when opened from button click
+    /* Delete */
     RemoveFormElement(element) {
         element.remove();
     }

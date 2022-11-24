@@ -30,11 +30,30 @@ class FormElements {
         divSelectedControls.appendChild(btnDelete);
         return divSelectedControls;
     }
+    GetFormElementId(elementName) {
+        const allElementsWithWrapperClass = document.querySelectorAll(`[name=${elementName}]`);
+        console.log(allElementsWithWrapperClass);
+        //find the highest number from ids
+        let highestNumber = 0;
+        allElementsWithWrapperClass.forEach((element) => {
+            const elementNumber = parseInt(element.id.replace(elementName, ''));
+            if (elementNumber > highestNumber) {
+                highestNumber = elementNumber;
+            }
+        });
+        return `${elementName}${highestNumber + 1}`;
+    }
+    //Form Elements
     FormElementHeading() {
         const divHeadingWrapper = document.createElement("div");
-        divHeadingWrapper.classList.add("createdFormElement", "headingWrapper", "pad15", "position-relative");
+        divHeadingWrapper.classList.add("createdFormElement", "pad15", "position-relative");
+        divHeadingWrapper.setAttribute("data-wrapper-type", "headingWrapper");
         const h2Heading = document.createElement("h2");
-        h2Heading.setAttribute("data-element-value", "");
+        const formElementName = "heading";
+        const formId = this.GetFormElementId(formElementName);
+        h2Heading.id = formId;
+        h2Heading.setAttribute("name", formElementName);
+        h2Heading.setAttribute("data-property-reference", "txtHeading");
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
         console.log("created header");
@@ -42,7 +61,8 @@ class FormElements {
     }
     FormElementFullName() {
         const divFullNameWrapper = document.createElement("div");
-        divFullNameWrapper.classList.add("createdFormElement", "fullNameWrapper", "pad15", "position-relative");
+        divFullNameWrapper.classList.add("createdFormElement", "pad15", "position-relative");
+        divFullNameWrapper.setAttribute("data-wrapper-type", "fullNameWrapper");
         const divFullNameRow = document.createElement("div");
         divFullNameRow.classList.add("row");
         divFullNameWrapper.appendChild(divFullNameRow);
