@@ -6,6 +6,11 @@
 
 type formComponent = {
     name: string;
-    element: string;
+    type: string;
     icon: string[];
+}
+
+type componentsToCreate = {
+    basicFormElements: formComponent[];
+    complexFormElements: formComponent[]
 }
