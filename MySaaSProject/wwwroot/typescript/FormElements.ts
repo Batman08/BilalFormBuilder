@@ -1,11 +1,46 @@
 ﻿class FormElements {
     private readonly _basicFormElements = document.querySelector("#basicFormElements") as HTMLDivElement;
-    private readonly _componentsToCreate = {
+    private readonly _complexFormElements = document.querySelector("#formElements") as HTMLDivElement;
+
+    private readonly _componentsToCreate: componentsToCreate = {
         basicFormElements: [
             { name: "Paragraph", type: "Paragraph", icon: ["fas", "fa-paragraph", "fa-sm"] },
             { name: "Dropdown", type: "Dropdown", icon: ["fas", "fa-caret-square-down", "fa-sm"] },
             { name: "Single Choice", type: "SingleChoice", icon: ["fas", "fa-dot-circle", "fa-sm"] },
-            { name: "Multiple Choice", type: "MultipleChoice", icon: ["fas", "fa-check-square", "fa-sm"] }
+            { name: "Multiple Choice", type: "MultipleChoice", icon: ["fas", "fa-check-square", "fa-sm"] },
+        ],
+        complexFormElements: [
+            { name: "Heading", type: "Heading", icon: ["fas", "fa-heading", "fa-sm"] },
+            { name: "Full Name", type: "FullName", icon: ["fas", "fa-user", "fa-sm"] },
+            { name: "Email", type: "Email", icon: ["fas", "fa-envelope", "fa-sm"] },
+            { name: "Phone", type: "Phone", icon: ["fas", "fa-phone", "fa-sm"] },
+            { name: "Address", type: "Address", icon: ["fas", "fa-map-marker-alt", "fa-sm"] },
+            { name: "Date", type: "Date", icon: ["fas", "fa-calendar-alt", "fa-sm"] },
+            { name: "Time", type: "Time", icon: ["fas", "fa-clock", "fa-sm"] },
+            { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
+            { name: "Signature", type: "Signature", icon: ["fas", "fa-pen", "fa-sm"] },
+            { name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },
+            { name: "Slider", type: "Slider", icon: ["fas", "fa-sliders-h", "fa-sm"] },
+            { name: "Number", type: "Number", icon: ["fas", "fa-hashtag", "fa-sm"] },
+            { name: "Currency", type: "Currency", icon: ["fas", "fa-dollar-sign", "fa-sm"] },
+            { name: "Website", type: "Website", icon: ["fas", "fa-globe", "fa-sm"] },
+            { name: "Password", type: "Password", icon: ["fas", "fa-key", "fa-sm"] },
+            { name: "Image", type: "Image", icon: ["fas", "fa-image", "fa-sm"] },
+            { name: "Video", type: "Video", icon: ["fas", "fa-video", "fa-sm"] },
+            { name: "Audio", type: "Audio", icon: ["fas", "fa-volume-up", "fa-sm"] },
+            { name: "Barcode", type: "Barcode", icon: ["fas", "fa-barcode", "fa-sm"] },
+            { name: "QR Code", type: "QRCode", icon: ["fas", "fa-qrcode", "fa-sm"] },
+            { name: "Location", type: "Location", icon: ["fas", "fa-map-marker-alt", "fa-sm"] },
+            { name: "Button", type: "Button", icon: ["fas", "fa-square", "fa-sm"] },
+            { name: "Link", type: "Link", icon: ["fas", "fa-link", "fa-sm"] },
+            { name: "HTML", type: "HTML", icon: ["fas", "fa-code", "fa-sm"] },
+            { name: "Divider", type: "Divider", icon: ["fas", "fa-minus", "fa-sm"] },
+            { name: "Page Break", type: "PageBreak", icon: ["fas", "fa-file-alt", "fa-sm"] },
+            { name: "Section Break", type: "SectionBreak", icon: ["fas", "fa-columns", "fa-sm"] },
+            { name: "Table", type: "Table", icon: ["fas", "fa-table", "fa-sm"] },
+            { name: "List", type: "List", icon: ["fas", "fa-list", "fa-sm"] },
+            { name: "Grid", type: "Grid", icon: ["fas", "fa-th", "fa-sm"] },
+            { name: "Tabs", type: "Tabs", icon: ["fas", "fa-window-maximize", "fa-sm"] }
         ]
     }
 
@@ -15,43 +50,47 @@
 
     private createFormElementAddComponent(): void {
         this._basicFormElements.innerHTML = '';
+        this._complexFormElements.innerHTML = '';
 
-        //loop through all components to create
+        //loop through all basic components to create
         this._componentsToCreate.basicFormElements.forEach((component) => {
-            const listElementWrapper = document.createElement("li") as HTMLLIElement;
-            listElementWrapper.classList.add("listAddFormElementWrapper", "bg-indigo-500");
-            listElementWrapper.setAttribute("data-element-type", `formElement${component.type}`);
-
-            const divIcon = document.createElement("div") as HTMLDivElement;
-            divIcon.classList.add("formElementIcon", "bg-indigo-700");
-            listElementWrapper.appendChild(divIcon);
-
-            const spanIcon = document.createElement("span") as HTMLSpanElement;
-            divIcon.appendChild(spanIcon);
-
-            const elementIcon = document.createElement("i") as HTMLDivElement;
-            elementIcon.classList.add(...component.icon);
-            spanIcon.appendChild(elementIcon);
-
-
-            const divElementnName = document.createElement("div") as HTMLDivElement;
-            divElementnName.classList.add("formElementName");
-            divElementnName.innerText = component.name;
-            listElementWrapper.appendChild(divElementnName);
-
-            this._basicFormElements.appendChild(listElementWrapper);
+            const addElementComponent = this.formElementComponent(component.name, component.type, component.icon);
+            this._basicFormElements.appendChild(addElementComponent);
         });
 
-        //const x = `<li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementParagraph">
-        //                    <div class="formElementIcon bg-indigo-700">
-        //                        <span><i class="fas fa-paragraph fa-sm"></i></span>
-        //                    </div>
-        //                    <div class="formElementName">Paragraph</div>
-        //                </li>`;
+        //loop through all complex components to create
+        this._componentsToCreate.complexFormElements.forEach((component) => {
+            const addElementComponent = this.formElementComponent(component.name, component.type, component.icon);
+            this._complexFormElements.appendChild(addElementComponent);
+        });
+    }
+
+    private formElementComponent(name: string, type: string, icon: string[]): HTMLLIElement {
+        const listElementWrapper = document.createElement("li") as HTMLLIElement;
+        listElementWrapper.classList.add("listAddFormElementWrapper", "bg-indigo-500");
+        listElementWrapper.setAttribute("data-element-type", `formElement${type}`);
+
+        const divIcon = document.createElement("div") as HTMLDivElement;
+        divIcon.classList.add("formElementIcon", "bg-indigo-700");
+        listElementWrapper.appendChild(divIcon);
+
+        const spanIcon = document.createElement("span") as HTMLSpanElement;
+        divIcon.appendChild(spanIcon);
+
+        const elementIcon = document.createElement("i") as HTMLDivElement;
+        elementIcon.classList.add(...icon);
+        spanIcon.appendChild(elementIcon);
+
+
+        const divElementnName = document.createElement("div") as HTMLDivElement;
+        divElementnName.classList.add("formElementName");
+        divElementnName.innerText = name;
+        listElementWrapper.appendChild(divElementnName);
+
+        return listElementWrapper;
     }
 
     public FindFormElementToCreate(formElementToCreate: string): HTMLDivElement | null {
-        debugger
         const prefix: string = formElementToCreate.substring(0, 11);
 
         if (prefix !== "formElement")
@@ -61,6 +100,14 @@
 
         //switch statement
         switch (elementType) {
+            case "Paragraph":
+                return this.FormElementParagraph();
+            case "Dropdown":
+                return this.FormElementDropdown();
+            case "SingleChoice":
+                return this.FormElementSingleChoice();
+            case "MultipleChoice":
+                return this.FormElementMultipleChoice();
             case "Heading":
                 return this.FormElementHeading();
             case "FullName":
@@ -108,8 +155,164 @@
         return `${elementName}${highestNumber + 1}` as string;
     }
 
-    //Form Elements
-    public FormElementHeading(): HTMLDivElement {
+
+    //#region Basic Form Elements
+    private FormElementParagraph(): HTMLDivElement {
+        const divParagraphWrapper = document.createElement("div") as HTMLDivElement;
+        divParagraphWrapper.classList.add("createdFormElement", "pad15", "position-relative", "text-start");
+        divParagraphWrapper.setAttribute("data-wrapper-type", "paragraphWrapper");
+
+        const paragraph = document.createElement("p") as HTMLParagraphElement;
+        const formElementName = "paragraph" as string;
+        const formId = this.GetFormElementId(formElementName) as string;
+
+        paragraph.id = formId;
+        paragraph.setAttribute("name", formElementName)
+        //paragraph.setAttribute("data-property-reference", "txtParagraph"); //todo: add tinymce editor for this
+        paragraph.innerText = "This is a paragraph";
+        divParagraphWrapper.appendChild(paragraph);
+
+        return divParagraphWrapper;
+    }
+
+    private FormElementDropdown(): HTMLDivElement {
+        const divDropdownWrapper = document.createElement("div") as HTMLDivElement;
+        divDropdownWrapper.classList.add("createdFormElement", "pad15", "position-relative");
+        divDropdownWrapper.setAttribute("data-wrapper-type", "dropdownWrapper");
+
+        const divTextStart = document.createElement("div") as HTMLDivElement;
+        divTextStart.classList.add("text-start");
+        divDropdownWrapper.appendChild(divTextStart);
+
+        const dropdownLabel = document.createElement("label") as HTMLLabelElement;
+        dropdownLabel.classList.add("form-label");
+        dropdownLabel.innerText = "Type a question";
+        divTextStart.appendChild(dropdownLabel);
+
+        const select = document.createElement("select") as HTMLSelectElement;
+        const formElementName = "dropdown" as string;
+        const formId = this.GetFormElementId(formElementName) as string;
+
+        select.id = formId;
+        select.classList.add("form-select");
+        select.setAttribute("name", formElementName)
+        select.ariaLabel = "Dropdown"
+        select.setAttribute("data-property-reference", "txtDropdown");
+        divDropdownWrapper.appendChild(select);
+
+        const defaultOption = document.createElement("option") as HTMLOptionElement;
+        defaultOption.innerText = "Select an option";
+        defaultOption.setAttribute("selected", "");
+        select.appendChild(defaultOption);
+
+        return divDropdownWrapper;
+    }
+
+    private FormElementSingleChoice(): HTMLDivElement {
+        const divSingleChoiceWrapper = document.createElement("div") as HTMLDivElement;
+        divSingleChoiceWrapper.classList.add("createdFormElement", "pad15", "position-relative");
+        divSingleChoiceWrapper.setAttribute("data-wrapper-type", "singleChoiceWrapper");
+
+        const divTextStart = document.createElement("div") as HTMLDivElement;
+        divTextStart.classList.add("text-start");
+        divSingleChoiceWrapper.appendChild(divTextStart);
+
+        const singleChoiceLabel = document.createElement("label") as HTMLLabelElement;
+        singleChoiceLabel.classList.add("form-label");
+        singleChoiceLabel.innerText = "Type a question";
+        divTextStart.appendChild(singleChoiceLabel);
+
+        const divRadioBtnsContainer = document.createElement("div") as HTMLDivElement;
+        const formElementName = "singleChoice" as string;
+        const formId = this.GetFormElementId(formElementName) as string;
+
+        divRadioBtnsContainer.id = formId;
+        divRadioBtnsContainer.setAttribute("name", formElementName)
+        divRadioBtnsContainer.ariaLabel = "Single Choice"
+        divRadioBtnsContainer.setAttribute("data-property-reference", "txtSingleChoice"); //todo:?
+        divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
+
+        const defaultCreateNumber = 3 as number;
+
+        for (var i = 0; i < defaultCreateNumber; i++) {
+            const itemNum = i + 1;
+            
+            const divRadioOption = document.createElement("div") as HTMLDivElement;
+            divRadioOption.classList.add("form-check");
+            divRadioBtnsContainer.appendChild(divRadioOption);
+            
+            const radioInput = document.createElement("input") as HTMLInputElement;
+            radioInput.classList.add("form-check-input");
+            radioInput.type = "radio";
+            radioInput.name = formElementName;
+            radioInput.id = `singleChoiceOption${itemNum}`;
+            divRadioOption.appendChild(radioInput);
+
+            const radioLabel = document.createElement("label") as HTMLLabelElement;
+            radioLabel.classList.add("form-check-label");
+            radioLabel.htmlFor = `singleChoiceOption${itemNum}`;
+            radioLabel.innerText = `Option ${itemNum}`;
+            divRadioOption.appendChild(radioLabel);
+        }
+
+        return divSingleChoiceWrapper;
+    }
+
+    private FormElementMultipleChoice(): HTMLDivElement {
+        const divMultipleChoiceWrapper = document.createElement("div") as HTMLDivElement;
+        divMultipleChoiceWrapper.classList.add("createdFormElement", "pad15", "position-relative");
+        divMultipleChoiceWrapper.setAttribute("data-wrapper-type", "multipleChoiceWrapper");
+
+        const divTextStart = document.createElement("div") as HTMLDivElement;
+        divTextStart.classList.add("text-start");
+        divMultipleChoiceWrapper.appendChild(divTextStart);
+
+        const multipleChoiceLabel = document.createElement("label") as HTMLLabelElement;
+        multipleChoiceLabel.classList.add("form-label");
+        multipleChoiceLabel.innerText = "Type a question";
+        divTextStart.appendChild(multipleChoiceLabel);
+
+        const divCheckboxBtnsContainer = document.createElement("div") as HTMLDivElement;
+        const formElementName = "multipleChoice" as string;
+        const formId = this.GetFormElementId(formElementName) as string;
+
+        divCheckboxBtnsContainer.id = formId;
+        divCheckboxBtnsContainer.setAttribute("name", formElementName)
+        divCheckboxBtnsContainer.ariaLabel = "Multiple Choice"
+        divCheckboxBtnsContainer.setAttribute("data-property-reference", "txtMultipleChoice"); //todo:?
+        divMultipleChoiceWrapper.appendChild(divCheckboxBtnsContainer);
+
+        const defaultCreateNumber = 3 as number;
+
+        for (var i = 0; i < defaultCreateNumber; i++) {
+            const itemNum = i + 1;
+
+            const divCheckboxOption = document.createElement("div") as HTMLDivElement;
+            divCheckboxOption.classList.add("form-check");
+            divCheckboxBtnsContainer.appendChild(divCheckboxOption);
+
+            const checkboxInput = document.createElement("input") as HTMLInputElement;
+            checkboxInput.classList.add("form-check-input");
+            checkboxInput.type = "checkbox";
+            checkboxInput.name = formElementName;
+            checkboxInput.id = `multipleChoiceOption${itemNum}`;
+            divCheckboxOption.appendChild(checkboxInput);
+
+            const checkboxLabel = document.createElement("label") as HTMLLabelElement;
+            checkboxLabel.classList.add("form-check-label");
+            checkboxLabel.htmlFor = `multipleChoiceOption${itemNum}`;
+            checkboxLabel.innerText = `Option ${itemNum}`;
+            divCheckboxOption.appendChild(checkboxLabel);
+        }
+
+        return divMultipleChoiceWrapper;
+    }
+
+    //#endregion
+
+
+    //#region Complex Form Elements
+    private FormElementHeading(): HTMLDivElement {
         const divHeadingWrapper = document.createElement("div") as HTMLDivElement;
         divHeadingWrapper.classList.add("createdFormElement", "pad15", "position-relative");
         divHeadingWrapper.setAttribute("data-wrapper-type", "headingWrapper");
@@ -128,7 +331,7 @@
         return divHeadingWrapper;
     }
 
-    public FormElementFullName(): HTMLDivElement {
+    private FormElementFullName(): HTMLDivElement {
         const divFullNameWrapper = document.createElement("div") as HTMLDivElement;
         divFullNameWrapper.classList.add("createdFormElement", "pad15", "position-relative");
         divFullNameWrapper.setAttribute("data-wrapper-type", "fullNameWrapper");
@@ -176,7 +379,7 @@
         return divFullNameWrapper;
     }
 
-    public FormElementEmail(): HTMLDivElement {
+    private FormElementEmail(): HTMLDivElement {
         const divEmailWrapper = document.createElement("div") as HTMLDivElement;
         divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15", "position-relative");
 
@@ -203,4 +406,5 @@
 
         return divEmailWrapper;
     }
+    //#endregion
 }
