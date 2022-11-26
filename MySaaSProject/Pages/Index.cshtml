@@ -13,27 +13,71 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="formElementsCategory">
-            <ul id="formElements" class="formElementList bg-indigo-500">
-                <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementHeading">
-                    <div class="formElementIcon bg-indigo-700">
-                        <span><i class="fas fa-heading fa-sm"></i></span>
-                    </div>
-                    <div class="formElementName">Heading</div>
-                </li>
-                <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementFullName">
-                    <div class="formElementIcon bg-indigo-700">
-                        <span><i class="fas fa-user-circle fa-sm"></i></span>
-                    </div>
-                    <div class="formElementName">Full Name</div>
-                </li>
-                <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementEmail">
-                    <div class="formElementIcon bg-indigo-700">
-                        <span><i class="far fa-envelope fa-sm"></i></span>
-                    </div>
-                    <div class="formElementName">Email</div>
-                </li>
-            </ul>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="basic-elments-tab" data-bs-toggle="tab" data-bs-target="#basic-elments-tab-pane" type="button" role="tab" aria-controls="basic-elments-tab-pane" aria-selected="true">Basic Elements</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="complex-elements-tab" data-bs-toggle="tab" data-bs-target="#complex-elements-tab-pane" type="button" role="tab" aria-controls="complex-elements-tab-pane" aria-selected="false">Complex Elements</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <br />
+            
+            <div class="tab-pane fade show active" id="basic-elments-tab-pane" role="tabpanel" aria-labelledby="basic-elments-tab" tabindex="0">
+                <div class="formElementsCategory">
+                    <ul id="basicFormElements" class="formElementList bg-indigo-500">
+@*                        <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementParagraph">
+                            <div class="formElementIcon bg-indigo-700">
+                                <span><i class="fas fa-paragraph fa-sm"></i></span>
+                            </div>
+                            <div class="formElementName">Paragraph</div>
+                        </li>
+                        <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementDropdown">
+                            <div class="formElementIcon bg-indigo-700">
+                                <span><i class="fas fa-caret-square-down fa-sm"></i></span>
+                            </div>
+                            <div class="formElementName">Dropdown</div>
+                        </li>
+                        <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementSingleChoice">
+                            <div class="formElementIcon bg-indigo-700">
+                                <span><i class="far fa-dot-circle fa-sm"></i></span>
+                            </div>
+                            <div class="formElementName">Single Choice</div>
+                        </li>
+                        <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementMultipleChoice">
+                            <div class="formElementIcon bg-indigo-700">
+                                <span><i class="fas fa-check-square fa-sm"></i></span>
+                            </div>
+                            <div class="formElementName">Multiple Choice</div>
+                        </li>*@
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="complex-elements-tab-pane" role="tabpanel" aria-labelledby="complex-elements-tab" tabindex="0">
+                <div class="formElementsCategory">
+                    <ul id="formElements" class="formElementList bg-indigo-500">
+                        <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementHeading">
+                            <div class="formElementIcon bg-indigo-700">
+                                <span><i class="fas fa-heading fa-sm"></i></span>
+                            </div>
+                            <div class="formElementName">Heading</div>
+                        </li>
+                        <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementFullName">
+                            <div class="formElementIcon bg-indigo-700">
+                                <span><i class="fas fa-user-circle fa-sm"></i></span>
+                            </div>
+                            <div class="formElementName">Full Name</div>
+                        </li>
+                        <li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementEmail">
+                            <div class="formElementIcon bg-indigo-700">
+                                <span><i class="far fa-envelope fa-sm"></i></span>
+                            </div>
+                            <div class="formElementName">Email</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -63,8 +107,8 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-                <div id="propertiesDesigner">
-                    <h1>Heading Properties</h1>
+                <div id="formDesigner">
+                    <h1>Form Designer</h1>
 
                     <br />
 
@@ -78,20 +122,7 @@
                     </div>
                 </div>
 
-                <div id="fullNameDesigner" class="hideElement">
-                    <h1>Full Name</h1>
-
-                    <br />
-
-                    <div class="mb-3">
-                        <label for="txtHeading" class="form-label">Heading Texts</label>
-                        <input type="text" class="form-control" id="txtHeading" data-reference aria-describedby="Heading Text">
-                    </div>
-                    <div class="mb-3">
-                        <label for="txtSubHeading" class="form-label">Subheading Text</label>
-                        <input type="text" class="form-control" id="txtSubHeading">
-                    </div>
-                </div>
+                <div id="propertiesDesigner" class="hideElement"></div>
             </div>
 
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">

@@ -1,23 +1,75 @@
 ﻿class FormElements {
-    private _allFormElements: formElements = {
-        Heading: this.FormElementHeading(),
-        FullName: this.FormElementFullName(),
-        Email: this.FormElementEmail()
-    };
+    private readonly _basicFormElements = document.querySelector("#basicFormElements") as HTMLDivElement;
+    private readonly _componentsToCreate = {
+        basicFormElements: [
+            { name: "Paragraph", type: "Paragraph", icon: ["fas", "fa-paragraph", "fa-sm"] },
+            { name: "Dropdown", type: "Dropdown", icon: ["fas", "fa-caret-square-down", "fa-sm"] },
+            { name: "Single Choice", type: "SingleChoice", icon: ["fas", "fa-dot-circle", "fa-sm"] },
+            { name: "Multiple Choice", type: "MultipleChoice", icon: ["fas", "fa-check-square", "fa-sm"] }
+        ]
+    }
 
     constructor() {
+        this.createFormElementAddComponent();
+    }
 
+    private createFormElementAddComponent(): void {
+        this._basicFormElements.innerHTML = '';
+
+        //loop through all components to create
+        this._componentsToCreate.basicFormElements.forEach((component) => {
+            const listElementWrapper = document.createElement("li") as HTMLLIElement;
+            listElementWrapper.classList.add("listAddFormElementWrapper", "bg-indigo-500");
+            listElementWrapper.setAttribute("data-element-type", `formElement${component.type}`);
+
+            const divIcon = document.createElement("div") as HTMLDivElement;
+            divIcon.classList.add("formElementIcon", "bg-indigo-700");
+            listElementWrapper.appendChild(divIcon);
+
+            const spanIcon = document.createElement("span") as HTMLSpanElement;
+            divIcon.appendChild(spanIcon);
+
+            const elementIcon = document.createElement("i") as HTMLDivElement;
+            elementIcon.classList.add(...component.icon);
+            spanIcon.appendChild(elementIcon);
+
+
+            const divElementnName = document.createElement("div") as HTMLDivElement;
+            divElementnName.classList.add("formElementName");
+            divElementnName.innerText = component.name;
+            listElementWrapper.appendChild(divElementnName);
+
+            this._basicFormElements.appendChild(listElementWrapper);
+        });
+
+        //const x = `<li role="button" class="listAddFormElementWrapper bg-indigo-500" data-element-type="formElementParagraph">
+        //                    <div class="formElementIcon bg-indigo-700">
+        //                        <span><i class="fas fa-paragraph fa-sm"></i></span>
+        //                    </div>
+        //                    <div class="formElementName">Paragraph</div>
+        //                </li>`;
     }
 
     public FindFormElementToCreate(formElementToCreate: string): HTMLDivElement | null {
+        debugger
         const prefix: string = formElementToCreate.substring(0, 11);
 
-        if (prefix === "formElement") {
-            const elementType: string = formElementToCreate.substring(11);
-            return this._allFormElements[elementType];
-        }
+        if (prefix !== "formElement")
+            return null;
 
-        return null;
+        const elementType: string = formElementToCreate.substring(11);
+
+        //switch statement
+        switch (elementType) {
+            case "Heading":
+                return this.FormElementHeading();
+            case "FullName":
+                return this.FormElementFullName();
+            case "Email":
+                return this.FormElementEmail();
+            default:
+                return null;
+        }
     }
 
     public FormElementControls(): HTMLDivElement {
