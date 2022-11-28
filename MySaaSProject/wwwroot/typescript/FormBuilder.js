@@ -3,14 +3,22 @@
 /// <reference path="./Utilities.ts" />
 class FormBuilder {
     constructor() {
+        this._btnFormDesigner = document.querySelector("#btnFormDesigner");
+        this._offcanvasDesignerRightLabel = document.querySelector("#offcanvasDesignerRightLabel");
         this._customFormSection = document.querySelector("#customFormSection");
         this._utils = new Utilities();
-        this._formElements = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
-        this._formDesigner = this._utils.BTSP_GetOffCanvas('#offcanvasRight');
+        this._formElementsOffCanvas = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
+        this._formDesignerOffCanvas = this._utils.BTSP_GetOffCanvas('#offcanvasRight');
         this._tabContent = document.querySelector("#myTabContent");
+        //#endregion
+    }
+    Init() {
+        const formElement = new FormElements();
+        formElement.Init();
+        this._btnFormDesigner.onclick = (ev) => this._offcanvasDesignerRightLabel.textContent = "Form Designer";
         this.AddFormElement();
     }
-    /* Create */
+    //#region Create
     AddFormElement() {
         const _formElements = document.querySelectorAll(".listAddFormElementWrapper");
         _formElements.forEach((element) => {
@@ -38,11 +46,10 @@ class FormBuilder {
             return;
         }
         const formElement = new FormElements();
-        //ev.preventDefault();
         const createdFormElement = formElement.FindFormElementToCreate(retrievedElementType);
         if (createdFormElement != null) {
-            createdFormElement.onclick = (ev) => { console.log("element click"); this.EditFormElement(createdFormElement); };
-            createdFormElement.onblur = (ev) => this.RemoveSelectedFormElementStyle();
+            createdFormElement.onclick = (ev) => this.SelectedFormElementToEdit(createdFormElement);
+            //createdFormElement.onblur = (ev: FocusEvent) => this.RemoveSelectedFormElementStyle();
             /*need to look at this again*/
             //createdFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
             //createdFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
@@ -53,26 +60,29 @@ class FormBuilder {
                 this._customFormSection.append(createdFormElement);
             }
         }
-        if (shouldInsert) {
+        if (shouldInsert)
             element.remove();
-        }
+        this.AddFormElement();
     }
-    /* Edit */
-    EditFormElement(element) {
-        if (this._currentSelectedFormElement !== undefined) {
-            console.log(this._currentSelectedFormElement);
-            console.log(this._currentSelectedFormElement.querySelector('#selectedFormElementControl'));
+    //#endregion
+    //#region Edit
+    SelectedFormElementToEdit(element) {
+        const formElement = new FormElements();
+        this.AddEditDesign(element);
+        const previousSelectedElementExists = this._currentSelectedFormElement !== undefined;
+        if (previousSelectedElementExists) {
+            //remove edit btns from previously selected element
             this._currentSelectedFormElement.querySelector('#selectedFormElementControl').remove();
         }
         //set new current form element
         this._currentSelectedFormElement = element;
-        const formElement = new FormElements();
+        const elementName = this._currentSelectedFormElement.querySelector("[data-property-reference]").getAttribute("data-property-reference");
+        this._offcanvasDesignerRightLabel.textContent = `${elementName} Properties`;
         const btnControls = formElement.FormElementControls();
         element.appendChild(btnControls);
-        this.AddEditDesign(element);
-        //if designer already open then show form properties in designer
-        const designer = document.querySelector('#offcanvasRight');
-        if (designer.classList.contains("show")) {
+        //if properties designer already open then show form properties in designer
+        const propertiesDesigner = document.querySelector('#offcanvasRight');
+        if (propertiesDesigner.classList.contains("show")) {
             const formElementProperties = new FormElementProperties(element.getAttribute("data-wrapper-type"), element);
             element.querySelectorAll("[data-element-value]").forEach((element) => {
                 const editHeadingText = document.querySelector("#txtHeading");
@@ -82,11 +92,12 @@ class FormBuilder {
                 }
             });
         }
-        /* edit buttons */
+        //#region edit buttons
         const selectedControlBtnProperty = this._currentSelectedFormElement.querySelector('#selectedControlBtnProperty');
         selectedControlBtnProperty.onclick = (ev) => {
-            this._utils.BTSP_CloseOffCanvas(this._formElements);
-            this._utils.BTSP_OpenOffCanvas(this._formDesigner);
+            debugger;
+            this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
+            this._utils.BTSP_OpenOffCanvas(this._formDesignerOffCanvas);
             //get all closest elements
             element.querySelectorAll("[data-element-value]").forEach((element) => {
                 const editHeadingText = document.querySelector("#txtHeading");
@@ -99,8 +110,9 @@ class FormBuilder {
         const selectedControlDeleteBtn = this._currentSelectedFormElement.querySelector('#selectedControlBtnDelete');
         selectedControlDeleteBtn.onclick = (ev) => {
             this.RemoveFormElement(element);
-            this._utils.BTSP_CloseOffCanvas(this._formDesigner);
+            this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
         };
+        //#endregion
     }
     AddEditDesign(element) {
         this.RemoveSelectedFormElementStyle();
@@ -113,7 +125,8 @@ class FormBuilder {
             element.classList.remove("formElementSelected");
         });
     }
-    /* Update */
+    //#endregion
+    //#region Update
     UpdateFormElement(element) {
         //ev.preventDefault();
         console.log(element);
@@ -134,7 +147,8 @@ class FormBuilder {
             }
         };
     }
-    /* Delete */
+    //#endregion
+    //#region Delete
     RemoveFormElement(element) {
         element.remove();
     }

@@ -1,7 +1,6 @@
 ﻿class FormElements {
     private readonly _basicFormElements = document.querySelector("#basicFormElements") as HTMLDivElement;
     private readonly _complexFormElements = document.querySelector("#formElements") as HTMLDivElement;
-
     private readonly _componentsToCreate: componentsToCreate = {
         basicFormElements: [
             { name: "Paragraph", type: "Paragraph", icon: ["fas", "fa-paragraph", "fa-sm"] },
@@ -44,7 +43,7 @@
         ]
     }
 
-    constructor() {
+    public Init(): void {
         this.createFormElementAddComponent();
     }
 
@@ -140,19 +139,23 @@
     }
 
     private GetFormElementId(elementName: string): string {
-        const allElementsWithWrapperClass = document.querySelectorAll(`[name=${elementName}]`);
+        //remove spaces form elementName
+        const trimmedElementName = elementName.split(" ").join("") as string;
+        
+        
+        const allElementsWithWrapperClass = document.querySelectorAll(`[name=${trimmedElementName}]`);
         console.log(allElementsWithWrapperClass);
 
         //find the highest number from ids
         let highestNumber = 0;
         allElementsWithWrapperClass.forEach((element: Element) => {
-            const elementNumber = parseInt(element.id.replace(elementName, ''));
+            const elementNumber = parseInt(element.id.replace(trimmedElementName, ''));
             if (elementNumber > highestNumber) {
                 highestNumber = elementNumber;
             }
         });
 
-        return `${elementName}${highestNumber + 1}` as string;
+        return `${trimmedElementName}${highestNumber + 1}` as string;
     }
 
 
@@ -168,7 +171,7 @@
 
         paragraph.id = formId;
         paragraph.setAttribute("name", formElementName)
-        //paragraph.setAttribute("data-property-reference", "txtParagraph"); //todo: add tinymce editor for this
+        paragraph.setAttribute("data-property-reference", "Paragraph");
         paragraph.innerText = "This is a paragraph";
         divParagraphWrapper.appendChild(paragraph);
 
@@ -197,7 +200,7 @@
         select.classList.add("form-select");
         select.setAttribute("name", formElementName)
         select.ariaLabel = "Dropdown"
-        select.setAttribute("data-property-reference", "txtDropdown");
+        select.setAttribute("data-property-reference", "Dropdown");
         divDropdownWrapper.appendChild(select);
 
         const defaultOption = document.createElement("option") as HTMLOptionElement;
@@ -229,7 +232,7 @@
         divRadioBtnsContainer.id = formId;
         divRadioBtnsContainer.setAttribute("name", formElementName)
         divRadioBtnsContainer.ariaLabel = "Single Choice"
-        divRadioBtnsContainer.setAttribute("data-property-reference", "txtSingleChoice"); //todo:?
+        divRadioBtnsContainer.setAttribute("data-property-reference", "Single Choice");
         divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
 
         const defaultCreateNumber = 3 as number;
@@ -279,7 +282,7 @@
         divCheckboxBtnsContainer.id = formId;
         divCheckboxBtnsContainer.setAttribute("name", formElementName)
         divCheckboxBtnsContainer.ariaLabel = "Multiple Choice"
-        divCheckboxBtnsContainer.setAttribute("data-property-reference", "txtMultipleChoice"); //todo:?
+        divCheckboxBtnsContainer.setAttribute("data-property-reference", "Multiple Choice");
         divMultipleChoiceWrapper.appendChild(divCheckboxBtnsContainer);
 
         const defaultCreateNumber = 3 as number;
@@ -323,7 +326,7 @@
 
         h2Heading.id = formId;
         h2Heading.setAttribute("name", formElementName)
-        h2Heading.setAttribute("data-property-reference", "txtHeading");
+        h2Heading.setAttribute("data-property-reference", "Heading");
         h2Heading.innerText = "Heading";
         divHeadingWrapper.appendChild(h2Heading);
         console.log("created header");

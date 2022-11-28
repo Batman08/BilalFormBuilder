@@ -3,20 +3,27 @@
 /// <reference path="./Utilities.ts" />
 
 class FormBuilder {
+    private _btnFormDesigner = document.querySelector("#btnFormDesigner") as HTMLButtonElement;
+    private _offcanvasDesignerRightLabel = document.querySelector("#offcanvasDesignerRightLabel") as HTMLHeadingElement;
+
     private _customFormSection = document.querySelector("#customFormSection") as HTMLDivElement;
     private _currentSelectedFormElement: HTMLDivElement;
 
-    private _utils = new Utilities();
-    private _formElements = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
-    private _formDesigner = this._utils.BTSP_GetOffCanvas('#offcanvasRight');
+    private _utils: Utilities = new Utilities();
+    private _formElementsOffCanvas: bootstrap.Offcanvas = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
+    private _formDesignerOffCanvas: bootstrap.Offcanvas = this._utils.BTSP_GetOffCanvas('#offcanvasRight');
 
     private readonly _tabContent = document.querySelector("#myTabContent") as HTMLDivElement;
-    
-    constructor() {
+
+    public Init(): void {
+        const formElement = new FormElements();
+        formElement.Init();
+
+        this._btnFormDesigner.onclick = (ev: MouseEvent) => this._offcanvasDesignerRightLabel.textContent = "Form Designer";
         this.AddFormElement();
     }
 
-    /* Create */
+    //#region Create
     private AddFormElement(): void {
         const _formElements = document.querySelectorAll(".listAddFormElementWrapper") as NodeListOf<HTMLDivElement>;
         _formElements.forEach((element) => {
@@ -47,18 +54,16 @@ class FormBuilder {
             return;
         }
 
-        const formElement: FormElements = new FormElements();
-        //ev.preventDefault();
+        const formElement = new FormElements();
         const createdFormElement = formElement.FindFormElementToCreate(retrievedElementType) as HTMLDivElement;
 
         if (createdFormElement != null) {
-            createdFormElement.onclick = (ev: MouseEvent) => { console.log("element click"); this.EditFormElement(createdFormElement) };
-            createdFormElement.onblur = (ev: FocusEvent) => this.RemoveSelectedFormElementStyle();
+            createdFormElement.onclick = (ev: MouseEvent) => this.SelectedFormElementToEdit(createdFormElement);
+            //createdFormElement.onblur = (ev: FocusEvent) => this.RemoveSelectedFormElementStyle();
 
             /*need to look at this again*/
             //createdFormElement.onmouseenter = (ev: Event) => { createFormElement.removeAttribute("dataindex")!; }
             //createdFormElement.onmouseleave = (ev: Event) => { createFormElement.setAttribute("dataindex", "1"); }
-
 
             if (shouldInsert) {
                 element.after(createdFormElement);
@@ -68,33 +73,39 @@ class FormBuilder {
             }
         }
 
-        if (shouldInsert) {
+        if (shouldInsert)
             element.remove();
-        }
+
+        this.AddFormElement();
     }
+    //#endregion
 
+    //#region Edit
+    public SelectedFormElementToEdit(element: HTMLDivElement): void {
+        const formElement = new FormElements();
 
-    /* Edit */
-    private EditFormElement(element: HTMLDivElement): void {
-        if (this._currentSelectedFormElement !== undefined) {
-            console.log(this._currentSelectedFormElement);
-            console.log(this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')!);
+        this.AddEditDesign(element);
+
+        const previousSelectedElementExists: boolean = this._currentSelectedFormElement !== undefined;
+        if (previousSelectedElementExists) {
+            //remove edit btns from previously selected element
             this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')!.remove();
         }
 
         //set new current form element
         this._currentSelectedFormElement = element;
+        
+        const elementName = this._currentSelectedFormElement.querySelector("[data-property-reference]").getAttribute("data-property-reference") as string;
+        this._offcanvasDesignerRightLabel.textContent = `${elementName} Properties`;
 
-        const formElement: FormElements = new FormElements();
-        const btnControls = formElement.FormElementControls();
+
+        const btnControls: HTMLDivElement = formElement.FormElementControls();
         element.appendChild(btnControls);
 
-        this.AddEditDesign(element);
+        //if properties designer already open then show form properties in designer
+        const propertiesDesigner = document.querySelector('#offcanvasRight') as HTMLDivElement;
+        if (propertiesDesigner.classList.contains("show")) {
 
-        //if designer already open then show form properties in designer
-        const designer = document.querySelector('#offcanvasRight') as HTMLDivElement;
-        if (designer.classList.contains("show")) {
-            
             const formElementProperties = new FormElementProperties(element.getAttribute("data-wrapper-type"), element);
             element.querySelectorAll("[data-element-value]").forEach((element) => {
                 const editHeadingText = document.querySelector("#txtHeading") as HTMLInputElement;
@@ -105,17 +116,18 @@ class FormBuilder {
             });
         }
 
-        /* edit buttons */
+        //#region edit buttons
         const selectedControlBtnProperty = this._currentSelectedFormElement.querySelector('#selectedControlBtnProperty') as HTMLDivElement;
         selectedControlBtnProperty.onclick = (ev: MouseEvent) => {
-            this._utils.BTSP_CloseOffCanvas(this._formElements);
-            this._utils.BTSP_OpenOffCanvas(this._formDesigner);
+            debugger
+            this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
+            this._utils.BTSP_OpenOffCanvas(this._formDesignerOffCanvas);
 
             //get all closest elements
-            
+
             element.querySelectorAll("[data-element-value]").forEach((element) => {
                 const editHeadingText = document.querySelector("#txtHeading") as HTMLInputElement;
-                if (editHeadingText.id === element.getAttribute("data-element-value")) {        
+                if (editHeadingText.id === element.getAttribute("data-element-value")) {
                     editHeadingText.setAttribute("data-reference", element.id);
                     editHeadingText.value = element.textContent;
                 }
@@ -125,8 +137,9 @@ class FormBuilder {
         const selectedControlDeleteBtn = this._currentSelectedFormElement.querySelector('#selectedControlBtnDelete') as HTMLDivElement;
         selectedControlDeleteBtn.onclick = (ev: MouseEvent) => {
             this.RemoveFormElement(element);
-            this._utils.BTSP_CloseOffCanvas(this._formDesigner);
+            this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
         }
+        //#endregion
     }
 
     private AddEditDesign(element: HTMLDivElement): void {
@@ -142,9 +155,9 @@ class FormBuilder {
             element.classList.remove("formElementSelected");
         });
     }
+    //#endregion
 
-
-    /* Update */
+    //#region Update
     private UpdateFormElement(element: HTMLDivElement): void {
         //ev.preventDefault();
         console.log(element);
@@ -167,10 +180,11 @@ class FormBuilder {
             }
         };
     }
+    //#endregion
 
-    
-    /* Delete */
+    //#region Delete
     private RemoveFormElement(element: HTMLDivElement): void {
         element.remove();
     }
+    //#endregion
 }

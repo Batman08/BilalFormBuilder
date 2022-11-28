@@ -23,7 +23,7 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <br />
-            
+
             <div class="tab-pane fade show active" id="basic-elments-tab-pane" role="tabpanel" aria-labelledby="basic-elments-tab" tabindex="0">
                 <div class="formElementsCategory">
                     <ul id="basicFormElements" class="formElementList bg-indigo-500"></ul>
@@ -57,36 +57,34 @@
     </div>
 </div>
 
-@*form designer/elemment properties*@
-<button class="btn btn-primary rounded-pill" type="button" style="float:right" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Form Designer</button>
+@*form designer button*@
+<button id="btnFormDesigner" class="btn btn-primary rounded-pill" type="button" style="float:right" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Form Designer</button>
 
-<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasDesignerRightLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasRightLabel">Form Designer</h5>
+        <h5 class="offcanvas-title" id="offcanvasDesignerRightLabel">Form adsfaDesigner</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
+                <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general-tab-pane" type="button" role="tab" aria-controls="general-tab-pane" aria-selected="true">General</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+                <button class="nav-link" id="options-tab" data-bs-toggle="tab" data-bs-target="#options-tab-pane" type="button" role="tab" aria-controls="options-tab-pane" aria-selected="false">Options</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+                <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced-tab-pane" type="button" role="tab" aria-controls="advanced-tab-pane" aria-selected="false">Advanced</button>
             </li>
-            <li class="nav-item" role="presentation">
+@*            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
-            </li>
+            </li>*@
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            <br />
+            
+            <div class="tab-pane fade show active" id="general-tab-pane" role="tabpanel" aria-labelledby="general-tab" tabindex="0">
                 <div id="formDesigner">
-                    <h1>Form Designer</h1>
-
-                    <br />
-
                     <div class="mb-3">
                         <label for="txtHeading" class="form-label">Heading Texts</label>
                         <input type="text" class="form-control" id="txtHeading" data-reference aria-describedby="Heading Text">
@@ -99,17 +97,14 @@
 
                 <div id="propertiesDesigner" class="hideElement"></div>
             </div>
-
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                <h1>Advanced</h1>
-            </div>
-            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
-            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="options-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"></div>
+            <div class="tab-pane fade" id="advanced-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0"></div>
+            @*<div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>*@
         </div>
     </div>
 </div>
 
-<div class="text-center">
+@*<div class="text-center">*@
     <div class="row">
         <div id="customFormArea" class="col-md-6 mx-auto">
             <div id="customFormWrapper" style="border-radius: 3px; box-shadow: 0 4px 4px rgb(87 100 126 / 21%);">
@@ -117,9 +112,12 @@
             </div>
         </div>
     </div>
-</div>
+@*</div>*@
 
+@*external scripts*@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.2.0/tinymce.min.js"></script>
+
 
 <script src="/typescript/FormElements.js"></script>
 <script src="/typescript/FormElementProperties.js"></script>
@@ -129,6 +127,17 @@
     document.addEventListener("DOMContentLoaded", function (event) {
 
         const formBuilder = new FormBuilder();
+        formBuilder.Init();
+
+        new Sortable(basicFormElements, {
+            group: {
+                name: 'shared',
+                pull: 'clone',
+                put: false // Do not allow items to be put into this list
+            },
+            animation: 150,
+            sort: false // To disable sorting: set sort to false
+        });
 
         new Sortable(formElements, {
             group: {
