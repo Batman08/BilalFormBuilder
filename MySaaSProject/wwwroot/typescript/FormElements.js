@@ -46,23 +46,23 @@ class FormElements {
         //#endregion
     }
     Init() {
-        this.createFormElementAddComponent();
+        this.CreateFormElementAddComponent();
     }
-    createFormElementAddComponent() {
+    CreateFormElementAddComponent() {
         this._basicFormElements.innerHTML = '';
         this._complexFormElements.innerHTML = '';
         //loop through all basic components to create
         this._componentsToCreate.basicFormElements.forEach((component) => {
-            const addElementComponent = this.formElementComponent(component.name, component.type, component.icon);
+            const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
             this._basicFormElements.appendChild(addElementComponent);
         });
         //loop through all complex components to create
         this._componentsToCreate.complexFormElements.forEach((component) => {
-            const addElementComponent = this.formElementComponent(component.name, component.type, component.icon);
+            const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
             this._complexFormElements.appendChild(addElementComponent);
         });
     }
-    formElementComponent(name, type, icon) {
+    FormElementComponent(name, type, icon) {
         const listElementWrapper = document.createElement("li");
         listElementWrapper.classList.add("listAddFormElementWrapper", "bg-indigo-500");
         listElementWrapper.setAttribute("data-element-type", `formElement${type}`);
@@ -136,13 +136,17 @@ class FormElements {
         });
         return `${trimmedElementName}${highestNumber + 1}`;
     }
+    CreateFormElementWrapper(elementName) {
+        const divWrapper = document.createElement("div");
+        divWrapper.classList.add("createdFormElement", "pad15", "position-relative", "text-start");
+        divWrapper.setAttribute("data-wrapper-type", `${elementName}Wrapper`);
+        return divWrapper;
+    }
     //#region Basic Form Elements
     FormElementParagraph() {
-        const divParagraphWrapper = document.createElement("div");
-        divParagraphWrapper.classList.add("createdFormElement", "pad15", "position-relative", "text-start");
-        divParagraphWrapper.setAttribute("data-wrapper-type", "paragraphWrapper");
-        const paragraph = document.createElement("p");
         const formElementName = "paragraph";
+        const divParagraphWrapper = this.CreateFormElementWrapper(formElementName);
+        const paragraph = document.createElement("p");
         const formId = this.GetFormElementId(formElementName);
         paragraph.id = formId;
         paragraph.setAttribute("name", formElementName);
@@ -152,9 +156,8 @@ class FormElements {
         return divParagraphWrapper;
     }
     FormElementDropdown() {
-        const divDropdownWrapper = document.createElement("div");
-        divDropdownWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divDropdownWrapper.setAttribute("data-wrapper-type", "dropdownWrapper");
+        const formElementName = "dropdown";
+        const divDropdownWrapper = this.CreateFormElementWrapper(formElementName);
         const divTextStart = document.createElement("div");
         divTextStart.classList.add("text-start");
         divDropdownWrapper.appendChild(divTextStart);
@@ -163,7 +166,6 @@ class FormElements {
         dropdownLabel.innerText = "Type a question";
         divTextStart.appendChild(dropdownLabel);
         const select = document.createElement("select");
-        const formElementName = "dropdown";
         const formId = this.GetFormElementId(formElementName);
         select.id = formId;
         select.classList.add("form-select");
@@ -178,9 +180,8 @@ class FormElements {
         return divDropdownWrapper;
     }
     FormElementSingleChoice() {
-        const divSingleChoiceWrapper = document.createElement("div");
-        divSingleChoiceWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divSingleChoiceWrapper.setAttribute("data-wrapper-type", "singleChoiceWrapper");
+        const formElementName = "singleChoice";
+        const divSingleChoiceWrapper = this.CreateFormElementWrapper(formElementName);
         const divTextStart = document.createElement("div");
         divTextStart.classList.add("text-start");
         divSingleChoiceWrapper.appendChild(divTextStart);
@@ -189,7 +190,6 @@ class FormElements {
         singleChoiceLabel.innerText = "Type a question";
         divTextStart.appendChild(singleChoiceLabel);
         const divRadioBtnsContainer = document.createElement("div");
-        const formElementName = "singleChoice";
         const formId = this.GetFormElementId(formElementName);
         divRadioBtnsContainer.id = formId;
         divRadioBtnsContainer.setAttribute("name", formElementName);
@@ -217,9 +217,8 @@ class FormElements {
         return divSingleChoiceWrapper;
     }
     FormElementMultipleChoice() {
-        const divMultipleChoiceWrapper = document.createElement("div");
-        divMultipleChoiceWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divMultipleChoiceWrapper.setAttribute("data-wrapper-type", "multipleChoiceWrapper");
+        const formElementName = "multipleChoice";
+        const divMultipleChoiceWrapper = this.CreateFormElementWrapper(formElementName);
         const divTextStart = document.createElement("div");
         divTextStart.classList.add("text-start");
         divMultipleChoiceWrapper.appendChild(divTextStart);
@@ -228,7 +227,6 @@ class FormElements {
         multipleChoiceLabel.innerText = "Type a question";
         divTextStart.appendChild(multipleChoiceLabel);
         const divCheckboxBtnsContainer = document.createElement("div");
-        const formElementName = "multipleChoice";
         const formId = this.GetFormElementId(formElementName);
         divCheckboxBtnsContainer.id = formId;
         divCheckboxBtnsContainer.setAttribute("name", formElementName);
@@ -258,11 +256,9 @@ class FormElements {
     //#endregion
     //#region Complex Form Elements
     FormElementHeading() {
-        const divHeadingWrapper = document.createElement("div");
-        divHeadingWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divHeadingWrapper.setAttribute("data-wrapper-type", "headingWrapper");
-        const h2Heading = document.createElement("h2");
         const formElementName = "heading";
+        const divHeadingWrapper = this.CreateFormElementWrapper(formElementName);
+        const h2Heading = document.createElement("h2");
         const formId = this.GetFormElementId(formElementName);
         h2Heading.id = formId;
         h2Heading.setAttribute("name", formElementName);
@@ -273,9 +269,8 @@ class FormElements {
         return divHeadingWrapper;
     }
     FormElementFullName() {
-        const divFullNameWrapper = document.createElement("div");
-        divFullNameWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divFullNameWrapper.setAttribute("data-wrapper-type", "fullNameWrapper");
+        const formElementName = "fullName";
+        const divFullNameWrapper = this.CreateFormElementWrapper(formElementName);
         const divFullNameRow = document.createElement("div");
         divFullNameRow.classList.add("row");
         divFullNameWrapper.appendChild(divFullNameRow);
@@ -312,8 +307,8 @@ class FormElements {
         return divFullNameWrapper;
     }
     FormElementEmail() {
-        const divEmailWrapper = document.createElement("div");
-        divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15", "position-relative");
+        const formElementName = "email";
+        const divEmailWrapper = this.CreateFormElementWrapper(formElementName);
         const divEmailRow = document.createElement("div");
         divEmailRow.classList.add("row");
         divEmailWrapper.appendChild(divEmailRow);

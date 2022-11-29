@@ -1,5 +1,5 @@
 class Utilities {
-    /*  Boostrap Modals  */
+    //#region Boostrap Modals
     BTSP_GetOffCanvas(selector) {
         const offCanvasElement = document.querySelector(selector);
         return new bootstrap.Offcanvas(offCanvasElement);
@@ -9,6 +9,31 @@ class Utilities {
     }
     BTSP_CloseOffCanvas(offCanvas) {
         offCanvas.hide();
+    }
+    //#endregion
+    //#region TinyMCE
+    InitTinyMCE(tinymce, editorSelector) {
+        // Initialize tinymce editor
+        tinymce.init({
+            selector: editorSelector
+            //themes: 'modern',
+            //height: 200
+        });
+    }
+    AddTinymceListeners(tinymce, element, callback) {
+        //add new key up event listner for _tinymce
+        tinymce.activeEditor.getBody().onkeyup = (ev) => {
+            if (ev.target) {
+                //do something
+                callback(tinymce, element);
+            }
+        };
+        tinymce.activeEditor.getContentAreaContainer().onmousedown = (ev) => {
+            if (ev.target) {
+                //do something
+                callback(tinymce, element);
+            }
+        };
     }
 }
 //# sourceMappingURL=Utilities.js.map

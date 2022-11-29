@@ -44,27 +44,27 @@
     }
 
     public Init(): void {
-        this.createFormElementAddComponent();
+        this.CreateFormElementAddComponent();
     }
 
-    private createFormElementAddComponent(): void {
+    private CreateFormElementAddComponent(): void {
         this._basicFormElements.innerHTML = '';
         this._complexFormElements.innerHTML = '';
 
         //loop through all basic components to create
         this._componentsToCreate.basicFormElements.forEach((component) => {
-            const addElementComponent = this.formElementComponent(component.name, component.type, component.icon);
+            const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
             this._basicFormElements.appendChild(addElementComponent);
         });
 
         //loop through all complex components to create
         this._componentsToCreate.complexFormElements.forEach((component) => {
-            const addElementComponent = this.formElementComponent(component.name, component.type, component.icon);
+            const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
             this._complexFormElements.appendChild(addElementComponent);
         });
     }
 
-    private formElementComponent(name: string, type: string, icon: string[]): HTMLLIElement {
+    private FormElementComponent(name: string, type: string, icon: string[]): HTMLLIElement {
         const listElementWrapper = document.createElement("li") as HTMLLIElement;
         listElementWrapper.classList.add("listAddFormElementWrapper", "bg-indigo-500");
         listElementWrapper.setAttribute("data-element-type", `formElement${type}`);
@@ -141,8 +141,8 @@
     private GetFormElementId(elementName: string): string {
         //remove spaces form elementName
         const trimmedElementName = elementName.split(" ").join("") as string;
-        
-        
+
+
         const allElementsWithWrapperClass = document.querySelectorAll(`[name=${trimmedElementName}]`);
         console.log(allElementsWithWrapperClass);
 
@@ -158,15 +158,20 @@
         return `${trimmedElementName}${highestNumber + 1}` as string;
     }
 
+    private CreateFormElementWrapper(elementName: string): HTMLDivElement {
+        const divWrapper = document.createElement("div") as HTMLDivElement;
+        divWrapper.classList.add("createdFormElement", "pad15", "position-relative", "text-start");
+        divWrapper.setAttribute("data-wrapper-type", `${elementName}Wrapper`);
+
+        return divWrapper
+    }
 
     //#region Basic Form Elements
     private FormElementParagraph(): HTMLDivElement {
-        const divParagraphWrapper = document.createElement("div") as HTMLDivElement;
-        divParagraphWrapper.classList.add("createdFormElement", "pad15", "position-relative", "text-start");
-        divParagraphWrapper.setAttribute("data-wrapper-type", "paragraphWrapper");
+        const formElementName: string = "paragraph";
+        const divParagraphWrapper = this.CreateFormElementWrapper(formElementName);
 
         const paragraph = document.createElement("p") as HTMLParagraphElement;
-        const formElementName = "paragraph" as string;
         const formId = this.GetFormElementId(formElementName) as string;
 
         paragraph.id = formId;
@@ -179,9 +184,8 @@
     }
 
     private FormElementDropdown(): HTMLDivElement {
-        const divDropdownWrapper = document.createElement("div") as HTMLDivElement;
-        divDropdownWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divDropdownWrapper.setAttribute("data-wrapper-type", "dropdownWrapper");
+        const formElementName: string = "dropdown";
+        const divDropdownWrapper = this.CreateFormElementWrapper(formElementName);
 
         const divTextStart = document.createElement("div") as HTMLDivElement;
         divTextStart.classList.add("text-start");
@@ -193,7 +197,6 @@
         divTextStart.appendChild(dropdownLabel);
 
         const select = document.createElement("select") as HTMLSelectElement;
-        const formElementName = "dropdown" as string;
         const formId = this.GetFormElementId(formElementName) as string;
 
         select.id = formId;
@@ -212,9 +215,8 @@
     }
 
     private FormElementSingleChoice(): HTMLDivElement {
-        const divSingleChoiceWrapper = document.createElement("div") as HTMLDivElement;
-        divSingleChoiceWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divSingleChoiceWrapper.setAttribute("data-wrapper-type", "singleChoiceWrapper");
+        const formElementName: string = "singleChoice";
+        const divSingleChoiceWrapper = this.CreateFormElementWrapper(formElementName);
 
         const divTextStart = document.createElement("div") as HTMLDivElement;
         divTextStart.classList.add("text-start");
@@ -226,7 +228,6 @@
         divTextStart.appendChild(singleChoiceLabel);
 
         const divRadioBtnsContainer = document.createElement("div") as HTMLDivElement;
-        const formElementName = "singleChoice" as string;
         const formId = this.GetFormElementId(formElementName) as string;
 
         divRadioBtnsContainer.id = formId;
@@ -239,11 +240,11 @@
 
         for (var i = 0; i < defaultCreateNumber; i++) {
             const itemNum = i + 1;
-            
+
             const divRadioOption = document.createElement("div") as HTMLDivElement;
             divRadioOption.classList.add("form-check");
             divRadioBtnsContainer.appendChild(divRadioOption);
-            
+
             const radioInput = document.createElement("input") as HTMLInputElement;
             radioInput.classList.add("form-check-input");
             radioInput.type = "radio";
@@ -262,9 +263,8 @@
     }
 
     private FormElementMultipleChoice(): HTMLDivElement {
-        const divMultipleChoiceWrapper = document.createElement("div") as HTMLDivElement;
-        divMultipleChoiceWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divMultipleChoiceWrapper.setAttribute("data-wrapper-type", "multipleChoiceWrapper");
+        const formElementName: string = "multipleChoice";
+        const divMultipleChoiceWrapper = this.CreateFormElementWrapper(formElementName);
 
         const divTextStart = document.createElement("div") as HTMLDivElement;
         divTextStart.classList.add("text-start");
@@ -276,7 +276,6 @@
         divTextStart.appendChild(multipleChoiceLabel);
 
         const divCheckboxBtnsContainer = document.createElement("div") as HTMLDivElement;
-        const formElementName = "multipleChoice" as string;
         const formId = this.GetFormElementId(formElementName) as string;
 
         divCheckboxBtnsContainer.id = formId;
@@ -316,12 +315,10 @@
 
     //#region Complex Form Elements
     private FormElementHeading(): HTMLDivElement {
-        const divHeadingWrapper = document.createElement("div") as HTMLDivElement;
-        divHeadingWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divHeadingWrapper.setAttribute("data-wrapper-type", "headingWrapper");
+        const formElementName: string = "heading";
+        const divHeadingWrapper = this.CreateFormElementWrapper(formElementName);
 
         const h2Heading = document.createElement("h2") as HTMLHeadingElement
-        const formElementName = "heading" as string;
         const formId = this.GetFormElementId(formElementName) as string;
 
         h2Heading.id = formId;
@@ -335,9 +332,8 @@
     }
 
     private FormElementFullName(): HTMLDivElement {
-        const divFullNameWrapper = document.createElement("div") as HTMLDivElement;
-        divFullNameWrapper.classList.add("createdFormElement", "pad15", "position-relative");
-        divFullNameWrapper.setAttribute("data-wrapper-type", "fullNameWrapper");
+        const formElementName: string = "fullName";
+        const divFullNameWrapper = this.CreateFormElementWrapper(formElementName);
 
         const divFullNameRow = document.createElement("div") as HTMLDivElement;
         divFullNameRow.classList.add("row");
@@ -383,8 +379,8 @@
     }
 
     private FormElementEmail(): HTMLDivElement {
-        const divEmailWrapper = document.createElement("div") as HTMLDivElement;
-        divEmailWrapper.classList.add("createdFormElement", "emailWrapper", "pad15", "position-relative");
+        const formElementName: string = "email";
+        const divEmailWrapper = this.CreateFormElementWrapper(formElementName);
 
         const divEmailRow = document.createElement("div") as HTMLDivElement;
         divEmailRow.classList.add("row");

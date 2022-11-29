@@ -6,13 +6,15 @@ class FormBuilder {
         this._btnFormDesigner = document.querySelector("#btnFormDesigner");
         this._offcanvasDesignerRightLabel = document.querySelector("#offcanvasDesignerRightLabel");
         this._customFormSection = document.querySelector("#customFormSection");
+        this._formElementProperties = new FormElementProperties();
         this._utils = new Utilities();
         this._formElementsOffCanvas = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
         this._formDesignerOffCanvas = this._utils.BTSP_GetOffCanvas('#offcanvasRight');
         this._tabContent = document.querySelector("#myTabContent");
         //#endregion
     }
-    Init() {
+    Init(tinymce) {
+        this._formElementProperties.Init(tinymce);
         const formElement = new FormElements();
         formElement.Init();
         this._btnFormDesigner.onclick = (ev) => this._offcanvasDesignerRightLabel.textContent = "Form Designer";
@@ -76,36 +78,20 @@ class FormBuilder {
         }
         //set new current form element
         this._currentSelectedFormElement = element;
-        const elementName = this._currentSelectedFormElement.querySelector("[data-property-reference]").getAttribute("data-property-reference");
-        this._offcanvasDesignerRightLabel.textContent = `${elementName} Properties`;
+        //create button scontrols
         const btnControls = formElement.FormElementControls();
         element.appendChild(btnControls);
         //if properties designer already open then show form properties in designer
         const propertiesDesigner = document.querySelector('#offcanvasRight');
         if (propertiesDesigner.classList.contains("show")) {
-            const formElementProperties = new FormElementProperties(element.getAttribute("data-wrapper-type"), element);
-            element.querySelectorAll("[data-element-value]").forEach((element) => {
-                const editHeadingText = document.querySelector("#txtHeading");
-                if (editHeadingText.id === element.getAttribute("data-property-reference")) {
-                    editHeadingText.setAttribute("data-element-reference", element.id);
-                    editHeadingText.value = element.textContent;
-                }
-            });
+            this.Edit();
         }
         //#region edit buttons
         const selectedControlBtnProperty = this._currentSelectedFormElement.querySelector('#selectedControlBtnProperty');
         selectedControlBtnProperty.onclick = (ev) => {
-            debugger;
+            this.Edit();
             this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
             this._utils.BTSP_OpenOffCanvas(this._formDesignerOffCanvas);
-            //get all closest elements
-            element.querySelectorAll("[data-element-value]").forEach((element) => {
-                const editHeadingText = document.querySelector("#txtHeading");
-                if (editHeadingText.id === element.getAttribute("data-element-value")) {
-                    editHeadingText.setAttribute("data-reference", element.id);
-                    editHeadingText.value = element.textContent;
-                }
-            });
         };
         const selectedControlDeleteBtn = this._currentSelectedFormElement.querySelector('#selectedControlBtnDelete');
         selectedControlDeleteBtn.onclick = (ev) => {
@@ -113,6 +99,18 @@ class FormBuilder {
             this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
         };
         //#endregion
+    }
+    Edit() {
+        const elementWrapper = this._currentSelectedFormElement.getAttribute("data-wrapper-type");
+        const elementName = this._currentSelectedFormElement.querySelector("[data-property-reference]").getAttribute("data-property-reference");
+        this._offcanvasDesignerRightLabel.textContent = `${elementName} Properties`;
+        if (elementWrapper === "paragraphWrapper") {
+            this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement, this.UpdateFormElement);
+        }
+        else {
+            this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement);
+        }
+        //const formElementProperties = new FormElementProperties();
     }
     AddEditDesign(element) {
         this.RemoveSelectedFormElementStyle();
@@ -127,25 +125,10 @@ class FormBuilder {
     }
     //#endregion
     //#region Update
-    UpdateFormElement(element) {
+    UpdateFormElement(tinymce, element) {
         //ev.preventDefault();
         console.log(element);
-        //element.innerHTML = this._tinymce.activeEditor.getContent();
-    }
-    AddTabContentListeners(element) {
-        //add new key up event listner for designer tabs
-        this._tabContent.onkeyup = (ev) => {
-            if (ev.target) {
-                //do something
-                this.UpdateFormElement(element);
-            }
-        };
-        this._tabContent.onmousedown = (ev) => {
-            if (ev.target) {
-                //do something
-                this.UpdateFormElement(element);
-            }
-        };
+        element.innerHTML = tinymce.activeEditor.getContent();
     }
     //#endregion
     //#region Delete

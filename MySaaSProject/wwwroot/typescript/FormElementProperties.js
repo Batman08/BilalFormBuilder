@@ -1,33 +1,57 @@
 /// <reference types="./FormBuilder" />
-///// <reference path="./FormElements.ts" />
 /// <reference path="./Utilities.ts" />
 class FormElementProperties {
-    //deal with designer properties
-    constructor(elementType, element) {
-        this.formDesigner = document.querySelector('#formDesigner');
-        this.propertiesDesigner = document.querySelector('#propertiesDesigner');
-        this.GetElementProperties(elementType, element);
+    constructor() {
+        this.rightDesigner = document.querySelector('#rightDesigner');
+        //#endregion
     }
-    GetElementProperties(elementType, element) {
-        if (elementType === "headingWrapper") {
-            this.HeadingProperties(element);
-        }
-        else if (elementType === "fullNameWrapper") {
-            {
+    Init(tinymce) {
+        this._tinymce = tinymce;
+    }
+    GetElementProperties(elementType, element, callback) {
+        switch (elementType) {
+            case "paragraphWrapper":
+                this.ParagraphProperties(element, callback);
+                break;
+            case "headingWrapper":
+                this.HeadingProperties(element);
+                break;
+            case "fullNameWrapper":
                 this.FullNameProperties(element);
-            }
+                break;
+            default:
+                break;
         }
     }
-    fillPropertiesDesigner(elementType, element) {
-        //loop through all inputs within element 
+    FillPropertiesDesigner(elementType, element) {
+        //loop through all inputs within element    
         var inputs = element.querySelectorAll("input");
     }
+    //#region Basic Properties
+    ParagraphProperties(paragraphElement, callback) {
+        const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]");
+        const currentText = elementToUpdateText.outerHTML;
+        this.rightDesigner.innerHTML = '';
+        const textArea = document.createElement('textarea');
+        textArea.id = 'paragraph-editor';
+        this.rightDesigner.appendChild(textArea);
+        //this._tinymce.activeEditor.setContent("this is a test");
+        //delay to init tinymce
+        setTimeout(() => {
+            debugger;
+            const utils = new Utilities();
+            utils.InitTinyMCE(this._tinymce, 'textarea#paragraph-editor');
+            setTimeout(() => {
+                this._tinymce.activeEditor.setContent(currentText);
+                utils.AddTinymceListeners(this._tinymce, elementToUpdateText, callback);
+            }, 1000);
+        }, 0.0001);
+    }
+    //#endregion
+    //#region Complex Properties
     HeadingProperties(headingElement) {
-        this.propertiesDesigner.innerHTML = `
-                    <h1>Heading Properties</h1>
-
-                    <br />
-
+        this.rightDesigner.innerHTML = '';
+        this.rightDesigner.innerHTML = `
                     <div class="mb-3">
                         <label for="txtHeading" class="form-label">Heading Texts</label>
                         <input type="text" class="form-control" id="txtHeading" data-reference aria-describedby="Heading Text">
@@ -36,14 +60,8 @@ class FormElementProperties {
                         <label for="txtSubHeading" class="form-label">Subheading Text</label>
                         <input type="text" class="form-control" id="txtSubHeading">
                     </div>`;
-        this.formDesigner.classList.add("hideElement");
-        this.propertiesDesigner.classList.remove("hideElement");
     }
     FullNameProperties(headingElement) {
-        this.formDesigner.classList.add("hideElement");
-        this.propertiesDesigner.classList.remove("hideElement");
-        //scrap idea of multiple property designers
-        //have one that changes its content fields
     }
 }
 //# sourceMappingURL=FormElementProperties.js.map

@@ -1,38 +1,64 @@
 ﻿/// <reference types="./FormBuilder" />
-///// <reference path="./FormElements.ts" />
 /// <reference path="./Utilities.ts" />
 
 class FormElementProperties {
-    private readonly formDesigner = document.querySelector('#formDesigner') as HTMLDivElement;
-    private readonly propertiesDesigner = document.querySelector('#propertiesDesigner') as HTMLDivElement;
+    private readonly rightDesigner = document.querySelector('#rightDesigner') as HTMLDivElement;
+    private _tinymce: any;
 
-    //deal with designer properties
-    constructor(elementType: string, element: HTMLElement) {
-        this.GetElementProperties(elementType, element);
+    public Init(tinymce: any): void {
+        this._tinymce = tinymce;
     }
 
-    private GetElementProperties(elementType: string, element: HTMLElement) {
-        if (elementType === "headingWrapper") {
-            this.HeadingProperties(element);
-        }
-        else if (elementType === "fullNameWrapper") {
-            {
+    public GetElementProperties(elementType: string, element: HTMLElement, callback?: Function) {
+        
+        switch (elementType) {
+            case "paragraphWrapper":
+                this.ParagraphProperties(element, callback);
+                break;
+            case "headingWrapper":
+                this.HeadingProperties(element);
+                break;
+            case "fullNameWrapper":
                 this.FullNameProperties(element);
-            }
+                break;
+            default:
+                break;
         }
     }
 
-    private fillPropertiesDesigner(elementType: string, element: HTMLElement) {
-        //loop through all inputs within element 
+    private FillPropertiesDesigner(elementType: string, element: HTMLElement) {
+        //loop through all inputs within element    
         var inputs = element.querySelectorAll("input");
     }
 
+    //#region Basic Properties
+    private ParagraphProperties(paragraphElement: HTMLElement, callback?: Function): void {
+        const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
+        const currentText: string = elementToUpdateText.outerHTML;
+        
+        this.rightDesigner.innerHTML = '';
+        const textArea = document.createElement('textarea') as HTMLTextAreaElement;
+        textArea.id = 'paragraph-editor';
+        this.rightDesigner.appendChild(textArea);
+        //this._tinymce.activeEditor.setContent("this is a test");
+
+        //delay to init tinymce
+        setTimeout(() => {//todo: should only show right designer when tinymce editor has been initialized
+            debugger
+            const utils = new Utilities();
+            utils.InitTinyMCE(this._tinymce, 'textarea#paragraph-editor');
+            setTimeout(() => {//todo: should only show right designer when tinymce editor has been initialized
+                this._tinymce.activeEditor.setContent(currentText);
+                utils.AddTinymceListeners(this._tinymce, elementToUpdateText, callback);
+            }, 1000);
+        }, 0.0001);
+    }
+    //#endregion
+
+    //#region Complex Properties
     private HeadingProperties(headingElement: HTMLElement) {
-        this.propertiesDesigner.innerHTML = `
-                    <h1>Heading Properties</h1>
-
-                    <br />
-
+        this.rightDesigner.innerHTML = '';
+        this.rightDesigner.innerHTML = `
                     <div class="mb-3">
                         <label for="txtHeading" class="form-label">Heading Texts</label>
                         <input type="text" class="form-control" id="txtHeading" data-reference aria-describedby="Heading Text">
@@ -42,17 +68,9 @@ class FormElementProperties {
                         <input type="text" class="form-control" id="txtSubHeading">
                     </div>`;
 
-        
-
-        this.formDesigner.classList.add("hideElement");
-        this.propertiesDesigner.classList.remove("hideElement");
     }
 
     private FullNameProperties(headingElement: HTMLElement) {
-        this.formDesigner.classList.add("hideElement");
-        this.propertiesDesigner.classList.remove("hideElement");
-
-        //scrap idea of multiple property designers
-        //have one that changes its content fields
     }
+    //#endregion
 }
