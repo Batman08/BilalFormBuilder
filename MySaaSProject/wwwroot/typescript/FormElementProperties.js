@@ -30,7 +30,7 @@ class FormElementProperties {
     //#region Basic Properties
     ParagraphProperties(paragraphElement, callback) {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]");
-        const currentText = elementToUpdateText.outerHTML;
+        const currentText = elementToUpdateText.textContent;
         this.rightDesigner.innerHTML = '';
         const textArea = document.createElement('textarea');
         textArea.id = 'paragraph-editor';
@@ -38,7 +38,6 @@ class FormElementProperties {
         //this._tinymce.activeEditor.setContent("this is a test");
         //delay to init tinymce
         setTimeout(() => {
-            debugger;
             const utils = new Utilities();
             utils.InitTinyMCE(this._tinymce, 'textarea#paragraph-editor');
             setTimeout(() => {

@@ -135,7 +135,6 @@ class FormBuilder {
         else {
             this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement);
         }
-        //const formElementProperties = new FormElementProperties();
     }
 
     private AddEditDesign(element: HTMLDivElement): void {
@@ -155,7 +154,6 @@ class FormBuilder {
 
     //#region Update
     private UpdateFormElement(tinymce: any, element: HTMLDivElement): void {
-        //ev.preventDefault();
         console.log(element);
         element.innerHTML = tinymce.activeEditor.getContent();
     }

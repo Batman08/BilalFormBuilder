@@ -175,6 +175,7 @@
         const formId = this.GetFormElementId(formElementName) as string;
 
         paragraph.id = formId;
+        paragraph.classList.add("text-break");
         paragraph.setAttribute("name", formElementName)
         paragraph.setAttribute("data-property-reference", "Paragraph");
         paragraph.innerText = "This is a paragraph";

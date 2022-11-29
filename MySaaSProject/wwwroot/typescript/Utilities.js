@@ -16,12 +16,14 @@ class Utilities {
         // Initialize tinymce editor
         tinymce.init({
             selector: editorSelector
-            //themes: 'modern',
-            //height: 200
         });
     }
     AddTinymceListeners(tinymce, element, callback) {
-        //add new key up event listner for _tinymce
+        const btnTinymceUpgrade = document.querySelector('.tox-promotion');
+        btnTinymceUpgrade.classList.add("hideElement");
+        const iconTinymce = document.querySelector('.tox-statusbar__branding');
+        iconTinymce.classList.add("hideElement");
+        //add new key up event listner for tinymce
         tinymce.activeEditor.getBody().onkeyup = (ev) => {
             if (ev.target) {
                 //do something

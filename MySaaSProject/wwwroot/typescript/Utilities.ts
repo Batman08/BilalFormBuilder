@@ -19,13 +19,16 @@
         // Initialize tinymce editor
         tinymce.init({
             selector: editorSelector
-            //themes: 'modern',
-            //height: 200
         });
     }
 
     public AddTinymceListeners(tinymce: any, element: HTMLElement, callback: Function): void {
-        //add new key up event listner for _tinymce
+        const btnTinymceUpgrade = document.querySelector('.tox-promotion') as HTMLDivElement;
+        btnTinymceUpgrade.classList.add("hideElement");
+        const iconTinymce = document.querySelector('.tox-statusbar__branding') as HTMLSpanElement;
+        iconTinymce.classList.add("hideElement");
+        
+        //add new key up event listner for tinymce
         tinymce.activeEditor.getBody().onkeyup = (ev: KeyboardEvent) => {
             if (ev.target) {
                 //do something

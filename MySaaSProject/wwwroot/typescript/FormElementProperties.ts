@@ -34,7 +34,7 @@ class FormElementProperties {
     //#region Basic Properties
     private ParagraphProperties(paragraphElement: HTMLElement, callback?: Function): void {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
-        const currentText: string = elementToUpdateText.outerHTML;
+        const currentText: string = elementToUpdateText.textContent;
         
         this.rightDesigner.innerHTML = '';
         const textArea = document.createElement('textarea') as HTMLTextAreaElement;
@@ -44,7 +44,6 @@ class FormElementProperties {
 
         //delay to init tinymce
         setTimeout(() => {//todo: should only show right designer when tinymce editor has been initialized
-            debugger
             const utils = new Utilities();
             utils.InitTinyMCE(this._tinymce, 'textarea#paragraph-editor');
             setTimeout(() => {//todo: should only show right designer when tinymce editor has been initialized

@@ -149,6 +149,7 @@ class FormElements {
         const paragraph = document.createElement("p");
         const formId = this.GetFormElementId(formElementName);
         paragraph.id = formId;
+        paragraph.classList.add("text-break");
         paragraph.setAttribute("name", formElementName);
         paragraph.setAttribute("data-property-reference", "Paragraph");
         paragraph.innerText = "This is a paragraph";

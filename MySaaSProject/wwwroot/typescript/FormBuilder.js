@@ -110,7 +110,6 @@ class FormBuilder {
         else {
             this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement);
         }
-        //const formElementProperties = new FormElementProperties();
     }
     AddEditDesign(element) {
         this.RemoveSelectedFormElementStyle();
@@ -126,7 +125,6 @@ class FormBuilder {
     //#endregion
     //#region Update
     UpdateFormElement(tinymce, element) {
-        //ev.preventDefault();
         console.log(element);
         element.innerHTML = tinymce.activeEditor.getContent();
     }
