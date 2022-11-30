@@ -10,10 +10,13 @@ class FormElementProperties {
     }
 
     public GetElementProperties(elementType: string, element: HTMLElement, callback?: Function) {
-        
+
         switch (elementType) {
             case "paragraphWrapper":
                 this.ParagraphProperties(element, callback);
+                break;
+            case "dropdownWrapper":
+                this.DropdownProperties(element);
                 break;
             case "headingWrapper":
                 this.HeadingProperties(element);
@@ -35,7 +38,7 @@ class FormElementProperties {
     private ParagraphProperties(paragraphElement: HTMLElement, callback?: Function): void {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
         const currentText: string = elementToUpdateText.textContent;
-        
+
         this.rightDesigner.innerHTML = '';
         const textArea = document.createElement('textarea') as HTMLTextAreaElement;
         textArea.id = 'paragraph-editor';
@@ -52,6 +55,59 @@ class FormElementProperties {
             }, 1000);
         }, 0.0001);
     }
+
+    private DropdownProperties(paragraphElement: HTMLElement, callback?: Function): void {
+        this.rightDesigner.innerHTML = '';
+
+        //region Extract Data
+        const labelTextElement = paragraphElement.querySelector(".form-label") as HTMLParagraphElement;
+        const currentLabelText: string = labelTextElement.textContent;
+
+        //find element within paragraphElement that is a select element
+        const allDropdownOptions = paragraphElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
+        //#endregion
+
+        //#region Create/Fill Property Fields
+        const editLabelFieldWrapper = document.createElement("div") as HTMLDivElement;
+        editLabelFieldWrapper.classList.add("mb-3");
+
+        const editLabel = document.createElement("label") as HTMLLabelElement;
+        editLabel.htmlFor = "txtDropdown";
+        editLabel.classList.add("form-label");
+        editLabel.textContent = currentLabelText;
+
+        const editInput = document.createElement("input") as HTMLInputElement;
+        editInput.type = "text";
+        editInput.value = "Enter Option";
+        editInput.classList.add("form-control");
+        editInput.id = "txtDropdown";
+        editInput.ariaRoleDescription = "Edit Dropdown Question";
+
+        editLabelFieldWrapper.appendChild(editLabel);
+        editLabelFieldWrapper.appendChild(editInput);
+
+        const optionsWrapper = document.createElement("div") as HTMLDivElement;
+        optionsWrapper.classList.add("mb-3", "pt-3");
+
+        const optionsLabel = document.createElement("label") as HTMLLabelElement;
+        optionsLabel.classList.add("form-label");
+        optionsLabel.textContent = "Dropdown Options";
+        optionsWrapper.appendChild(optionsLabel);
+        
+        allDropdownOptions.forEach((option) => {
+            const dropdownOption = document.createElement("input") as HTMLInputElement;
+            dropdownOption.type = "text";
+            dropdownOption.classList.add("form-control");
+            dropdownOption.value = option.textContent;
+            
+            optionsWrapper.appendChild(dropdownOption);
+        });
+        //#endregion
+
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+        this.rightDesigner.appendChild(optionsWrapper);
+    }
+
     //#endregion
 
     //#region Complex Properties
