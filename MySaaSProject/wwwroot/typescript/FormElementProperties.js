@@ -49,13 +49,14 @@ class FormElementProperties {
             }, 1000);
         }, 0.0001);
     }
-    DropdownProperties(paragraphElement, callback) {
+    //#region dropdown
+    DropdownProperties(dropdownElement, callback) {
         this.rightDesigner.innerHTML = '';
         //region Extract Data
-        const labelTextElement = paragraphElement.querySelector(".form-label");
+        const labelTextElement = dropdownElement.querySelector(".form-label");
         const currentLabelText = labelTextElement.textContent;
         //find element within paragraphElement that is a select element
-        const allDropdownOptions = paragraphElement.querySelector("[data-property-reference]").childNodes;
+        const allDropdownOptions = dropdownElement.querySelector("[data-property-reference]").childNodes;
         //#endregion
         //#region Create/Fill Property Fields
         const editLabelFieldWrapper = document.createElement("div");
@@ -63,32 +64,125 @@ class FormElementProperties {
         const editLabel = document.createElement("label");
         editLabel.htmlFor = "txtDropdown";
         editLabel.classList.add("form-label");
-        editLabel.textContent = currentLabelText;
+        editLabel.textContent = "Field Label";
         const editInput = document.createElement("input");
-        editInput.type = "text";
-        editInput.value = "Enter Option";
-        editInput.classList.add("form-control");
         editInput.id = "txtDropdown";
+        editInput.classList.add("form-control");
+        editInput.type = "text";
+        editInput.placeholder = "type a question";
+        editInput.value = currentLabelText;
         editInput.ariaRoleDescription = "Edit Dropdown Question";
+        editInput.oninput = (ev) => { labelTextElement.textContent = editInput.value; };
         editLabelFieldWrapper.appendChild(editLabel);
         editLabelFieldWrapper.appendChild(editInput);
         const optionsWrapper = document.createElement("div");
+        optionsWrapper.id = "ddlOptions";
         optionsWrapper.classList.add("mb-3", "pt-3");
         const optionsLabel = document.createElement("label");
         optionsLabel.classList.add("form-label");
         optionsLabel.textContent = "Dropdown Options";
         optionsWrapper.appendChild(optionsLabel);
         allDropdownOptions.forEach((option) => {
-            const dropdownOption = document.createElement("input");
-            dropdownOption.type = "text";
-            dropdownOption.classList.add("form-control");
-            dropdownOption.value = option.textContent;
-            optionsWrapper.appendChild(dropdownOption);
+            if (option.firstChild.nodeValue === "Select an option")
+                return;
+            this.AddNewOption(option.textContent, this.DeleteOption, optionsWrapper, dropdownElement);
         });
+        //#region Add Option Section
+        const addOptionFieldWrapper = document.createElement("div");
+        addOptionFieldWrapper.classList.add("mb-3", "pt-3");
+        const divRow = document.createElement("div");
+        divRow.classList.add("row");
+        addOptionFieldWrapper.appendChild(divRow);
+        const addOptionLabel = document.createElement("label");
+        addOptionLabel.htmlFor = "txtAddOption";
+        addOptionLabel.classList.add("form-label");
+        addOptionLabel.textContent = "Add Option";
+        divRow.appendChild(addOptionLabel);
+        const addOptionInputWrapper = document.createElement("div");
+        addOptionInputWrapper.classList.add("col-md-8");
+        divRow.appendChild(addOptionInputWrapper);
+        const addOptionInput = document.createElement("input");
+        addOptionInput.id = "txtAddOption";
+        addOptionInput.type = "text";
+        addOptionInput.placeholder = "Enter Option";
+        addOptionInput.classList.add("form-control");
+        addOptionInputWrapper.appendChild(addOptionInput);
+        const addOptionButtonWrapper = document.createElement("div");
+        addOptionButtonWrapper.classList.add("col-md-4");
+        divRow.appendChild(addOptionButtonWrapper);
+        const addOptionButton = document.createElement("button");
+        addOptionButton.classList.add("btn", "btn-primary");
+        addOptionButton.textContent = "Add";
+        addOptionButtonWrapper.appendChild(addOptionButton);
+        addOptionButton.onclick = (ev) => this.AddNewOption(addOptionInput.value, this.DeleteOption, optionsWrapper, dropdownElement, this.UpdateDropdownOptions, dropdownElement);
+        //#endregion
         //#endregion
         this.rightDesigner.appendChild(editLabelFieldWrapper);
+        this.rightDesigner.appendChild(divRow);
         this.rightDesigner.appendChild(optionsWrapper);
     }
+    AddNewOption(optionValue, func, areaToAppend, editedEl, inputEventFunc, funcParam) {
+        const newOptionFieldWrapper = document.createElement("div");
+        newOptionFieldWrapper.classList.add("mb-3", "mt-2");
+        const divRow = document.createElement("div");
+        divRow.classList.add("row");
+        newOptionFieldWrapper.appendChild(divRow);
+        const newOptionInputWrapper = document.createElement("div");
+        newOptionFieldWrapper.setAttribute("name", "ddlOptions");
+        newOptionInputWrapper.classList.add("col-md-10");
+        divRow.appendChild(newOptionInputWrapper);
+        const newOptionInput = document.createElement("input");
+        newOptionInput.type = "text";
+        newOptionInput.setAttribute("data-option", "");
+        const areaOnlyContainsLabelElement = areaToAppend.children.length <= 1;
+        if (areaOnlyContainsLabelElement)
+            newOptionInput.classList.add("form-control");
+        else
+            newOptionInput.classList.add("form-control");
+        newOptionInput.value = optionValue;
+        newOptionInputWrapper.appendChild(newOptionInput);
+        const deleteOptionBtnWrapper = document.createElement("div");
+        deleteOptionBtnWrapper.classList.add("col-md-2");
+        divRow.appendChild(deleteOptionBtnWrapper);
+        const deleteOptionBtn = document.createElement("button");
+        deleteOptionBtn.classList.add("btn", "btn-danger");
+        deleteOptionBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        deleteOptionBtn.onclick = (ev) => {
+            func(newOptionFieldWrapper);
+            this.UpdateDropdownOptions(editedEl);
+        };
+        deleteOptionBtnWrapper.appendChild(deleteOptionBtn);
+        areaToAppend.appendChild(newOptionFieldWrapper);
+        if (inputEventFunc !== undefined && inputEventFunc !== null && funcParam !== undefined && funcParam !== null)
+            inputEventFunc(funcParam);
+    }
+    UpdateDropdownOptions(dropdownElWrapper) {
+        const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]");
+        const currentDropdownOptions = ddlEl.querySelectorAll("option");
+        const newDropdownOptions = document.querySelector("#ddlOptions").querySelectorAll("[data-option]");
+        console.log(currentDropdownOptions);
+        console.log(newDropdownOptions);
+        currentDropdownOptions.forEach((option) => {
+            if (option.firstChild.nodeValue === "Select an option")
+                return;
+            /*const optionValue = allDropdownOptionsInput[allDropdownOptions.indexOf(option)].value;*/
+            /*option.textContent = optionValue;*/
+            //const optionValue = newDropdownOptions[newDropdownOptions.indexOf(option)].value;
+            option.remove();
+        });
+        for (let i = 0; i < newDropdownOptions.length; i++) {
+            const newOption = document.createElement("option");
+            newOption.value = newDropdownOptions[i].value;
+            newOption.textContent = newDropdownOptions[i].value;
+            ddlEl.appendChild(newOption);
+        }
+    }
+    DeleteOption(htmlElement) {
+        htmlElement.remove();
+    }
+    OptionListeners() {
+    }
+    //#endregion
     //#endregion
     //#region Complex Properties
     HeadingProperties(headingElement) {
