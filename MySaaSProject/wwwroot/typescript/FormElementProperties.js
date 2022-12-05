@@ -13,6 +13,9 @@ class FormElementProperties {
             case "paragraphWrapper":
                 this.ParagraphProperties(element, callback);
                 break;
+            //case "singleChoiceWrapper":
+            //    this.SingleChoiceProperties(element);
+            //    break;
             case "dropdownWrapper":
                 this.DropdownProperties(element);
                 break;
@@ -62,7 +65,7 @@ class FormElementProperties {
             }, 1000);
         }, 0.0001);
     }
-    //#region dropdown
+    //#region Dropdown Properties
     DropdownProperties(dropdownElement, callback) {
         this.rightDesigner.innerHTML = '';
         const dropdownLabelEl = dropdownElement.querySelector(".form-label");
@@ -93,6 +96,7 @@ class FormElementProperties {
         optionsWrapper.classList.add("mb-3", "pt-3");
         const optionsLabel = document.createElement("label");
         optionsLabel.classList.add("form-label");
+        optionsLabel.htmlFor = "txtAreaOptions";
         optionsLabel.textContent = "Dropdown Options";
         optionsWrapper.appendChild(optionsLabel);
         //#endregion
@@ -112,7 +116,7 @@ class FormElementProperties {
         divTextarea.appendChild(textareaLabel);
         let optionsFromElement = [];
         optionsFromDropdown.forEach((option) => {
-            if (option.firstChild.nodeValue === "Select an option")
+            if (option.textContent === "Select an option")
                 return;
             optionsFromElement.push(option.textContent);
         });
@@ -129,7 +133,6 @@ class FormElementProperties {
     UpdateDropdownOptions(dropdownElWrapper, options) {
         const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]");
         const currentDropdownOptions = ddlEl.querySelectorAll("option");
-        console.log(currentDropdownOptions);
         currentDropdownOptions.forEach((option) => {
             if (option.textContent === "Select an option")
                 return;

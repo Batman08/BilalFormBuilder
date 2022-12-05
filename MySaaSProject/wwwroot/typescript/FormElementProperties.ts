@@ -15,6 +15,9 @@ class FormElementProperties {
             case "paragraphWrapper":
                 this.ParagraphProperties(element, callback);
                 break;
+            //case "singleChoiceWrapper":
+            //    this.SingleChoiceProperties(element);
+            //    break;
             case "dropdownWrapper":
                 this.DropdownProperties(element);
                 break;
@@ -50,6 +53,7 @@ class FormElementProperties {
     //#endregion
 
     //#region Basic Properties
+
     private ParagraphProperties(paragraphElement: HTMLElement, callback?: Function): void {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
         const currentText: string = elementToUpdateText.textContent;
@@ -71,7 +75,7 @@ class FormElementProperties {
         }, 0.0001);
     }
 
-    //#region dropdown
+    //#region Dropdown Properties
     private DropdownProperties(dropdownElement: HTMLElement, callback?: Function): void {
         this.rightDesigner.innerHTML = '';
 
@@ -110,6 +114,7 @@ class FormElementProperties {
 
         const optionsLabel = document.createElement("label") as HTMLLabelElement;
         optionsLabel.classList.add("form-label");
+        optionsLabel.htmlFor = "txtAreaOptions";
         optionsLabel.textContent = "Dropdown Options";
         optionsWrapper.appendChild(optionsLabel);
         //#endregion
@@ -134,7 +139,7 @@ class FormElementProperties {
 
         let optionsFromElement: string[] = [];
         optionsFromDropdown.forEach((option) => {
-            if (option.firstChild.nodeValue === "Select an option")
+            if (option.textContent === "Select an option")
                 return;
 
             optionsFromElement.push(option.textContent);
@@ -157,7 +162,6 @@ class FormElementProperties {
     private UpdateDropdownOptions(dropdownElWrapper: HTMLElement, options: string[]): void {
         const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
         const currentDropdownOptions = ddlEl.querySelectorAll("option") as NodeListOf<HTMLOptionElement>;
-        console.log(currentDropdownOptions);
         currentDropdownOptions.forEach((option) => {
             if (option.textContent === "Select an option")
                 return;
@@ -172,7 +176,6 @@ class FormElementProperties {
             ddlEl.appendChild(newOption);
         }
     }
-
     //#endregion
 
     //#endregion
