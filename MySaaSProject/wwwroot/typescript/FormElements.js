@@ -48,6 +48,7 @@ class FormElements {
     Init() {
         this.CreateFormElementAddComponent();
     }
+    //#region Components
     CreateFormElementAddComponent() {
         this._basicFormElements.innerHTML = '';
         this._complexFormElements.innerHTML = '';
@@ -121,6 +122,8 @@ class FormElements {
         divSelectedControls.appendChild(btnDelete);
         return divSelectedControls;
     }
+    //#endregion
+    //#region Generic Form Element Functions
     GetFormElementId(elementName) {
         //remove spaces form elementName
         const trimmedElementName = elementName.split(" ").join("");
@@ -142,6 +145,7 @@ class FormElements {
         divWrapper.setAttribute("data-wrapper-type", `${elementName}Wrapper`);
         return divWrapper;
     }
+    //#endregion
     //#region Basic Form Elements
     FormElementParagraph() {
         const formElementName = "paragraph";

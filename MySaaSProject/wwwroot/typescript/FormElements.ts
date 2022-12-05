@@ -47,6 +47,7 @@
         this.CreateFormElementAddComponent();
     }
 
+    //#region Components
     private CreateFormElementAddComponent(): void {
         this._basicFormElements.innerHTML = '';
         this._complexFormElements.innerHTML = '';
@@ -137,7 +138,9 @@
 
         return divSelectedControls;
     }
+    //#endregion
 
+    //#region Generic Form Element Functions
     private GetFormElementId(elementName: string): string {
         //remove spaces form elementName
         const trimmedElementName = elementName.split(" ").join("") as string;
@@ -165,6 +168,7 @@
 
         return divWrapper
     }
+    //#endregion
 
     //#region Basic Form Elements
     private FormElementParagraph(): HTMLDivElement {
@@ -312,7 +316,6 @@
     }
 
     //#endregion
-
 
     //#region Complex Form Elements
     private FormElementHeading(): HTMLDivElement {
