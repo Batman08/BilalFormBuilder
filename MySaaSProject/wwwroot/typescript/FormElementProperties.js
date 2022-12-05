@@ -30,6 +30,19 @@ class FormElementProperties {
         //loop through all inputs within element    
         var inputs = element.querySelectorAll("input");
     }
+    //#region Generic Multi-Selection Functions
+    UpdateTextAreaOptions(textarea, options) {
+        //add options to textarea
+        if (options !== null && options !== undefined) {
+            textarea.value = options.join('\n');
+        }
+    }
+    GetOptionsFromTextarea(textarea) {
+        //split data into array
+        const options = textarea.value.split(/[\n,]+/);
+        return options;
+    }
+    //#endregion
     //#region Basic Properties
     ParagraphProperties(paragraphElement, callback) {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]");
@@ -50,145 +63,12 @@ class FormElementProperties {
         }, 0.0001);
     }
     //#region dropdown
-    DropdownProperties_CURRENT(dropdownElement, callback) {
-        this.rightDesigner.innerHTML = '';
-        //Extract Data
-        const labelTextElement = dropdownElement.querySelector(".form-label");
-        const currentLabelText = labelTextElement.textContent;
-        //find element within paragraphElement that is a select element
-        const allDropdownOptions = dropdownElement.querySelector("[data-property-reference]").childNodes;
-        //Fill Property Fields
-        const editLabelFieldWrapper = document.createElement("div");
-        editLabelFieldWrapper.classList.add("mb-3");
-        const editLabel = document.createElement("label");
-        editLabel.htmlFor = "txtDropdown";
-        editLabel.classList.add("form-label");
-        editLabel.textContent = "Field Label";
-        const editInput = document.createElement("input");
-        editInput.id = "txtDropdown";
-        editInput.classList.add("form-control");
-        editInput.type = "text";
-        editInput.placeholder = "type a question";
-        editInput.value = currentLabelText;
-        editInput.ariaRoleDescription = "Edit Dropdown Question";
-        editInput.oninput = (ev) => { labelTextElement.textContent = editInput.value; };
-        editLabelFieldWrapper.appendChild(editLabel);
-        editLabelFieldWrapper.appendChild(editInput);
-        const optionsWrapper = document.createElement("div");
-        optionsWrapper.id = "ddlOptions";
-        optionsWrapper.classList.add("mb-3", "pt-3");
-        const optionsLabel = document.createElement("label");
-        optionsLabel.classList.add("form-label");
-        optionsLabel.textContent = "Dropdown Options";
-        optionsWrapper.appendChild(optionsLabel);
-        allDropdownOptions.forEach((option) => {
-            if (option.firstChild.nodeValue === "Select an option")
-                return;
-            this.AddNewOption(option.textContent, this.DeleteOption, optionsWrapper, dropdownElement);
-        });
-        //Add Option Section
-        const addOptionFieldWrapper = document.createElement("div");
-        addOptionFieldWrapper.classList.add("mb-3", "pt-3");
-        const divRow = document.createElement("div");
-        divRow.classList.add("row");
-        addOptionFieldWrapper.appendChild(divRow);
-        const addOptionLabel = document.createElement("label");
-        addOptionLabel.htmlFor = "txtAddOption";
-        addOptionLabel.classList.add("form-label");
-        addOptionLabel.textContent = "Add Option";
-        divRow.appendChild(addOptionLabel);
-        const addOptionInputWrapper = document.createElement("div");
-        addOptionInputWrapper.classList.add("col-md-8");
-        divRow.appendChild(addOptionInputWrapper);
-        const addOptionInput = document.createElement("input");
-        addOptionInput.id = "txtAddOption";
-        addOptionInput.type = "text";
-        addOptionInput.placeholder = "Enter Option";
-        addOptionInput.classList.add("form-control");
-        addOptionInputWrapper.appendChild(addOptionInput);
-        const addOptionButtonWrapper = document.createElement("div");
-        addOptionButtonWrapper.classList.add("col-md-4");
-        divRow.appendChild(addOptionButtonWrapper);
-        const addOptionButton = document.createElement("button");
-        addOptionButton.classList.add("btn", "btn-primary");
-        addOptionButton.textContent = "Add";
-        addOptionButtonWrapper.appendChild(addOptionButton);
-        addOptionButton.onclick = (ev) => this.AddNewOption(addOptionInput.value, this.DeleteOption, optionsWrapper, dropdownElement, this.UpdateDropdownOptions, dropdownElement);
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
-        this.rightDesigner.appendChild(divRow);
-        this.rightDesigner.appendChild(optionsWrapper);
-    }
-    AddNewOption_CURRENT(optionValue, func, areaToAppend, editedEl, inputEventFunc, funcParam) {
-        const newOptionFieldWrapper = document.createElement("div");
-        newOptionFieldWrapper.classList.add("mb-3", "mt-2");
-        const divRow = document.createElement("div");
-        divRow.classList.add("row");
-        newOptionFieldWrapper.appendChild(divRow);
-        const newOptionInputWrapper = document.createElement("div");
-        newOptionFieldWrapper.setAttribute("name", "ddlOptions");
-        newOptionInputWrapper.classList.add("col-md-10");
-        divRow.appendChild(newOptionInputWrapper);
-        const newOptionInput = document.createElement("input");
-        newOptionInput.type = "text";
-        newOptionInput.setAttribute("data-option", "");
-        const areaOnlyContainsLabelElement = areaToAppend.children.length <= 1;
-        if (areaOnlyContainsLabelElement)
-            newOptionInput.classList.add("form-control");
-        else
-            newOptionInput.classList.add("form-control");
-        newOptionInput.value = optionValue;
-        newOptionInputWrapper.appendChild(newOptionInput);
-        const deleteOptionBtnWrapper = document.createElement("div");
-        deleteOptionBtnWrapper.classList.add("col-md-2");
-        divRow.appendChild(deleteOptionBtnWrapper);
-        const deleteOptionBtn = document.createElement("button");
-        deleteOptionBtn.classList.add("btn", "btn-danger");
-        deleteOptionBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        deleteOptionBtn.onclick = (ev) => {
-            func(newOptionFieldWrapper);
-            this.UpdateDropdownOptions(editedEl);
-        };
-        deleteOptionBtnWrapper.appendChild(deleteOptionBtn);
-        areaToAppend.appendChild(newOptionFieldWrapper);
-        if (inputEventFunc !== undefined && inputEventFunc !== null && funcParam !== undefined && funcParam !== null)
-            inputEventFunc(funcParam);
-    }
-    UpdateDropdownOptions_CURRENT(dropdownElWrapper) {
-        const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]");
-        const currentDropdownOptions = ddlEl.querySelectorAll("option");
-        const newDropdownOptions = document.querySelector("#ddlOptions").querySelectorAll("[data-option]");
-        console.log(currentDropdownOptions);
-        console.log(newDropdownOptions);
-        currentDropdownOptions.forEach((option) => {
-            if (option.firstChild.nodeValue === "Select an option")
-                return;
-            /*const optionValue = allDropdownOptionsInput[allDropdownOptions.indexOf(option)].value;*/
-            /*option.textContent = optionValue;*/
-            //const optionValue = newDropdownOptions[newDropdownOptions.indexOf(option)].value;
-            option.remove();
-        });
-        for (let i = 0; i < newDropdownOptions.length; i++) {
-            const newOption = document.createElement("option");
-            newOption.value = newDropdownOptions[i].value;
-            newOption.textContent = newDropdownOptions[i].value;
-            ddlEl.appendChild(newOption);
-        }
-    }
-    DeleteOption_CURRENT(htmlElement) {
-        htmlElement.remove();
-    }
-    OptionListeners_CURRENT() {
-    }
-    //#endregion
-    //#region new dropdown
     DropdownProperties(dropdownElement, callback) {
         this.rightDesigner.innerHTML = '';
-        //Extract Data
-        const labelTextElement = dropdownElement.querySelector(".form-label");
-        const currentLabelText = labelTextElement.textContent;
-        //find element within paragraphElement that is a select element
-        const allDropdownOptions = dropdownElement.querySelector("[data-property-reference]").childNodes;
-        //Fill Property Fields
+        const dropdownLabelEl = dropdownElement.querySelector(".form-label");
+        const dropdownLabelText = dropdownLabelEl.textContent;
+        const optionsFromDropdown = dropdownElement.querySelector("[data-property-reference]").childNodes;
+        //#region Dropdown Label Property
         const editLabelFieldWrapper = document.createElement("div");
         editLabelFieldWrapper.classList.add("mb-3");
         const editLabel = document.createElement("label");
@@ -200,11 +80,14 @@ class FormElementProperties {
         editInput.classList.add("form-control");
         editInput.type = "text";
         editInput.placeholder = "type a question";
-        editInput.value = currentLabelText;
+        editInput.value = dropdownLabelText;
         editInput.ariaRoleDescription = "Edit Dropdown Question";
-        editInput.oninput = (ev) => { labelTextElement.textContent = editInput.value; };
+        editInput.oninput = (ev) => { dropdownLabelEl.textContent = editInput.value; };
         editLabelFieldWrapper.appendChild(editLabel);
         editLabelFieldWrapper.appendChild(editInput);
+        //#endregion
+        //#region Dropdown Options
+        //#region Label Property Element
         const optionsWrapper = document.createElement("div");
         optionsWrapper.id = "ddlOptions";
         optionsWrapper.classList.add("mb-3", "pt-3");
@@ -212,104 +95,54 @@ class FormElementProperties {
         optionsLabel.classList.add("form-label");
         optionsLabel.textContent = "Dropdown Options";
         optionsWrapper.appendChild(optionsLabel);
-        allDropdownOptions.forEach((option) => {
+        //#endregion
+        //#region Textarea Property Element
+        const divTextarea = document.createElement("div");
+        divTextarea.classList.add("form-floating");
+        optionsWrapper.appendChild(divTextarea);
+        const textarea = document.createElement("textarea");
+        textarea.id = "txtAreaOptions";
+        textarea.classList.add("form-control");
+        textarea.placeholder = "Enter each option on a new line";
+        textarea.style.height = "100px";
+        const textareaLabel = document.createElement("label");
+        textareaLabel.htmlFor = "txtAreaOptions";
+        textareaLabel.textContent = "Enter each option on a new line";
+        divTextarea.appendChild(textarea);
+        divTextarea.appendChild(textareaLabel);
+        let optionsFromElement = [];
+        optionsFromDropdown.forEach((option) => {
             if (option.firstChild.nodeValue === "Select an option")
                 return;
-            this.AddNewOption(option.textContent, this.DeleteOption, optionsWrapper, dropdownElement);
+            optionsFromElement.push(option.textContent);
         });
-        //Add Option Section
-        const addOptionFieldWrapper = document.createElement("div");
-        addOptionFieldWrapper.classList.add("mb-3", "pt-3");
-        const divRow = document.createElement("div");
-        divRow.classList.add("row");
-        addOptionFieldWrapper.appendChild(divRow);
-        const addOptionLabel = document.createElement("label");
-        addOptionLabel.htmlFor = "txtAddOption";
-        addOptionLabel.classList.add("form-label");
-        addOptionLabel.textContent = "Add Option";
-        divRow.appendChild(addOptionLabel);
-        const addOptionInputWrapper = document.createElement("div");
-        addOptionInputWrapper.classList.add("col-md-8");
-        divRow.appendChild(addOptionInputWrapper);
-        const addOptionInput = document.createElement("input");
-        addOptionInput.id = "txtAddOption";
-        addOptionInput.type = "text";
-        addOptionInput.placeholder = "Enter Option";
-        addOptionInput.classList.add("form-control");
-        addOptionInputWrapper.appendChild(addOptionInput);
-        const addOptionButtonWrapper = document.createElement("div");
-        addOptionButtonWrapper.classList.add("col-md-4");
-        divRow.appendChild(addOptionButtonWrapper);
-        const addOptionButton = document.createElement("button");
-        addOptionButton.classList.add("btn", "btn-primary");
-        addOptionButton.textContent = "Add";
-        addOptionButtonWrapper.appendChild(addOptionButton);
-        addOptionButton.onclick = (ev) => this.AddNewOption(addOptionInput.value, this.DeleteOption, optionsWrapper, dropdownElement, this.UpdateDropdownOptions, dropdownElement);
+        this.UpdateTextAreaOptions(textarea, optionsFromElement);
+        textarea.oninput = (ev) => {
+            const options = this.GetOptionsFromTextarea(textarea);
+            this.UpdateDropdownOptions(dropdownElement, options);
+        };
+        //#endregion
+        //#endregion
         this.rightDesigner.appendChild(editLabelFieldWrapper);
-        this.rightDesigner.appendChild(divRow);
         this.rightDesigner.appendChild(optionsWrapper);
     }
-    AddNewOption(optionValue, func, areaToAppend, editedEl, inputEventFunc, funcParam) {
-        const newOptionFieldWrapper = document.createElement("div");
-        newOptionFieldWrapper.classList.add("mb-3", "mt-2");
-        const divRow = document.createElement("div");
-        divRow.classList.add("row");
-        newOptionFieldWrapper.appendChild(divRow);
-        const newOptionInputWrapper = document.createElement("div");
-        newOptionFieldWrapper.setAttribute("name", "ddlOptions");
-        newOptionInputWrapper.classList.add("col-md-10");
-        divRow.appendChild(newOptionInputWrapper);
-        const newOptionInput = document.createElement("input");
-        newOptionInput.type = "text";
-        newOptionInput.setAttribute("data-option", "");
-        const areaOnlyContainsLabelElement = areaToAppend.children.length <= 1;
-        if (areaOnlyContainsLabelElement)
-            newOptionInput.classList.add("form-control");
-        else
-            newOptionInput.classList.add("form-control");
-        newOptionInput.value = optionValue;
-        newOptionInputWrapper.appendChild(newOptionInput);
-        const deleteOptionBtnWrapper = document.createElement("div");
-        deleteOptionBtnWrapper.classList.add("col-md-2");
-        divRow.appendChild(deleteOptionBtnWrapper);
-        const deleteOptionBtn = document.createElement("button");
-        deleteOptionBtn.classList.add("btn", "btn-danger");
-        deleteOptionBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        deleteOptionBtn.onclick = (ev) => {
-            func(newOptionFieldWrapper);
-            this.UpdateDropdownOptions(editedEl);
-        };
-        deleteOptionBtnWrapper.appendChild(deleteOptionBtn);
-        areaToAppend.appendChild(newOptionFieldWrapper);
-        if (inputEventFunc !== undefined && inputEventFunc !== null && funcParam !== undefined && funcParam !== null)
-            inputEventFunc(funcParam);
-    }
-    UpdateDropdownOptions(dropdownElWrapper) {
+    UpdateDropdownOptions(dropdownElWrapper, options) {
         const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]");
         const currentDropdownOptions = ddlEl.querySelectorAll("option");
-        const newDropdownOptions = document.querySelector("#ddlOptions").querySelectorAll("[data-option]");
         console.log(currentDropdownOptions);
-        console.log(newDropdownOptions);
         currentDropdownOptions.forEach((option) => {
-            if (option.firstChild.nodeValue === "Select an option")
+            if (option.textContent === "Select an option")
                 return;
-            /*const optionValue = allDropdownOptionsInput[allDropdownOptions.indexOf(option)].value;*/
-            /*option.textContent = optionValue;*/
-            //const optionValue = newDropdownOptions[newDropdownOptions.indexOf(option)].value;
             option.remove();
         });
-        for (let i = 0; i < newDropdownOptions.length; i++) {
+        for (let i = 0; i < options.length; i++) {
             const newOption = document.createElement("option");
-            newOption.value = newDropdownOptions[i].value;
-            newOption.textContent = newDropdownOptions[i].value;
+            newOption.value = options[i];
+            newOption.textContent = options[i];
             ddlEl.appendChild(newOption);
         }
     }
-    DeleteOption(htmlElement) {
-        htmlElement.remove();
-    }
-    OptionListeners() {
-    }
+    //#endregion
     //#endregion
     //#region Complex Properties
     HeadingProperties(headingElement) {
