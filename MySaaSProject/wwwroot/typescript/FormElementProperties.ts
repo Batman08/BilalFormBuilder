@@ -57,18 +57,18 @@ class FormElementProperties {
     }
 
     //#region dropdown
-    private DropdownProperties(dropdownElement: HTMLElement, callback?: Function): void {
+    private DropdownProperties_CURRENT(dropdownElement: HTMLElement, callback?: Function): void {
         this.rightDesigner.innerHTML = '';
 
-        //region Extract Data
+        //Extract Data
         const labelTextElement = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
         const currentLabelText: string = labelTextElement.textContent;
 
         //find element within paragraphElement that is a select element
         const allDropdownOptions = dropdownElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
-        //#endregion
 
-        //#region Create/Fill Property Fields
+
+        //Fill Property Fields
         const editLabelFieldWrapper = document.createElement("div") as HTMLDivElement;
         editLabelFieldWrapper.classList.add("mb-3");
 
@@ -104,7 +104,7 @@ class FormElementProperties {
             this.AddNewOption(option.textContent, this.DeleteOption, optionsWrapper, dropdownElement);
         });
 
-        //#region Add Option Section
+        //Add Option Section
         const addOptionFieldWrapper = document.createElement("div") as HTMLDivElement;
         addOptionFieldWrapper.classList.add("mb-3", "pt-3");
 
@@ -138,15 +138,13 @@ class FormElementProperties {
         addOptionButton.textContent = "Add";
         addOptionButtonWrapper.appendChild(addOptionButton);
         addOptionButton.onclick = (ev: MouseEvent) => this.AddNewOption(addOptionInput.value, this.DeleteOption, optionsWrapper, dropdownElement, this.UpdateDropdownOptions, dropdownElement);
-        //#endregion
-        //#endregion
-
+        
         this.rightDesigner.appendChild(editLabelFieldWrapper);
         this.rightDesigner.appendChild(divRow);
         this.rightDesigner.appendChild(optionsWrapper);
     }
 
-    private AddNewOption(optionValue: string, func: Function, areaToAppend: HTMLElement, editedEl: HTMLElement, inputEventFunc?: Function, funcParam?: HTMLElement): void {
+    private AddNewOption_CURRENT(optionValue: string, func: Function, areaToAppend: HTMLElement, editedEl: HTMLElement, inputEventFunc?: Function, funcParam?: HTMLElement): void {
         const newOptionFieldWrapper = document.createElement("div") as HTMLDivElement;
         newOptionFieldWrapper.classList.add("mb-3", "mt-2");
 
@@ -191,7 +189,7 @@ class FormElementProperties {
             inputEventFunc(funcParam);
     }
 
-    private UpdateDropdownOptions(dropdownElWrapper: HTMLElement): void {
+    private UpdateDropdownOptions_CURRENT(dropdownElWrapper: HTMLElement): void {
         const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
         const currentDropdownOptions = ddlEl.querySelectorAll("option") as NodeListOf<HTMLOptionElement>;
         const newDropdownOptions = document.querySelector("#ddlOptions").querySelectorAll("[data-option]") as NodeListOf<HTMLInputElement>;
@@ -216,15 +214,148 @@ class FormElementProperties {
         }
     }
 
-    private DeleteOption(htmlElement: HTMLElement): void {
+    private DeleteOption_CURRENT(htmlElement: HTMLElement): void {
         htmlElement.remove();
     }
 
+    private OptionListeners_CURRENT(): void {
+    }
+    //#endregion
+
+
+    //#region new dropdown
+    private DropdownProperties(dropdownElement: HTMLElement, callback?: Function): void {
+            this.rightDesigner.innerHTML = '';
+    
+            //Extract Data
+            const labelTextElement = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
+            const currentLabelText: string = labelTextElement.textContent;
+    
+            //find element within paragraphElement that is a select element
+            const allDropdownOptions = dropdownElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
+    
+    
+            //Fill Property Fields
+            const editLabelFieldWrapper = document.createElement("div") as HTMLDivElement;
+            editLabelFieldWrapper.classList.add("mb-3");
+    
+            const editLabel = document.createElement("label") as HTMLLabelElement;
+            editLabel.htmlFor = "txtDropdown";
+            editLabel.classList.add("form-label");
+            editLabel.textContent = "Field Label";
+    
+            const editInput = document.createElement("input") as HTMLInputElement;
+            editInput.id = "txtDropdown";
+            editInput.classList.add("form-control");
+            editInput.type = "text";
+            editInput.placeholder = "type a question"
+            editInput.value = currentLabelText;
+            editInput.ariaRoleDescription = "Edit Dropdown Question";
+            editInput.oninput = (ev: InputEvent) => { labelTextElement.textContent = editInput.value; };
+    
+            editLabelFieldWrapper.appendChild(editLabel);
+            editLabelFieldWrapper.appendChild(editInput);
+    
+            const optionsWrapper = document.createElement("div") as HTMLDivElement;
+            optionsWrapper.id = "ddlOptions";
+            optionsWrapper.classList.add("mb-3", "pt-3");
+    
+            const optionsLabel = document.createElement("label") as HTMLLabelElement;
+            optionsLabel.classList.add("form-label");
+            optionsLabel.textContent = "Dropdown Options";
+            optionsWrapper.appendChild(optionsLabel);
+    
+            allDropdownOptions.forEach((option) => {
+                if (option.firstChild.nodeValue === "Select an option")
+                    return
+                this.AddNewOption(option.textContent, this.DeleteOption, optionsWrapper, dropdownElement);
+            });
+
+            // addOptionButton.onclick = (ev: MouseEvent) => this.AddNewOption(addOptionInput.value, this.DeleteOption, optionsWrapper, dropdownElement, this.UpdateDropdownOptions, dropdownElement);
+            
+            this.rightDesigner.appendChild(editLabelFieldWrapper);
+            // this.rightDesigner.appendChild(divRow);
+            this.rightDesigner.appendChild(optionsWrapper);
+    }
+    
+    private AddNewOption(optionValue: string, func: Function, areaToAppend: HTMLElement, editedEl: HTMLElement, inputEventFunc?: Function, funcParam?: HTMLElement): void {
+            const newOptionFieldWrapper = document.createElement("div") as HTMLDivElement;
+            newOptionFieldWrapper.classList.add("mb-3", "mt-2");
+    
+            const divRow = document.createElement("div") as HTMLDivElement;
+            divRow.classList.add("row");
+            newOptionFieldWrapper.appendChild(divRow);
+    
+            const newOptionInputWrapper = document.createElement("div") as HTMLDivElement;
+            newOptionFieldWrapper.setAttribute("name", "ddlOptions");
+            newOptionInputWrapper.classList.add("col-md-10");
+            divRow.appendChild(newOptionInputWrapper);
+    
+            const newOptionInput = document.createElement("input") as HTMLInputElement;
+            newOptionInput.type = "text";
+            newOptionInput.setAttribute("data-option", "");
+    
+            const areaOnlyContainsLabelElement: boolean = areaToAppend.children.length <= 1;
+            if (areaOnlyContainsLabelElement)
+                newOptionInput.classList.add("form-control");
+            else
+                newOptionInput.classList.add("form-control");
+            newOptionInput.value = optionValue;
+    
+            newOptionInputWrapper.appendChild(newOptionInput);
+    
+            const deleteOptionBtnWrapper = document.createElement("div") as HTMLDivElement;
+            deleteOptionBtnWrapper.classList.add("col-md-2");
+            divRow.appendChild(deleteOptionBtnWrapper);
+    
+            const deleteOptionBtn = document.createElement("button") as HTMLButtonElement;
+            deleteOptionBtn.classList.add("btn", "btn-danger");
+            deleteOptionBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+            deleteOptionBtn.onclick = (ev: MouseEvent) => {
+                func(newOptionFieldWrapper);
+                this.UpdateDropdownOptions(editedEl);
+            };
+            deleteOptionBtnWrapper.appendChild(deleteOptionBtn);
+    
+            areaToAppend.appendChild(newOptionFieldWrapper);
+    
+            if (inputEventFunc !== undefined && inputEventFunc !== null && funcParam !== undefined && funcParam !== null)
+                inputEventFunc(funcParam);
+    }
+    
+    private UpdateDropdownOptions(dropdownElWrapper: HTMLElement): void {
+            const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
+            const currentDropdownOptions = ddlEl.querySelectorAll("option") as NodeListOf<HTMLOptionElement>;
+            const newDropdownOptions = document.querySelector("#ddlOptions").querySelectorAll("[data-option]") as NodeListOf<HTMLInputElement>;
+            console.log(currentDropdownOptions);
+            console.log(newDropdownOptions);
+            currentDropdownOptions.forEach((option) => {
+                if (option.firstChild.nodeValue === "Select an option")
+                    return
+    
+                /*const optionValue = allDropdownOptionsInput[allDropdownOptions.indexOf(option)].value;*/
+                /*option.textContent = optionValue;*/
+    
+                //const optionValue = newDropdownOptions[newDropdownOptions.indexOf(option)].value;
+                option.remove();
+            });
+    
+            for (let i = 0; i < newDropdownOptions.length; i++) {
+                const newOption = document.createElement("option") as HTMLOptionElement;
+                newOption.value = newDropdownOptions[i].value;
+                newOption.textContent = newDropdownOptions[i].value;
+                ddlEl.appendChild(newOption);
+            }
+    }
+    
+    private DeleteOption(htmlElement: HTMLElement): void {
+            htmlElement.remove();
+    }
+    
     private OptionListeners(): void {
     }
     //#endregion
 
-    //#endregion
 
     //#region Complex Properties
     private HeadingProperties(headingElement: HTMLElement) {
