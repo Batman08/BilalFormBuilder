@@ -13,9 +13,9 @@ class FormElementProperties {
             case "paragraphWrapper":
                 this.ParagraphProperties(element, callback);
                 break;
-            //case "singleChoiceWrapper":
-            //    this.SingleChoiceProperties(element);
-            //    break;
+            case "singleChoiceWrapper":
+                this.SingleChoiceProperties(element);
+                break;
             case "dropdownWrapper":
                 this.DropdownProperties(element);
                 break;
@@ -143,6 +143,95 @@ class FormElementProperties {
             newOption.value = options[i];
             newOption.textContent = options[i];
             ddlEl.appendChild(newOption);
+        }
+    }
+    //#endregion
+    //#region Single Choice Properties
+    SingleChoiceProperties(singleChoiceElement, callback) {
+        this.rightDesigner.innerHTML = '';
+        const singleChoiceLabelEl = singleChoiceElement.querySelector(".form-label");
+        const dropdownLabelText = singleChoiceLabelEl.textContent;
+        const optionsFromSingleChoice = singleChoiceElement.querySelector("[data-property-reference]").childNodes;
+        //#region Single Choice Label Property
+        const editLabelFieldWrapper = document.createElement("div");
+        editLabelFieldWrapper.classList.add("mb-3");
+        const editLabel = document.createElement("label");
+        editLabel.htmlFor = "txtSingleChoice";
+        editLabel.classList.add("form-label");
+        editLabel.textContent = "Field Label";
+        const editInput = document.createElement("input");
+        editInput.id = "txtSingleChoice";
+        editInput.classList.add("form-control");
+        editInput.type = "text";
+        editInput.placeholder = "type a question";
+        editInput.value = dropdownLabelText;
+        editInput.ariaRoleDescription = "Edit Single Question";
+        editInput.oninput = (ev) => { singleChoiceLabelEl.textContent = editInput.value; };
+        editLabelFieldWrapper.appendChild(editLabel);
+        editLabelFieldWrapper.appendChild(editInput);
+        //#endregion
+        //#region Single Choice Options
+        //#region Label Property Element
+        const optionsWrapper = document.createElement("div");
+        optionsWrapper.id = "scOptions";
+        optionsWrapper.classList.add("mb-3", "pt-3");
+        const optionsLabel = document.createElement("label");
+        optionsLabel.classList.add("form-label");
+        optionsLabel.htmlFor = "scOptions";
+        optionsLabel.textContent = "Single Choice Options";
+        optionsWrapper.appendChild(optionsLabel);
+        //#endregion
+        //#region Textarea Property Element
+        const divTextarea = document.createElement("div");
+        divTextarea.classList.add("form-floating");
+        optionsWrapper.appendChild(divTextarea);
+        const textarea = document.createElement("textarea");
+        textarea.id = "txtAreaOptions";
+        textarea.classList.add("form-control");
+        textarea.placeholder = "Enter each option on a new line";
+        textarea.style.height = "100px";
+        const textareaLabel = document.createElement("label");
+        textareaLabel.htmlFor = "txtAreaOptions";
+        textareaLabel.textContent = "Enter each option on a new line";
+        divTextarea.appendChild(textarea);
+        divTextarea.appendChild(textareaLabel);
+        let optionsFromElement = [];
+        optionsFromSingleChoice.forEach((option) => {
+            if (option.textContent === "Select an option")
+                return;
+            optionsFromElement.push(option.textContent);
+        });
+        this.UpdateTextAreaOptions(textarea, optionsFromElement);
+        textarea.oninput = (ev) => {
+            const options = this.GetOptionsFromTextarea(textarea);
+            this.UpdateSingleChoiceOptions(singleChoiceElement, options);
+        };
+        //#endregion
+        //#endregion
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+        this.rightDesigner.appendChild(optionsWrapper);
+    }
+    UpdateSingleChoiceOptions(singlchoiceElWrapper, options) {
+        const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]");
+        singleChoicelEl.innerHTML = "";
+        const singleChoiceElName = singleChoicelEl.getAttribute("name");
+        for (let i = 0; i < options.length; i++) {
+            const singleChoiceNum = i + 1;
+            const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
+            const divSinglChoiceWrapper = document.createElement("div");
+            divSinglChoiceWrapper.classList.add("form-check");
+            singleChoicelEl.appendChild(divSinglChoiceWrapper);
+            const singleChoiceInput = document.createElement("input");
+            singleChoiceInput.type = "radio";
+            singleChoiceInput.id = singleChoiceOptionId;
+            singleChoiceInput.classList.add("form-check-input");
+            singleChoiceInput.name = singleChoiceElName;
+            divSinglChoiceWrapper.appendChild(singleChoiceInput);
+            const singleChoiceLabel = document.createElement("label");
+            singleChoiceLabel.classList.add("form-check-label");
+            singleChoiceLabel.htmlFor = singleChoiceOptionId;
+            singleChoiceLabel.textContent = options[i];
+            divSinglChoiceWrapper.appendChild(singleChoiceLabel);
         }
     }
     //#endregion
