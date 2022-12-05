@@ -3,6 +3,7 @@
 class FormElementProperties {
     constructor() {
         this.rightDesigner = document.querySelector('#rightDesigner');
+        this._utils = new Utilities();
         //#endregion
     }
     Init(tinymce) {
@@ -214,10 +215,12 @@ class FormElementProperties {
     UpdateSingleChoiceOptions(singlchoiceElWrapper, options) {
         const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]");
         singleChoicelEl.innerHTML = "";
+        let totalSinglChoiceOptionCount = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
         const singleChoiceElName = singleChoicelEl.getAttribute("name");
         for (let i = 0; i < options.length; i++) {
-            const singleChoiceNum = i + 1;
-            const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
+            totalSinglChoiceOptionCount += 1;
+            const singleChoiceOptionNum = totalSinglChoiceOptionCount;
+            const singleChoiceOptionId = `singleChoiceOption${singleChoiceOptionNum}`;
             const divSinglChoiceWrapper = document.createElement("div");
             divSinglChoiceWrapper.classList.add("form-check");
             singleChoicelEl.appendChild(divSinglChoiceWrapper);

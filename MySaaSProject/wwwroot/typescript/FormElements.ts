@@ -43,6 +43,8 @@
         ]
     }
 
+    private _utils: Utilities = new Utilities();
+
     public Init(): void {
         this.CreateFormElementAddComponent();
     }
@@ -242,9 +244,12 @@
         divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
 
         const defaultCreateNumber = 3 as number;
-
+        let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
         for (var i = 0; i < defaultCreateNumber; i++) {
+            totalSinglChoiceOptionCount += 1
             const itemNum = i + 1;
+            const singleChoiceNum = totalSinglChoiceOptionCount;
+            const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
 
             const divRadioOption = document.createElement("div") as HTMLDivElement;
             divRadioOption.classList.add("form-check");
@@ -254,12 +259,12 @@
             radioInput.classList.add("form-check-input");
             radioInput.type = "radio";
             radioInput.name = formElementName;
-            radioInput.id = `singleChoiceOption${itemNum}`;
+            radioInput.id = singleChoiceOptionId;
             divRadioOption.appendChild(radioInput);
 
             const radioLabel = document.createElement("label") as HTMLLabelElement;
             radioLabel.classList.add("form-check-label");
-            radioLabel.htmlFor = `singleChoiceOption${itemNum}`;
+            radioLabel.htmlFor = singleChoiceOptionId;
             radioLabel.innerText = `Option ${itemNum}`;
             divRadioOption.appendChild(radioLabel);
         }

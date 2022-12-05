@@ -37,5 +37,16 @@ class Utilities {
             }
         };
     }
+    //#endregion
+    //#region Form Utils
+    GetElOptionTotal(dataWrapperType, elName) {
+        let totalOptionCount = 0;
+        const allFormEls = document.querySelectorAll(`[data-wrapper-type=${dataWrapperType}`);
+        allFormEls.forEach((elWrapper) => {
+            const optionCount = elWrapper.querySelector(`[name=${elName}]`).children.length;
+            totalOptionCount += optionCount;
+        });
+        return totalOptionCount;
+    }
 }
 //# sourceMappingURL=Utilities.js.map

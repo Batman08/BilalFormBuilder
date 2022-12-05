@@ -43,6 +43,7 @@ class FormElements {
                 { name: "Tabs", type: "Tabs", icon: ["fas", "fa-window-maximize", "fa-sm"] }
             ]
         };
+        this._utils = new Utilities();
         //#endregion
     }
     Init() {
@@ -202,8 +203,12 @@ class FormElements {
         divRadioBtnsContainer.setAttribute("data-property-reference", "Single Choice");
         divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
         const defaultCreateNumber = 3;
+        let totalSinglChoiceOptionCount = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
         for (var i = 0; i < defaultCreateNumber; i++) {
+            totalSinglChoiceOptionCount += 1;
             const itemNum = i + 1;
+            const singleChoiceNum = totalSinglChoiceOptionCount;
+            const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
             const divRadioOption = document.createElement("div");
             divRadioOption.classList.add("form-check");
             divRadioBtnsContainer.appendChild(divRadioOption);
@@ -211,11 +216,11 @@ class FormElements {
             radioInput.classList.add("form-check-input");
             radioInput.type = "radio";
             radioInput.name = formElementName;
-            radioInput.id = `singleChoiceOption${itemNum}`;
+            radioInput.id = singleChoiceOptionId;
             divRadioOption.appendChild(radioInput);
             const radioLabel = document.createElement("label");
             radioLabel.classList.add("form-check-label");
-            radioLabel.htmlFor = `singleChoiceOption${itemNum}`;
+            radioLabel.htmlFor = singleChoiceOptionId;
             radioLabel.innerText = `Option ${itemNum}`;
             divRadioOption.appendChild(radioLabel);
         }

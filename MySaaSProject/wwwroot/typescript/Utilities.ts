@@ -27,7 +27,7 @@
         btnTinymceUpgrade.classList.add("hideElement");
         const iconTinymce = document.querySelector('.tox-statusbar__branding') as HTMLSpanElement;
         iconTinymce.classList.add("hideElement");
-        
+
         //add new key up event listner for tinymce
         tinymce.activeEditor.getBody().onkeyup = (ev: KeyboardEvent) => {
             if (ev.target) {
@@ -42,6 +42,18 @@
                 callback(tinymce, element);
             }
         };
+    }
+    //#endregion
+
+    //#region Form Utils
+    public GetElOptionTotal(dataWrapperType: string, elName: string): number {
+        let totalOptionCount: number = 0;
+        const allFormEls = document.querySelectorAll(`[data-wrapper-type=${dataWrapperType}`) as NodeListOf<HTMLDivElement>;
+        allFormEls.forEach((elWrapper) => {
+            const optionCount: number = elWrapper.querySelector(`[name=${elName}]`).children.length;
+            totalOptionCount += optionCount;
+        });
+        return totalOptionCount;
     }
     //#endregion
 }

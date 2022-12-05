@@ -4,6 +4,7 @@
 class FormElementProperties {
     private readonly rightDesigner = document.querySelector('#rightDesigner') as HTMLDivElement;
     private _tinymce: any;
+    private _utils: Utilities = new Utilities();
 
     public Init(tinymce: any): void {
         this._tinymce = tinymce;
@@ -265,10 +266,13 @@ class FormElementProperties {
         const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
         singleChoicelEl.innerHTML = "";
 
+        let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
+
         const singleChoiceElName: string = singleChoicelEl.getAttribute("name");
         for (let i = 0; i < options.length; i++) {
-            const singleChoiceNum = i + 1;
-            const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
+            totalSinglChoiceOptionCount += 1
+            const singleChoiceOptionNum = totalSinglChoiceOptionCount;
+            const singleChoiceOptionId = `singleChoiceOption${singleChoiceOptionNum}`;
 
             const divSinglChoiceWrapper = document.createElement("div") as HTMLDivElement;
             divSinglChoiceWrapper.classList.add("form-check");
@@ -288,7 +292,6 @@ class FormElementProperties {
             divSinglChoiceWrapper.appendChild(singleChoiceLabel);
         }
     }
-
     //#endregion
 
     //#endregion
