@@ -23,16 +23,10 @@ class Utilities {
         btnTinymceUpgrade.classList.add("hideElement");
         const iconTinymce = document.querySelector('.tox-statusbar__branding');
         iconTinymce.classList.add("hideElement");
-        //add new key up event listner for tinymce
-        tinymce.activeEditor.getBody().onkeyup = (ev) => {
+        //add input event listner for tinymce
+        tinymce.activeEditor.getBody().oninput = (ev) => {
             if (ev.target) {
-                //do something
-                callback(tinymce, element);
-            }
-        };
-        tinymce.activeEditor.getContentAreaContainer().onmousedown = (ev) => {
-            if (ev.target) {
-                //do something
+                //update paragraph element
                 callback(tinymce, element);
             }
         };
@@ -40,13 +34,35 @@ class Utilities {
     //#endregion
     //#region Form Utils
     GetElOptionTotal(dataWrapperType, elName) {
-        let totalOptionCount = 0;
         const allFormEls = document.querySelectorAll(`[data-wrapper-type=${dataWrapperType}`);
+        let totalOptionCount = 0;
         allFormEls.forEach((elWrapper) => {
             const optionCount = elWrapper.querySelector(`[name=${elName}]`).children.length;
             totalOptionCount += optionCount;
         });
         return totalOptionCount;
+    }
+    CreateDropdownOption(ddlOptionData) {
+        const ddlOption = document.createElement("option");
+        ddlOption.value = ddlOptionData.dropdownValue;
+        ddlOption.textContent = ddlOptionData.dropdownTextContent;
+        return ddlOption;
+    }
+    CreateSingleChoiceOption(scOptionData) {
+        const divSinglChoiceWrapper = document.createElement("div");
+        divSinglChoiceWrapper.classList.add("form-check");
+        const singleChoiceInput = document.createElement("input");
+        singleChoiceInput.type = "radio";
+        singleChoiceInput.id = scOptionData.singleChoiceOptionId;
+        singleChoiceInput.classList.add("form-check-input");
+        singleChoiceInput.name = scOptionData.singleChoiceElName;
+        divSinglChoiceWrapper.appendChild(singleChoiceInput);
+        const singleChoiceLabel = document.createElement("label");
+        singleChoiceLabel.classList.add("form-check-label");
+        singleChoiceLabel.htmlFor = scOptionData.singleChoiceOptionId;
+        singleChoiceLabel.textContent = scOptionData.singleChoiceOptionTextContent;
+        divSinglChoiceWrapper.appendChild(singleChoiceLabel);
+        return divSinglChoiceWrapper;
     }
 }
 //# sourceMappingURL=Utilities.js.map

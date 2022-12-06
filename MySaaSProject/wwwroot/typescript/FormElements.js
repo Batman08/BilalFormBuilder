@@ -179,8 +179,8 @@ class FormElements {
         select.ariaLabel = "Dropdown";
         select.setAttribute("data-property-reference", "Dropdown");
         divDropdownWrapper.appendChild(select);
-        const defaultOption = document.createElement("option");
-        defaultOption.innerText = "Select an option";
+        const ddlOptionData = { dropdownValue: "", dropdownTextContent: "Select an option" };
+        const defaultOption = this._utils.CreateDropdownOption(ddlOptionData);
         defaultOption.setAttribute("selected", "");
         select.appendChild(defaultOption);
         return divDropdownWrapper;
@@ -202,27 +202,17 @@ class FormElements {
         divRadioBtnsContainer.ariaLabel = "Single Choice";
         divRadioBtnsContainer.setAttribute("data-property-reference", "Single Choice");
         divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
+        const singleChoiceElName = `${formElementName}Q${formId.substring(12, 13)}`;
         const defaultCreateNumber = 3;
         let totalSinglChoiceOptionCount = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
         for (var i = 0; i < defaultCreateNumber; i++) {
             totalSinglChoiceOptionCount += 1;
-            const itemNum = i + 1;
+            const itemNum = (i + 1).toString();
             const singleChoiceNum = totalSinglChoiceOptionCount;
             const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
-            const divRadioOption = document.createElement("div");
-            divRadioOption.classList.add("form-check");
-            divRadioBtnsContainer.appendChild(divRadioOption);
-            const radioInput = document.createElement("input");
-            radioInput.classList.add("form-check-input");
-            radioInput.type = "radio";
-            radioInput.name = formElementName;
-            radioInput.id = singleChoiceOptionId;
-            divRadioOption.appendChild(radioInput);
-            const radioLabel = document.createElement("label");
-            radioLabel.classList.add("form-check-label");
-            radioLabel.htmlFor = singleChoiceOptionId;
-            radioLabel.innerText = `Option ${itemNum}`;
-            divRadioOption.appendChild(radioLabel);
+            const scOptionData = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: itemNum };
+            const divSinglChoiceWrapper = this._utils.CreateSingleChoiceOption(scOptionData);
+            divRadioBtnsContainer.appendChild(divSinglChoiceWrapper);
         }
         return divSingleChoiceWrapper;
     }

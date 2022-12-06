@@ -30,10 +30,6 @@ class FormElementProperties {
                 break;
         }
     }
-    FillPropertiesDesigner(elementType, element) {
-        //loop through all inputs within element    
-        var inputs = element.querySelectorAll("input");
-    }
     //#region Generic Multi-Selection Functions
     UpdateTextAreaOptions(textarea, options) {
         //add options to textarea
@@ -48,6 +44,7 @@ class FormElementProperties {
     }
     //#endregion
     //#region Basic Properties
+    //#region Paragraph Properties
     ParagraphProperties(paragraphElement, callback) {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]");
         const currentText = elementToUpdateText.textContent;
@@ -66,6 +63,7 @@ class FormElementProperties {
             }, 1000);
         }, 0.0001);
     }
+    //#endregion
     //#region Dropdown Properties
     DropdownProperties(dropdownElement, callback) {
         this.rightDesigner.innerHTML = '';
@@ -140,9 +138,8 @@ class FormElementProperties {
             option.remove();
         });
         for (let i = 0; i < options.length; i++) {
-            const newOption = document.createElement("option");
-            newOption.value = options[i];
-            newOption.textContent = options[i];
+            const ddlOptionData = { dropdownValue: options[i], dropdownTextContent: options[i] };
+            const newOption = this._utils.CreateDropdownOption(ddlOptionData);
             ddlEl.appendChild(newOption);
         }
     }
@@ -216,25 +213,14 @@ class FormElementProperties {
         const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]");
         singleChoicelEl.innerHTML = "";
         let totalSinglChoiceOptionCount = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
-        const singleChoiceElName = singleChoicelEl.getAttribute("name");
+        const singleChoiceElName = `${singleChoicelEl.getAttribute("name")}Q${singleChoicelEl.id.substring(12, 13)}`;
         for (let i = 0; i < options.length; i++) {
             totalSinglChoiceOptionCount += 1;
             const singleChoiceOptionNum = totalSinglChoiceOptionCount;
             const singleChoiceOptionId = `singleChoiceOption${singleChoiceOptionNum}`;
-            const divSinglChoiceWrapper = document.createElement("div");
-            divSinglChoiceWrapper.classList.add("form-check");
+            const scOptionData = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: options[i] };
+            const divSinglChoiceWrapper = this._utils.CreateSingleChoiceOption(scOptionData);
             singleChoicelEl.appendChild(divSinglChoiceWrapper);
-            const singleChoiceInput = document.createElement("input");
-            singleChoiceInput.type = "radio";
-            singleChoiceInput.id = singleChoiceOptionId;
-            singleChoiceInput.classList.add("form-check-input");
-            singleChoiceInput.name = singleChoiceElName;
-            divSinglChoiceWrapper.appendChild(singleChoiceInput);
-            const singleChoiceLabel = document.createElement("label");
-            singleChoiceLabel.classList.add("form-check-label");
-            singleChoiceLabel.htmlFor = singleChoiceOptionId;
-            singleChoiceLabel.textContent = options[i];
-            divSinglChoiceWrapper.appendChild(singleChoiceLabel);
         }
     }
     //#endregion

@@ -33,11 +33,6 @@ class FormElementProperties {
         }
     }
 
-    private FillPropertiesDesigner(elementType: string, element: HTMLElement) {
-        //loop through all inputs within element    
-        var inputs = element.querySelectorAll("input");
-    }
-
     //#region Generic Multi-Selection Functions
     private UpdateTextAreaOptions(textarea: HTMLTextAreaElement, options: string[]): void {
         //add options to textarea
@@ -54,6 +49,8 @@ class FormElementProperties {
     //#endregion
 
     //#region Basic Properties
+
+    //#region Paragraph Properties
     private ParagraphProperties(paragraphElement: HTMLElement, callback?: Function): void {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
         const currentText: string = elementToUpdateText.textContent;
@@ -74,6 +71,7 @@ class FormElementProperties {
             }, 1000);
         }, 0.0001);
     }
+    //#endregion
 
     //#region Dropdown Properties
     private DropdownProperties(dropdownElement: HTMLElement, callback?: Function): void {
@@ -170,9 +168,8 @@ class FormElementProperties {
         });
 
         for (let i = 0; i < options.length; i++) {
-            const newOption = document.createElement("option") as HTMLOptionElement;
-            newOption.value = options[i];
-            newOption.textContent = options[i];
+            const ddlOptionData: DropdownOptionDTO = { dropdownValue: options[i], dropdownTextContent: options[i] };
+            const newOption: HTMLOptionElement = this._utils.CreateDropdownOption(ddlOptionData);
             ddlEl.appendChild(newOption);
         }
     }
@@ -263,33 +260,19 @@ class FormElementProperties {
     }
 
     private UpdateSingleChoiceOptions(singlchoiceElWrapper: HTMLElement, options: string[]): void {
-        const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
+        const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
         singleChoicelEl.innerHTML = "";
 
         let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
-
-        const singleChoiceElName: string = singleChoicelEl.getAttribute("name");
+        const singleChoiceElName: string = `${singleChoicelEl.getAttribute("name")}Q${singleChoicelEl.id.substring(12, 13)}`;
         for (let i = 0; i < options.length; i++) {
             totalSinglChoiceOptionCount += 1
             const singleChoiceOptionNum = totalSinglChoiceOptionCount;
             const singleChoiceOptionId = `singleChoiceOption${singleChoiceOptionNum}`;
 
-            const divSinglChoiceWrapper = document.createElement("div") as HTMLDivElement;
-            divSinglChoiceWrapper.classList.add("form-check");
+            const scOptionData: SingleChoiceOptionDTO = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: options[i] };
+            const divSinglChoiceWrapper: HTMLDivElement = this._utils.CreateSingleChoiceOption(scOptionData);
             singleChoicelEl.appendChild(divSinglChoiceWrapper);
-
-            const singleChoiceInput = document.createElement("input") as HTMLInputElement;
-            singleChoiceInput.type = "radio";
-            singleChoiceInput.id = singleChoiceOptionId;
-            singleChoiceInput.classList.add("form-check-input");
-            singleChoiceInput.name = singleChoiceElName;
-            divSinglChoiceWrapper.appendChild(singleChoiceInput);
-
-            const singleChoiceLabel = document.createElement("label") as HTMLLabelElement;
-            singleChoiceLabel.classList.add("form-check-label");
-            singleChoiceLabel.htmlFor = singleChoiceOptionId;
-            singleChoiceLabel.textContent = options[i];
-            divSinglChoiceWrapper.appendChild(singleChoiceLabel);
         }
     }
     //#endregion

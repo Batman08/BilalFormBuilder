@@ -1,7 +1,7 @@
 ﻿class FormElements {
     private readonly _basicFormElements = document.querySelector("#basicFormElements") as HTMLDivElement;
     private readonly _complexFormElements = document.querySelector("#formElements") as HTMLDivElement;
-    private readonly _componentsToCreate: componentsToCreate = {
+    private readonly _componentsToCreate: ComponentsToCreateDTO = {
         basicFormElements: [
             { name: "Paragraph", type: "Paragraph", icon: ["fas", "fa-paragraph", "fa-sm"] },
             { name: "Dropdown", type: "Dropdown", icon: ["fas", "fa-caret-square-down", "fa-sm"] },
@@ -205,16 +205,15 @@
 
         const select = document.createElement("select") as HTMLSelectElement;
         const formId = this.GetFormElementId(formElementName) as string;
-
         select.id = formId;
         select.classList.add("form-select");
-        select.setAttribute("name", formElementName)
-        select.ariaLabel = "Dropdown"
+        select.setAttribute("name", formElementName);
+        select.ariaLabel = "Dropdown";
         select.setAttribute("data-property-reference", "Dropdown");
         divDropdownWrapper.appendChild(select);
 
-        const defaultOption = document.createElement("option") as HTMLOptionElement;
-        defaultOption.innerText = "Select an option";
+        const ddlOptionData: DropdownOptionDTO = { dropdownValue: "", dropdownTextContent: "Select an option" };
+        const defaultOption: HTMLOptionElement = this._utils.CreateDropdownOption(ddlOptionData);
         defaultOption.setAttribute("selected", "");
         select.appendChild(defaultOption);
 
@@ -243,30 +242,18 @@
         divRadioBtnsContainer.setAttribute("data-property-reference", "Single Choice");
         divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
 
+        const singleChoiceElName: string = `${formElementName}Q${formId.substring(12, 13)}`;
         const defaultCreateNumber = 3 as number;
         let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
         for (var i = 0; i < defaultCreateNumber; i++) {
             totalSinglChoiceOptionCount += 1
-            const itemNum = i + 1;
+            const itemNum: string = (i + 1).toString();
             const singleChoiceNum = totalSinglChoiceOptionCount;
             const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
 
-            const divRadioOption = document.createElement("div") as HTMLDivElement;
-            divRadioOption.classList.add("form-check");
-            divRadioBtnsContainer.appendChild(divRadioOption);
-
-            const radioInput = document.createElement("input") as HTMLInputElement;
-            radioInput.classList.add("form-check-input");
-            radioInput.type = "radio";
-            radioInput.name = formElementName;
-            radioInput.id = singleChoiceOptionId;
-            divRadioOption.appendChild(radioInput);
-
-            const radioLabel = document.createElement("label") as HTMLLabelElement;
-            radioLabel.classList.add("form-check-label");
-            radioLabel.htmlFor = singleChoiceOptionId;
-            radioLabel.innerText = `Option ${itemNum}`;
-            divRadioOption.appendChild(radioLabel);
+            const scOptionData: SingleChoiceOptionDTO = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: itemNum };
+            const divSinglChoiceWrapper: HTMLDivElement = this._utils.CreateSingleChoiceOption(scOptionData);
+            divRadioBtnsContainer.appendChild(divSinglChoiceWrapper);
         }
 
         return divSingleChoiceWrapper;
@@ -319,7 +306,6 @@
 
         return divMultipleChoiceWrapper;
     }
-
     //#endregion
 
     //#region Complex Form Elements
