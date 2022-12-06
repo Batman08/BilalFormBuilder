@@ -75,5 +75,26 @@
 
         return divSinglChoiceWrapper;
     }
+
+    public CreateMultipleChoiceOption(mcOptionData: MultipleChoiceOptionDTO): HTMLDivElement {
+        const divCheckboxOption = document.createElement("div") as HTMLDivElement;
+        divCheckboxOption.classList.add("form-check");
+
+        const checkboxInput = document.createElement("input") as HTMLInputElement;
+        checkboxInput.classList.add("form-check-input");
+        checkboxInput.type = "checkbox";
+        checkboxInput.id = mcOptionData.multipleChoiceOptionId;
+        checkboxInput.name = mcOptionData.multipleChoiceElName;
+        checkboxInput.value = mcOptionData.multipleChoiceOptionValue;
+        divCheckboxOption.appendChild(checkboxInput);
+
+        const checkboxLabel = document.createElement("label") as HTMLLabelElement;
+        checkboxLabel.classList.add("form-check-label");
+        checkboxLabel.htmlFor = mcOptionData.multipleChoiceOptionId;
+        checkboxLabel.textContent = mcOptionData.multipleChoiceOptionTextContent;
+        divCheckboxOption.appendChild(checkboxLabel);
+
+        return divCheckboxOption;
+    }
     //#endregion
 }

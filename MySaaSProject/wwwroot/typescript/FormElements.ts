@@ -251,7 +251,7 @@
             const singleChoiceNum = totalSinglChoiceOptionCount;
             const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
 
-            const scOptionData: SingleChoiceOptionDTO = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: itemNum };
+            const scOptionData: SingleChoiceOptionDTO = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: `Option ${itemNum}` };
             const divSinglChoiceWrapper: HTMLDivElement = this._utils.CreateSingleChoiceOption(scOptionData);
             divRadioBtnsContainer.appendChild(divSinglChoiceWrapper);
         }
@@ -282,26 +282,20 @@
         divMultipleChoiceWrapper.appendChild(divCheckboxBtnsContainer);
 
         const defaultCreateNumber = 3 as number;
-
+        let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("multipleChoiceWrapper", "multipleChoice");
         for (var i = 0; i < defaultCreateNumber; i++) {
+            totalSinglChoiceOptionCount += 1
             const itemNum = i + 1;
+            const multipleChoiceOptionId: string = `multipleChoiceOption${totalSinglChoiceOptionCount}`;
 
-            const divCheckboxOption = document.createElement("div") as HTMLDivElement;
-            divCheckboxOption.classList.add("form-check");
-            divCheckboxBtnsContainer.appendChild(divCheckboxOption);
-
-            const checkboxInput = document.createElement("input") as HTMLInputElement;
-            checkboxInput.classList.add("form-check-input");
-            checkboxInput.type = "checkbox";
-            checkboxInput.name = formElementName;
-            checkboxInput.id = `multipleChoiceOption${itemNum}`;
-            divCheckboxOption.appendChild(checkboxInput);
-
-            const checkboxLabel = document.createElement("label") as HTMLLabelElement;
-            checkboxLabel.classList.add("form-check-label");
-            checkboxLabel.htmlFor = `multipleChoiceOption${itemNum}`;
-            checkboxLabel.innerText = `Option ${itemNum}`;
-            divCheckboxOption.appendChild(checkboxLabel);
+            const mcOptionData: MultipleChoiceOptionDTO = {
+                multipleChoiceOptionId: multipleChoiceOptionId,
+                multipleChoiceElName: multipleChoiceOptionId,
+                multipleChoiceOptionValue: `Option ${itemNum}`,
+                multipleChoiceOptionTextContent: `Option ${itemNum}`
+            };
+            const divMultipleChoiceWrapper: HTMLDivElement = this._utils.CreateMultipleChoiceOption(mcOptionData);
+            divCheckboxBtnsContainer.appendChild(divMultipleChoiceWrapper);
         }
 
         return divMultipleChoiceWrapper;

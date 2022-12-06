@@ -25,3 +25,10 @@ type SingleChoiceOptionDTO = {
     singleChoiceElName: string;
     singleChoiceOptionTextContent: string;
 };
+
+type MultipleChoiceOptionDTO = {
+    multipleChoiceOptionId: string;
+    multipleChoiceElName: string;
+    multipleChoiceOptionValue: string;
+    multipleChoiceOptionTextContent: string;
+};

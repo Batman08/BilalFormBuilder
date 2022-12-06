@@ -20,6 +20,9 @@ class FormElementProperties {
             case "dropdownWrapper":
                 this.DropdownProperties(element);
                 break;
+            case "multipleChoiceWrapper":
+                this.MultipleChoiceProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -221,6 +224,88 @@ class FormElementProperties {
             const scOptionData = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: options[i] };
             const divSinglChoiceWrapper = this._utils.CreateSingleChoiceOption(scOptionData);
             singleChoicelEl.appendChild(divSinglChoiceWrapper);
+        }
+    }
+    //#endregion
+    //#region Multiple Choice Properties
+    MultipleChoiceProperties(multipleChoiceElement, callback) {
+        this.rightDesigner.innerHTML = '';
+        const multipleChoiceLabelEl = multipleChoiceElement.querySelector(".form-label");
+        const multipleChoiceLabelText = multipleChoiceLabelEl.textContent;
+        const optionsFromMultipleChoice = multipleChoiceElement.querySelector("[data-property-reference]").childNodes;
+        //#region Single Choice Label Property
+        const editLabelFieldWrapper = document.createElement("div");
+        editLabelFieldWrapper.classList.add("mb-3");
+        const editLabel = document.createElement("label");
+        editLabel.htmlFor = "txtMultipleChoice";
+        editLabel.classList.add("form-label");
+        editLabel.textContent = "Field Label";
+        const editInput = document.createElement("input");
+        editInput.id = "txtMultipleChoice";
+        editInput.classList.add("form-control");
+        editInput.type = "text";
+        editInput.placeholder = "type a question";
+        editInput.value = multipleChoiceLabelText;
+        editInput.ariaRoleDescription = "Edit Multiple Question";
+        editInput.oninput = (ev) => { multipleChoiceLabelEl.textContent = editInput.value; };
+        editLabelFieldWrapper.appendChild(editLabel);
+        editLabelFieldWrapper.appendChild(editInput);
+        //#endregion
+        //#region Single Choice Options
+        //#region Label Property Element
+        const optionsWrapper = document.createElement("div");
+        optionsWrapper.id = "mcOptions";
+        optionsWrapper.classList.add("mb-3", "pt-3");
+        const optionsLabel = document.createElement("label");
+        optionsLabel.classList.add("form-label");
+        optionsLabel.htmlFor = "scOptions";
+        optionsLabel.textContent = "Single Choice Options";
+        optionsWrapper.appendChild(optionsLabel);
+        //#endregion
+        //#region Textarea Property Element
+        const divTextarea = document.createElement("div");
+        divTextarea.classList.add("form-floating");
+        optionsWrapper.appendChild(divTextarea);
+        const textarea = document.createElement("textarea");
+        textarea.id = "txtAreaOptions";
+        textarea.classList.add("form-control");
+        textarea.placeholder = "Enter each option on a new line";
+        textarea.style.height = "100px";
+        const textareaLabel = document.createElement("label");
+        textareaLabel.htmlFor = "txtAreaOptions";
+        textareaLabel.textContent = "Enter each option on a new line";
+        divTextarea.appendChild(textarea);
+        divTextarea.appendChild(textareaLabel);
+        let optionsFromElement = [];
+        optionsFromMultipleChoice.forEach((option) => {
+            optionsFromElement.push(option.textContent);
+        });
+        this.UpdateTextAreaOptions(textarea, optionsFromElement);
+        textarea.oninput = (ev) => {
+            const options = this.GetOptionsFromTextarea(textarea);
+            this.UpdateMultipleChoiceOptions(multipleChoiceElement, options);
+        };
+        //#endregion
+        //#endregion
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+        this.rightDesigner.appendChild(optionsWrapper);
+    }
+    UpdateMultipleChoiceOptions(multipleChoiceElWrapper, options) {
+        const multipleChoicelEl = multipleChoiceElWrapper.querySelector("[data-property-reference]");
+        multipleChoicelEl.innerHTML = "";
+        let totalSinglChoiceOptionCount = this._utils.GetElOptionTotal("multipleChoiceWrapper", "multipleChoice");
+        for (let i = 0; i < options.length; i++) {
+            totalSinglChoiceOptionCount += 1;
+            const multipleChoiceOptionNum = totalSinglChoiceOptionCount;
+            const multipleChoiceOptionId = `multipleChoiceOption${multipleChoiceOptionNum}`;
+            const mcOptionData = {
+                multipleChoiceOptionId: multipleChoiceOptionId,
+                multipleChoiceElName: multipleChoiceOptionId,
+                multipleChoiceOptionValue: options[i],
+                multipleChoiceOptionTextContent: options[i]
+            };
+            const divSinglChoiceWrapper = this._utils.CreateMultipleChoiceOption(mcOptionData);
+            multipleChoicelEl.appendChild(divSinglChoiceWrapper);
         }
     }
     //#endregion
