@@ -61,8 +61,11 @@ body {
 }
 
 .formElementSelected {
-    border: 1px solid #520dc2;
+    /*border: 1px solid #520dc2;*/
     cursor: move;
+    box-shadow: 0 0 0 2px #520dc2; /*blue: #0293e2*/
+    border-radius: 3px;
+    /*padding: 12px 10px;*/
 }
 
 
