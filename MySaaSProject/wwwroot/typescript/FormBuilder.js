@@ -19,6 +19,18 @@ class FormBuilder {
         formElement.Init();
         this._btnFormDesigner.onclick = (ev) => this._offcanvasDesignerRightLabel.textContent = "Form Designer";
         this.AddFormElement();
+        const body = document.querySelector('body');
+        const customFormArea = document.querySelector('#customFormArea');
+        body.onclick = (ev) => {
+            let btnControls = null;
+            const isClickInsideElement = customFormArea.contains(ev.target);
+            if (!isClickInsideElement) {
+                btnControls = document.querySelector('#selectedFormElementControl');
+                if (btnControls != null)
+                    btnControls.remove();
+                this.RemoveSelectedFormElementStyle();
+            }
+        };
     }
     //#region Create
     AddFormElement() {
@@ -74,7 +86,10 @@ class FormBuilder {
         const previousSelectedElementExists = this._currentSelectedFormElement !== undefined;
         if (previousSelectedElementExists) {
             //remove edit btns from previously selected element
-            this._currentSelectedFormElement.querySelector('#selectedFormElementControl').remove();
+            const previousBtnControls = this._currentSelectedFormElement.querySelector('#selectedFormElementControl');
+            if (previousBtnControls !== null) {
+                previousBtnControls.remove();
+            }
         }
         //set new current form element
         this._currentSelectedFormElement = element;

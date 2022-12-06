@@ -24,6 +24,20 @@ class FormBuilder {
 
         this._btnFormDesigner.onclick = (ev: MouseEvent) => this._offcanvasDesignerRightLabel.textContent = "Form Designer";
         this.AddFormElement();
+
+        const body = document.querySelector('body') as HTMLBodyElement;
+        const customFormArea = document.querySelector('#customFormArea') as HTMLBodyElement;
+
+        body.onclick = (ev: MouseEvent) => {
+            let btnControls: HTMLDivElement | null = null;
+            const isClickInsideElement = customFormArea.contains(ev.target as Node);
+            if (!isClickInsideElement) {
+                btnControls = document.querySelector('#selectedFormElementControl');
+                if (btnControls != null)
+                    btnControls.remove();
+                this.RemoveSelectedFormElementStyle();
+            }
+        };
     }
 
     //#region Create
@@ -92,7 +106,10 @@ class FormBuilder {
         const previousSelectedElementExists: boolean = this._currentSelectedFormElement !== undefined;
         if (previousSelectedElementExists) {
             //remove edit btns from previously selected element
-            this._currentSelectedFormElement!.querySelector('#selectedFormElementControl')!.remove();
+            const previousBtnControls: HTMLDivElement | null = this._currentSelectedFormElement!.querySelector('#selectedFormElementControl');
+            if (previousBtnControls !== null) {
+                previousBtnControls.remove();
+            }
         }
 
         //set new current form element
