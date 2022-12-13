@@ -53,6 +53,17 @@ class FormElementProperties {
         fieldLabelWrapper.appendChild(fieldLabelInput);
         return fieldLabelWrapper;
     }
+    TextareaLabelProperty(wrapperId, textVal) {
+        const optionsWrapper = document.createElement("div");
+        optionsWrapper.id = wrapperId;
+        optionsWrapper.classList.add("mb-3", "pt-3");
+        const optionsLabel = document.createElement("label");
+        optionsLabel.classList.add("form-label");
+        optionsLabel.htmlFor = "txtAreaOptions";
+        optionsLabel.textContent = textVal;
+        optionsWrapper.appendChild(optionsLabel);
+        return optionsWrapper;
+    }
     MultiSelectTextAreaProperty(optionsFromMultiSelectEl, elementToUpdate, updateFunc) {
         const divTextarea = document.createElement("div");
         divTextarea.classList.add("form-floating");
@@ -129,14 +140,7 @@ class FormElementProperties {
         //#endregion
         //#region Dropdown Options
         //#region Label Property Element
-        const optionsWrapper = document.createElement("div");
-        optionsWrapper.id = "ddlOptions";
-        optionsWrapper.classList.add("mb-3", "pt-3");
-        const optionsLabel = document.createElement("label");
-        optionsLabel.classList.add("form-label");
-        optionsLabel.htmlFor = "txtAreaOptions";
-        optionsLabel.textContent = "Dropdown Options";
-        optionsWrapper.appendChild(optionsLabel);
+        const optionsWrapper = this.TextareaLabelProperty("ddlOptions", "Dropdown Options");
         //#endregion
         //#region Textarea Property Element
         const textarea = this.MultiSelectTextAreaProperty(optionsFromDropdown, dropdownElement, this.UpdateDropdownOptions);
@@ -171,21 +175,14 @@ class FormElementProperties {
         const fieldLabelPropertyData = {
             PlaceHolder: "type a question",
             InputVal: dropdownLabelText,
-            AriaRoleDesc: "Edit Single Question",
+            AriaRoleDesc: "Edit Single Choice Question",
             ElementToUpdate: singleChoiceLabelEl
         };
         const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
         //#region Single Choice Options
         //#region Label Property Element
-        const optionsWrapper = document.createElement("div");
-        optionsWrapper.id = "scOptions";
-        optionsWrapper.classList.add("mb-3", "pt-3");
-        const optionsLabel = document.createElement("label");
-        optionsLabel.classList.add("form-label");
-        optionsLabel.htmlFor = "scOptions";
-        optionsLabel.textContent = "Single Choice Options";
-        optionsWrapper.appendChild(optionsLabel);
+        const optionsWrapper = this.TextareaLabelProperty("scOptions", "Single Choice Options");
         //#endregion
         //#region Textarea Property Element
         const textarea = this.MultiSelectTextAreaProperty(optionsFromSingleChoice, singleChoiceElement, this.UpdateSingleChoiceOptions);
@@ -219,25 +216,18 @@ class FormElementProperties {
         const multipleChoiceLabelEl = multipleChoiceElement.querySelector(".form-label");
         const multipleChoiceLabelText = multipleChoiceLabelEl.textContent;
         const optionsFromMultipleChoice = multipleChoiceElement.querySelector("[data-property-reference]").childNodes;
-        //#region Single Choice Label Property
+        //#region Multiple Choice Label Property
         const fieldLabelPropertyData = {
             PlaceHolder: "type a question",
             InputVal: multipleChoiceLabelText,
-            AriaRoleDesc: "Edit Multiple Question",
+            AriaRoleDesc: "Edit Multiple Choice Question",
             ElementToUpdate: multipleChoiceLabelEl
         };
         const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
-        //#region Single Choice Options
+        //#region Multiple Choice Options
         //#region Label Property Element
-        const optionsWrapper = document.createElement("div");
-        optionsWrapper.id = "mcOptions";
-        optionsWrapper.classList.add("mb-3", "pt-3");
-        const optionsLabel = document.createElement("label");
-        optionsLabel.classList.add("form-label");
-        optionsLabel.htmlFor = "scOptions";
-        optionsLabel.textContent = "Single Choice Options";
-        optionsWrapper.appendChild(optionsLabel);
+        const optionsWrapper = this.TextareaLabelProperty("mcOptions", "Multiple Choice Options");
         //#endregion
         //#region Textarea Property Element
         const textarea = this.MultiSelectTextAreaProperty(optionsFromMultipleChoice, multipleChoiceElement, this.UpdateMultipleChoiceOptions);
