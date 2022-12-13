@@ -19,16 +19,20 @@ class FormBuilder {
         formElement.Init();
         this._btnFormDesigner.onclick = (ev) => this._offcanvasDesignerRightLabel.textContent = "Form Designer";
         this.AddFormElement();
-        const body = document.querySelector('body');
-        const customFormArea = document.querySelector('#customFormArea');
-        body.onclick = (ev) => {
+        this.ManageClicksOutsideFormField();
+    }
+    ManageClicksOutsideFormField() {
+        const bodyEl = document.querySelector('body');
+        const customFormAreaEl = document.querySelector('#customFormArea');
+        bodyEl.onclick = (ev) => {
             let btnControls = null;
-            const isClickInsideElement = customFormArea.contains(ev.target);
+            const isClickInsideElement = customFormAreaEl.contains(ev.target);
             if (!isClickInsideElement) {
                 btnControls = document.querySelector('#selectedFormElementControl');
                 if (btnControls != null)
                     btnControls.remove();
                 this.RemoveSelectedFormElementStyle();
+                //this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
             }
         };
     }
