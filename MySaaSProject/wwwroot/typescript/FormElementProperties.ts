@@ -36,7 +36,31 @@ class FormElementProperties {
         }
     }
 
-    //#region Generic Multi-Selection Functions
+    //#region Generic Functions
+    private FieldLabelProperty(data: FieldLabelPropertyData): HTMLDivElement {
+        const fieldLabelWrapper = document.createElement("div") as HTMLDivElement;
+        fieldLabelWrapper.classList.add("mb-3");
+
+        const fieldLabel = document.createElement("label") as HTMLLabelElement;
+        fieldLabel.htmlFor = "editField";
+        fieldLabel.classList.add("form-label");
+        fieldLabel.textContent = "Field Label";
+
+        const fieldLabelInput = document.createElement("input") as HTMLInputElement;
+        fieldLabelInput.id = "editField";
+        fieldLabelInput.classList.add("form-control");
+        fieldLabelInput.type = "text";
+        fieldLabelInput.placeholder = data.PlaceHolder;
+        fieldLabelInput.value = data.InputVal;
+        fieldLabelInput.ariaRoleDescription = data.AriaRoleDesc;
+        fieldLabelInput.oninput = (ev: InputEvent) => { data.ElementToUpdate.textContent = fieldLabelInput.value; };
+
+        fieldLabelWrapper.appendChild(fieldLabel);
+        fieldLabelWrapper.appendChild(fieldLabelInput);
+
+        return fieldLabelWrapper;
+    }
+    
     private UpdateTextAreaOptions(textarea: HTMLTextAreaElement, options: string[]): void {
         //add options to textarea
         if (options !== null && options !== undefined) {
@@ -85,25 +109,13 @@ class FormElementProperties {
         const optionsFromDropdown = dropdownElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
 
         //#region Dropdown Label Property
-        const editLabelFieldWrapper = document.createElement("div") as HTMLDivElement;
-        editLabelFieldWrapper.classList.add("mb-3");
-
-        const editLabel = document.createElement("label") as HTMLLabelElement;
-        editLabel.htmlFor = "txtDropdown";
-        editLabel.classList.add("form-label");
-        editLabel.textContent = "Field Label";
-
-        const editInput = document.createElement("input") as HTMLInputElement;
-        editInput.id = "txtDropdown";
-        editInput.classList.add("form-control");
-        editInput.type = "text";
-        editInput.placeholder = "type a question"
-        editInput.value = dropdownLabelText;
-        editInput.ariaRoleDescription = "Edit Dropdown Question";
-        editInput.oninput = (ev: InputEvent) => { dropdownLabelEl.textContent = editInput.value; };
-
-        editLabelFieldWrapper.appendChild(editLabel);
-        editLabelFieldWrapper.appendChild(editInput);
+        const fieldLabelPropertyData: FieldLabelPropertyData = {
+            PlaceHolder: "type a question",
+            InputVal: dropdownLabelText,
+            AriaRoleDesc: "Edit Dropdown Question",
+            ElementToUpdate: dropdownLabelEl
+        }
+        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
 
         //#region Dropdown Options
@@ -187,25 +199,13 @@ class FormElementProperties {
         const optionsFromSingleChoice = singleChoiceElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
 
         //#region Single Choice Label Property
-        const editLabelFieldWrapper = document.createElement("div") as HTMLDivElement;
-        editLabelFieldWrapper.classList.add("mb-3");
-
-        const editLabel = document.createElement("label") as HTMLLabelElement;
-        editLabel.htmlFor = "txtSingleChoice";
-        editLabel.classList.add("form-label");
-        editLabel.textContent = "Field Label";
-
-        const editInput = document.createElement("input") as HTMLInputElement;
-        editInput.id = "txtSingleChoice";
-        editInput.classList.add("form-control");
-        editInput.type = "text";
-        editInput.placeholder = "type a question"
-        editInput.value = dropdownLabelText;
-        editInput.ariaRoleDescription = "Edit Single Question";
-        editInput.oninput = (ev: InputEvent) => { singleChoiceLabelEl.textContent = editInput.value; };
-
-        editLabelFieldWrapper.appendChild(editLabel);
-        editLabelFieldWrapper.appendChild(editInput);
+        const fieldLabelPropertyData: FieldLabelPropertyData = {
+            PlaceHolder: "type a question",
+            InputVal: dropdownLabelText,
+            AriaRoleDesc: "Edit Single Question",
+            ElementToUpdate: singleChoiceLabelEl
+        }
+        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
 
         //#region Single Choice Options
@@ -292,25 +292,13 @@ class FormElementProperties {
         const optionsFromMultipleChoice = multipleChoiceElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
 
         //#region Single Choice Label Property
-        const editLabelFieldWrapper = document.createElement("div") as HTMLDivElement;
-        editLabelFieldWrapper.classList.add("mb-3");
-
-        const editLabel = document.createElement("label") as HTMLLabelElement;
-        editLabel.htmlFor = "txtMultipleChoice";
-        editLabel.classList.add("form-label");
-        editLabel.textContent = "Field Label";
-
-        const editInput = document.createElement("input") as HTMLInputElement;
-        editInput.id = "txtMultipleChoice";
-        editInput.classList.add("form-control");
-        editInput.type = "text";
-        editInput.placeholder = "type a question"
-        editInput.value = multipleChoiceLabelText;
-        editInput.ariaRoleDescription = "Edit Multiple Question";
-        editInput.oninput = (ev: InputEvent) => { multipleChoiceLabelEl.textContent = editInput.value; };
-
-        editLabelFieldWrapper.appendChild(editLabel);
-        editLabelFieldWrapper.appendChild(editInput);
+        const fieldLabelPropertyData: FieldLabelPropertyData = {
+            PlaceHolder: "type a question",
+            InputVal: multipleChoiceLabelText,
+            AriaRoleDesc: "Edit Multiple Question",
+            ElementToUpdate: multipleChoiceLabelEl
+        }
+        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
 
         //#region Single Choice Options

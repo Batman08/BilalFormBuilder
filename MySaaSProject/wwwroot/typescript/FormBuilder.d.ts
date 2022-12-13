@@ -32,3 +32,10 @@ type MultipleChoiceOptionDTO = {
     multipleChoiceOptionValue: string;
     multipleChoiceOptionTextContent: string;
 };
+
+type FieldLabelPropertyData = {
+    PlaceHolder: string;
+    InputVal: string;
+    AriaRoleDesc: string;
+    ElementToUpdate: HTMLElement;
+}
