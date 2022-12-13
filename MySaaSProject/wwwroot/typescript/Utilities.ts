@@ -39,16 +39,6 @@
     //#endregion
 
     //#region Form Utils
-    public GetElOptionTotal(dataWrapperType: string, elName: string): number {
-        const allFormEls = document.querySelectorAll(`[data-wrapper-type=${dataWrapperType}`) as NodeListOf<HTMLDivElement>;
-        let totalOptionCount: number = 0;
-        allFormEls.forEach((elWrapper) => {
-            const optionCount: number = elWrapper.querySelector(`[name=${elName}]`).children.length;
-            totalOptionCount += optionCount;
-        });
-        return totalOptionCount;
-    }
-
     public CreateDropdownOption(ddlOptionData: DropdownOptionDTO): HTMLOptionElement {
         const ddlOption = document.createElement("option") as HTMLOptionElement;
         ddlOption.value = ddlOptionData.dropdownValue;
