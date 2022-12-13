@@ -53,6 +53,32 @@ class FormElementProperties {
         fieldLabelWrapper.appendChild(fieldLabelInput);
         return fieldLabelWrapper;
     }
+    MultiSelectTextAreaProperty(optionsFromMultiSelectEl, elementToUpdate, updateFunc) {
+        const divTextarea = document.createElement("div");
+        divTextarea.classList.add("form-floating");
+        const textarea = document.createElement("textarea");
+        textarea.id = "txtAreaOptions";
+        textarea.classList.add("form-control");
+        textarea.placeholder = "Enter each option on a new line";
+        textarea.style.height = "100px";
+        const textareaLabel = document.createElement("label");
+        textareaLabel.htmlFor = "txtAreaOptions";
+        textareaLabel.textContent = "Enter each option on a new line";
+        divTextarea.appendChild(textarea);
+        divTextarea.appendChild(textareaLabel);
+        let optionsFromElement = [];
+        optionsFromMultiSelectEl.forEach((option) => {
+            if (option.textContent === "Select an option")
+                return;
+            optionsFromElement.push(option.textContent);
+        });
+        this.UpdateTextAreaOptions(textarea, optionsFromElement);
+        textarea.oninput = (ev) => {
+            const options = this.GetOptionsFromTextarea(textarea);
+            updateFunc(this._utils, elementToUpdate, options);
+        };
+        return divTextarea;
+    }
     UpdateTextAreaOptions(textarea, options) {
         //add options to textarea
         if (options !== null && options !== undefined) {
@@ -113,36 +139,14 @@ class FormElementProperties {
         optionsWrapper.appendChild(optionsLabel);
         //#endregion
         //#region Textarea Property Element
-        const divTextarea = document.createElement("div");
-        divTextarea.classList.add("form-floating");
-        optionsWrapper.appendChild(divTextarea);
-        const textarea = document.createElement("textarea");
-        textarea.id = "txtAreaOptions";
-        textarea.classList.add("form-control");
-        textarea.placeholder = "Enter each option on a new line";
-        textarea.style.height = "100px";
-        const textareaLabel = document.createElement("label");
-        textareaLabel.htmlFor = "txtAreaOptions";
-        textareaLabel.textContent = "Enter each option on a new line";
-        divTextarea.appendChild(textarea);
-        divTextarea.appendChild(textareaLabel);
-        let optionsFromElement = [];
-        optionsFromDropdown.forEach((option) => {
-            if (option.textContent === "Select an option")
-                return;
-            optionsFromElement.push(option.textContent);
-        });
-        this.UpdateTextAreaOptions(textarea, optionsFromElement);
-        textarea.oninput = (ev) => {
-            const options = this.GetOptionsFromTextarea(textarea);
-            this.UpdateDropdownOptions(dropdownElement, options);
-        };
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromDropdown, dropdownElement, this.UpdateDropdownOptions);
+        optionsWrapper.appendChild(textarea);
         //#endregion
         //#endregion
         this.rightDesigner.appendChild(editLabelFieldWrapper);
         this.rightDesigner.appendChild(optionsWrapper);
     }
-    UpdateDropdownOptions(dropdownElWrapper, options) {
+    UpdateDropdownOptions(utils, dropdownElWrapper, options) {
         const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]");
         const currentDropdownOptions = ddlEl.querySelectorAll("option");
         currentDropdownOptions.forEach((option) => {
@@ -152,7 +156,7 @@ class FormElementProperties {
         });
         for (let i = 0; i < options.length; i++) {
             const ddlOptionData = { dropdownValue: options[i], dropdownTextContent: options[i] };
-            const newOption = this._utils.CreateDropdownOption(ddlOptionData);
+            const newOption = utils.CreateDropdownOption(ddlOptionData);
             ddlEl.appendChild(newOption);
         }
     }
@@ -184,36 +188,14 @@ class FormElementProperties {
         optionsWrapper.appendChild(optionsLabel);
         //#endregion
         //#region Textarea Property Element
-        const divTextarea = document.createElement("div");
-        divTextarea.classList.add("form-floating");
-        optionsWrapper.appendChild(divTextarea);
-        const textarea = document.createElement("textarea");
-        textarea.id = "txtAreaOptions";
-        textarea.classList.add("form-control");
-        textarea.placeholder = "Enter each option on a new line";
-        textarea.style.height = "100px";
-        const textareaLabel = document.createElement("label");
-        textareaLabel.htmlFor = "txtAreaOptions";
-        textareaLabel.textContent = "Enter each option on a new line";
-        divTextarea.appendChild(textarea);
-        divTextarea.appendChild(textareaLabel);
-        let optionsFromElement = [];
-        optionsFromSingleChoice.forEach((option) => {
-            if (option.textContent === "Select an option")
-                return;
-            optionsFromElement.push(option.textContent);
-        });
-        this.UpdateTextAreaOptions(textarea, optionsFromElement);
-        textarea.oninput = (ev) => {
-            const options = this.GetOptionsFromTextarea(textarea);
-            this.UpdateSingleChoiceOptions(singleChoiceElement, options);
-        };
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromSingleChoice, singleChoiceElement, this.UpdateSingleChoiceOptions);
+        optionsWrapper.appendChild(textarea);
         //#endregion
         //#endregion
         this.rightDesigner.appendChild(editLabelFieldWrapper);
         this.rightDesigner.appendChild(optionsWrapper);
     }
-    UpdateSingleChoiceOptions(singlchoiceElWrapper, options) {
+    UpdateSingleChoiceOptions(utils, singlchoiceElWrapper, options) {
         const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]");
         singleChoicelEl.innerHTML = "";
         const singleChoicelElNumber = singleChoicelEl.id.substring(12);
@@ -226,7 +208,7 @@ class FormElementProperties {
                 singleChoiceElName: singleChoiceElName,
                 singleChoiceOptionTextContent: options[i]
             };
-            const divSinglChoiceWrapper = this._utils.CreateSingleChoiceOption(scOptionData);
+            const divSinglChoiceWrapper = utils.CreateSingleChoiceOption(scOptionData);
             singleChoicelEl.appendChild(divSinglChoiceWrapper);
         }
     }
@@ -258,34 +240,14 @@ class FormElementProperties {
         optionsWrapper.appendChild(optionsLabel);
         //#endregion
         //#region Textarea Property Element
-        const divTextarea = document.createElement("div");
-        divTextarea.classList.add("form-floating");
-        optionsWrapper.appendChild(divTextarea);
-        const textarea = document.createElement("textarea");
-        textarea.id = "txtAreaOptions";
-        textarea.classList.add("form-control");
-        textarea.placeholder = "Enter each option on a new line";
-        textarea.style.height = "100px";
-        const textareaLabel = document.createElement("label");
-        textareaLabel.htmlFor = "txtAreaOptions";
-        textareaLabel.textContent = "Enter each option on a new line";
-        divTextarea.appendChild(textarea);
-        divTextarea.appendChild(textareaLabel);
-        let optionsFromElement = [];
-        optionsFromMultipleChoice.forEach((option) => {
-            optionsFromElement.push(option.textContent);
-        });
-        this.UpdateTextAreaOptions(textarea, optionsFromElement);
-        textarea.oninput = (ev) => {
-            const options = this.GetOptionsFromTextarea(textarea);
-            this.UpdateMultipleChoiceOptions(multipleChoiceElement, options);
-        };
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromMultipleChoice, multipleChoiceElement, this.UpdateMultipleChoiceOptions);
+        optionsWrapper.appendChild(textarea);
         //#endregion
         //#endregion
         this.rightDesigner.appendChild(editLabelFieldWrapper);
         this.rightDesigner.appendChild(optionsWrapper);
     }
-    UpdateMultipleChoiceOptions(multipleChoiceElWrapper, options) {
+    UpdateMultipleChoiceOptions(utils, multipleChoiceElWrapper, options) {
         const multipleChoicelEl = multipleChoiceElWrapper.querySelector("[data-property-reference]");
         multipleChoicelEl.innerHTML = "";
         const multipleChoicelElNumber = multipleChoicelEl.id.substring(14);
@@ -298,7 +260,7 @@ class FormElementProperties {
                 multipleChoiceOptionValue: options[i],
                 multipleChoiceOptionTextContent: options[i]
             };
-            const divSinglChoiceWrapper = this._utils.CreateMultipleChoiceOption(mcOptionData);
+            const divSinglChoiceWrapper = utils.CreateMultipleChoiceOption(mcOptionData);
             multipleChoicelEl.appendChild(divSinglChoiceWrapper);
         }
     }
