@@ -237,19 +237,18 @@
         const formId = this.GetFormElementId(formElementName) as string;
 
         divRadioBtnsContainer.id = formId;
-        divRadioBtnsContainer.setAttribute("name", formElementName)
-        divRadioBtnsContainer.ariaLabel = "Single Choice"
+        divRadioBtnsContainer.setAttribute("name", formElementName);
+        divRadioBtnsContainer.ariaLabel = "Single Choice";
         divRadioBtnsContainer.setAttribute("data-property-reference", "Single Choice");
         divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
 
-        const singleChoiceElName: string = `${formElementName}Q${formId.substring(12, 13)}`;
+        const singleChoicelElNumber: string = formId.substring(12);
+        const singleChoiceElName: string = `${formElementName}Q${singleChoicelElNumber}`;
         const defaultCreateNumber = 3 as number;
-        let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
         for (var i = 0; i < defaultCreateNumber; i++) {
-            totalSinglChoiceOptionCount += 1
             const itemNum: string = (i + 1).toString();
-            const singleChoiceNum = totalSinglChoiceOptionCount;
-            const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
+            const singleChoiceOptionNum = i;
+            const singleChoiceOptionId = `single_choice_${singleChoicelElNumber}_option_${singleChoiceOptionNum}`;
 
             const scOptionData: SingleChoiceOptionDTO = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: `Option ${itemNum}` };
             const divSinglChoiceWrapper: HTMLDivElement = this._utils.CreateSingleChoiceOption(scOptionData);
@@ -282,11 +281,11 @@
         divMultipleChoiceWrapper.appendChild(divCheckboxBtnsContainer);
 
         const defaultCreateNumber = 3 as number;
-        let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("multipleChoiceWrapper", "multipleChoice");
+        const multipleChoicelElNumber: string = formId.substring(14);
         for (var i = 0; i < defaultCreateNumber; i++) {
-            totalSinglChoiceOptionCount += 1
             const itemNum = i + 1;
-            const multipleChoiceOptionId: string = `multipleChoiceOption${totalSinglChoiceOptionCount}`;
+            const multipleChoiceOptionNum = i;
+            const multipleChoiceOptionId: string = `multiple_choice_${multipleChoicelElNumber}_option_${multipleChoiceOptionNum}`;
 
             const mcOptionData: MultipleChoiceOptionDTO = {
                 multipleChoiceOptionId: multipleChoiceOptionId,

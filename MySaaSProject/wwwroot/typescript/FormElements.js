@@ -202,14 +202,13 @@ class FormElements {
         divRadioBtnsContainer.ariaLabel = "Single Choice";
         divRadioBtnsContainer.setAttribute("data-property-reference", "Single Choice");
         divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
-        const singleChoiceElName = `${formElementName}Q${formId.substring(12, 13)}`;
+        const singleChoicelElNumber = formId.substring(12);
+        const singleChoiceElName = `${formElementName}Q${singleChoicelElNumber}`;
         const defaultCreateNumber = 3;
-        let totalSinglChoiceOptionCount = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
         for (var i = 0; i < defaultCreateNumber; i++) {
-            totalSinglChoiceOptionCount += 1;
             const itemNum = (i + 1).toString();
-            const singleChoiceNum = totalSinglChoiceOptionCount;
-            const singleChoiceOptionId = `singleChoiceOption${singleChoiceNum}`;
+            const singleChoiceOptionNum = i;
+            const singleChoiceOptionId = `single_choice_${singleChoicelElNumber}_option_${singleChoiceOptionNum}`;
             const scOptionData = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: `Option ${itemNum}` };
             const divSinglChoiceWrapper = this._utils.CreateSingleChoiceOption(scOptionData);
             divRadioBtnsContainer.appendChild(divSinglChoiceWrapper);
@@ -234,11 +233,11 @@ class FormElements {
         divCheckboxBtnsContainer.setAttribute("data-property-reference", "Multiple Choice");
         divMultipleChoiceWrapper.appendChild(divCheckboxBtnsContainer);
         const defaultCreateNumber = 3;
-        let totalSinglChoiceOptionCount = this._utils.GetElOptionTotal("multipleChoiceWrapper", "multipleChoice");
+        const multipleChoicelElNumber = formId.substring(14);
         for (var i = 0; i < defaultCreateNumber; i++) {
-            totalSinglChoiceOptionCount += 1;
             const itemNum = i + 1;
-            const multipleChoiceOptionId = `multipleChoiceOption${totalSinglChoiceOptionCount}`;
+            const multipleChoiceOptionNum = i;
+            const multipleChoiceOptionId = `multiple_choice_${multipleChoicelElNumber}_option_${multipleChoiceOptionNum}`;
             const mcOptionData = {
                 multipleChoiceOptionId: multipleChoiceOptionId,
                 multipleChoiceElName: multipleChoiceOptionId,

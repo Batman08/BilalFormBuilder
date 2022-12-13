@@ -266,14 +266,17 @@ class FormElementProperties {
         const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
         singleChoicelEl.innerHTML = "";
 
-        let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("singleChoiceWrapper", "singleChoice");
-        const singleChoiceElName: string = `${singleChoicelEl.getAttribute("name")}Q${singleChoicelEl.id.substring(12, 13)}`;
+        const singleChoicelElNumber: string = singleChoicelEl.id.substring(12);
+        const singleChoiceElName: string = `${singleChoicelEl.getAttribute("name")}Q${singleChoicelElNumber}`;
         for (let i = 0; i < options.length; i++) {
-            totalSinglChoiceOptionCount += 1
-            const singleChoiceOptionNum = totalSinglChoiceOptionCount;
-            const singleChoiceOptionId = `singleChoiceOption${singleChoiceOptionNum}`;
+            const singleChoiceOptionNum = i + 1;
+            const singleChoiceOptionId = `single_choice_${singleChoicelElNumber}_option_${singleChoiceOptionNum}`;
 
-            const scOptionData: SingleChoiceOptionDTO = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: options[i] };
+            const scOptionData: SingleChoiceOptionDTO = {
+                singleChoiceOptionId: singleChoiceOptionId,
+                singleChoiceElName: singleChoiceElName,
+                singleChoiceOptionTextContent: options[i]
+            };
             const divSinglChoiceWrapper: HTMLDivElement = this._utils.CreateSingleChoiceOption(scOptionData);
             singleChoicelEl.appendChild(divSinglChoiceWrapper);
         }
@@ -365,11 +368,10 @@ class FormElementProperties {
         const multipleChoicelEl = multipleChoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
         multipleChoicelEl.innerHTML = "";
 
-        let totalSinglChoiceOptionCount: number = this._utils.GetElOptionTotal("multipleChoiceWrapper", "multipleChoice");
+        const multipleChoicelElNumber: string = multipleChoicelEl.id.substring(14);
         for (let i = 0; i < options.length; i++) {
-            totalSinglChoiceOptionCount += 1
-            const multipleChoiceOptionNum = totalSinglChoiceOptionCount;
-            const multipleChoiceOptionId = `multipleChoiceOption${multipleChoiceOptionNum}`;
+            const multipleChoiceOptionNum = i;
+            const multipleChoiceOptionId = `multiple_choice_${multipleChoicelElNumber}_option_${multipleChoiceOptionNum}`;
 
             const mcOptionData: MultipleChoiceOptionDTO = {
                 multipleChoiceOptionId: multipleChoiceOptionId,
