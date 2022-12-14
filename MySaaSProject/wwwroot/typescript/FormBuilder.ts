@@ -5,6 +5,7 @@
 class FormBuilder {
     private _btnFormDesigner = document.querySelector("#btnFormDesigner") as HTMLButtonElement;
     private _offcanvasDesignerRightLabel = document.querySelector("#offcanvasDesignerRightLabel") as HTMLHeadingElement;
+    private _rightDesignerBody: HTMLDivElement = document.querySelector('#rightDesigner');
 
     private _customFormSection = document.querySelector("#customFormSection") as HTMLDivElement;
     private _currentSelectedFormElement: HTMLDivElement;
@@ -22,11 +23,103 @@ class FormBuilder {
         const formElement = new FormElements();
         formElement.Init();
 
-        this._btnFormDesigner.onclick = (ev: MouseEvent) => this._offcanvasDesignerRightLabel.textContent = "Form Designer";
+        this.FormDesignerOnClick();
         this.AddFormElement();
-
         this.ManageClicksOutsideFormField();
     }
+
+    //#region Form Designer
+    private FormDesigner(ev: MouseEvent): void {
+        ev.preventDefault();
+
+        this._offcanvasDesignerRightLabel.textContent = "Form Designer";
+        this._rightDesignerBody.innerHTML = "";
+
+        //#region Page Color
+        const divPageColor = document.createElement("div") as HTMLDivElement;
+        divPageColor.classList.add("mb-3");
+
+        const labelPageColor = document.createElement("label") as HTMLLabelElement;
+        labelPageColor.htmlFor = "inputPageColor";
+        labelPageColor.classList.add("form-label");
+        labelPageColor.textContent = "Page Color";
+        divPageColor.appendChild(labelPageColor);
+
+        const inputPageColor = document.createElement("input") as HTMLInputElement;
+        inputPageColor.type = "color";
+        inputPageColor.classList.add("form-control");
+        inputPageColor.id = "inputPageColor";
+        //todo: inputPageColor.value = this._customFormSection.style.backgroundColor;
+        this.UpdateFormDesign("pageColor", inputPageColor, document.body);
+        divPageColor.appendChild(inputPageColor);
+        //#endregion
+
+        //#region Form Color
+        const divFormColor = document.createElement("div") as HTMLDivElement;
+        divFormColor.classList.add("mb-3");
+
+        const labelFormColor = document.createElement("label") as HTMLLabelElement;
+        labelFormColor.htmlFor = "inputFormColor";
+        labelFormColor.classList.add("form-label");
+        labelFormColor.textContent = "Form Color";
+        divFormColor.appendChild(labelFormColor);
+
+        const inputFormColor = document.createElement("input") as HTMLInputElement;
+        inputFormColor.type = "color";
+        inputFormColor.classList.add("form-control");
+        inputFormColor.id = "inputFormColor";
+        //todo:inputFormColor.value = this._customFormSection.style.backgroundColor;
+        this.UpdateFormDesign("formColor", inputFormColor, this._customFormSection);
+        divFormColor.appendChild(inputFormColor);
+        //#endregion
+
+        //#region Font Color
+        const divFontColor = document.createElement("div") as HTMLDivElement;
+        divFontColor.classList.add("mb-3");
+
+        const labelFontColor = document.createElement("label") as HTMLLabelElement;
+        labelFontColor.htmlFor = "inputFontColor";
+        labelFontColor.classList.add("form-label");
+        labelFontColor.textContent = "Font Color";
+        divFontColor.appendChild(labelFontColor);
+
+        const inputFontColor = document.createElement("input") as HTMLInputElement;
+        inputFontColor.type = "color";
+        inputFontColor.classList.add("form-control");
+        inputFontColor.id = "inputFontColor";
+        //todo: inputFontColor.value = this._customFormSection.style.color;
+        this.UpdateFormDesign("fontColor", inputFontColor, this._customFormSection);
+        divFontColor.appendChild(inputFontColor);
+        //#endregion
+
+        this._rightDesignerBody.appendChild(divPageColor);
+        this._rightDesignerBody.appendChild(divFormColor);
+        this._rightDesignerBody.appendChild(divFontColor);
+    }
+
+    private UpdateFormDesign(type: string, input: HTMLInputElement, elToUpdate: HTMLElement): void {
+        input.oninput = (ev: InputEvent) => {
+            const inputFontColor = ev.target as HTMLInputElement;
+            const fontColor: string = inputFontColor.value;
+
+            switch (type) {
+                case "pageColor":
+                    elToUpdate.style.backgroundColor = fontColor;
+                    break;
+                case "formColor":
+                    elToUpdate.style.backgroundColor = fontColor;
+                    break;
+                case "fontColor":
+                    elToUpdate.style.color = fontColor;
+                    break;
+            }
+        };
+    }
+
+    private FormDesignerOnClick(): void {
+        this._btnFormDesigner.onclick = (ev: MouseEvent) => this.FormDesigner(ev);
+    }
+    //#endregion
 
     private ManageClicksOutsideFormField(): void {
         const bodyEl = document.querySelector('body') as HTMLBodyElement;
