@@ -18,6 +18,11 @@ class FormBuilder {
     private readonly _tabContent = document.querySelector("#myTabContent") as HTMLDivElement;
 
     public Init(tinymce: any): void {
+        /*define default form colours*/
+        document.body.style.backgroundColor = "#f8f9fa";
+        this._customFormSection.style.backgroundColor = "#FFFFFF";
+        this._customFormSection.style.color = "#000000";
+
         this._formElementProperties.Init(tinymce);
 
         const formElement = new FormElements();
@@ -26,6 +31,23 @@ class FormBuilder {
         this.FormDesignerOnClick();
         this.AddFormElement();
         this.ManageClicksOutsideFormField();
+    }
+
+    private ManageClicksOutsideFormField(): void {
+        const bodyEl = document.querySelector('body') as HTMLBodyElement;
+        const customFormAreaEl = document.querySelector('#customFormArea') as HTMLBodyElement;
+
+        bodyEl.onclick = (ev: MouseEvent) => {
+            let btnControls: HTMLDivElement | null = null;
+            const isClickInsideElement = customFormAreaEl.contains(ev.target as Node);
+            if (!isClickInsideElement) {
+                btnControls = document.querySelector('#selectedFormElementControl');
+                if (btnControls != null)
+                    btnControls.remove();
+                this.RemoveSelectedFormElementStyle();
+                //this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
+            }
+        };
     }
 
     //#region Form Designer
@@ -49,7 +71,10 @@ class FormBuilder {
         inputPageColor.type = "color";
         inputPageColor.classList.add("form-control");
         inputPageColor.id = "inputPageColor";
-        //todo: inputPageColor.value = this._customFormSection.style.backgroundColor;
+
+        const currentPageColor = this._utils.RgbToHex(document.body.style.backgroundColor);
+        inputPageColor.value = currentPageColor;
+
         this.UpdateFormDesign("pageColor", inputPageColor, document.body);
         divPageColor.appendChild(inputPageColor);
         //#endregion
@@ -68,7 +93,10 @@ class FormBuilder {
         inputFormColor.type = "color";
         inputFormColor.classList.add("form-control");
         inputFormColor.id = "inputFormColor";
-        //todo:inputFormColor.value = this._customFormSection.style.backgroundColor;
+
+        const currentFormColor = this._utils.RgbToHex(this._customFormSection.style.backgroundColor);
+        inputFormColor.value = currentFormColor;
+
         this.UpdateFormDesign("formColor", inputFormColor, this._customFormSection);
         divFormColor.appendChild(inputFormColor);
         //#endregion
@@ -87,7 +115,10 @@ class FormBuilder {
         inputFontColor.type = "color";
         inputFontColor.classList.add("form-control");
         inputFontColor.id = "inputFontColor";
-        //todo: inputFontColor.value = this._customFormSection.style.color;
+
+        const currentFontColor = this._utils.RgbToHex(this._customFormSection.style.color);
+        inputFontColor.value = currentFontColor;
+
         this.UpdateFormDesign("fontColor", inputFontColor, this._customFormSection);
         divFontColor.appendChild(inputFontColor);
         //#endregion
@@ -120,23 +151,6 @@ class FormBuilder {
         this._btnFormDesigner.onclick = (ev: MouseEvent) => this.FormDesigner(ev);
     }
     //#endregion
-
-    private ManageClicksOutsideFormField(): void {
-        const bodyEl = document.querySelector('body') as HTMLBodyElement;
-        const customFormAreaEl = document.querySelector('#customFormArea') as HTMLBodyElement;
-
-        bodyEl.onclick = (ev: MouseEvent) => {
-            let btnControls: HTMLDivElement | null = null;
-            const isClickInsideElement = customFormAreaEl.contains(ev.target as Node);
-            if (!isClickInsideElement) {
-                btnControls = document.querySelector('#selectedFormElementControl');
-                if (btnControls != null)
-                    btnControls.remove();
-                this.RemoveSelectedFormElementStyle();
-                //this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
-            }
-        };
-    }
 
     //#region Create
     private AddFormElement(): void {

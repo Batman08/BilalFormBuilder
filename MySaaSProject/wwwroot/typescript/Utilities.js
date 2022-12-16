@@ -72,5 +72,14 @@ class Utilities {
         divCheckboxOption.appendChild(checkboxLabel);
         return divCheckboxOption;
     }
+    //#endregion
+    RgbToHex(rgbVal) {
+        const rgb = rgbVal.substring(4, rgbVal.length - 1).replace(/ /g, '').split(',');
+        const r = parseInt(rgb[0], 10).toString(16);
+        const g = parseInt(rgb[1], 10).toString(16);
+        const b = parseInt(rgb[2], 10).toString(16);
+        const hex = "#" + r + g + b;
+        return hex;
+    }
 }
 //# sourceMappingURL=Utilities.js.map
