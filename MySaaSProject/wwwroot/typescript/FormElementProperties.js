@@ -26,6 +26,9 @@ class FormElementProperties {
             case "datePickerWrapper":
                 this.DatePickerProperties(element);
                 break;
+            case "timeWrapper":
+                this.TimeProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -272,13 +275,24 @@ class FormElementProperties {
         };
         const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
-        //#region Date Picker Options
-        //#region Label Property Element
-        const optionsWrapper = this.TextareaLabelProperty("ddlOptions", "Dropdown Options");
-        //#endregion
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+    }
+    //#endregion
+    //#region Time Properties
+    TimeProperties(dropdownElement, callback) {
+        this.rightDesigner.innerHTML = '';
+        const timeLabelEl = dropdownElement.querySelector(".form-label");
+        const timeLabelText = timeLabelEl.textContent;
+        //#region Time Label Property
+        const fieldLabelPropertyData = {
+            PlaceHolder: "Time",
+            InputVal: timeLabelText,
+            AriaRoleDesc: "Edit Time",
+            ElementToUpdate: timeLabelEl
+        };
+        const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
         this.rightDesigner.appendChild(editLabelFieldWrapper);
-        this.rightDesigner.appendChild(optionsWrapper);
     }
     //#endregion
     //#endregion

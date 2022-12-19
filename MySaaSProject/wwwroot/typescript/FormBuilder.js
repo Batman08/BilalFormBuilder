@@ -63,6 +63,9 @@ class FormBuilder {
                             case "date":
                                 inputEle.value = "";
                                 break;
+                            case "time":
+                                inputEle.value = "";
+                                break;
                             case "file":
                                 break;
                         }

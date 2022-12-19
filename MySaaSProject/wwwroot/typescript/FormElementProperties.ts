@@ -28,6 +28,9 @@ class FormElementProperties {
             case "datePickerWrapper":
                 this.DatePickerProperties(element);
                 break;
+            case "timeWrapper":
+                this.TimeProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -64,7 +67,7 @@ class FormElementProperties {
         return fieldLabelWrapper;
     }
 
-    private TextareaLabelProperty(wrapperId: string, textVal:string): HTMLDivElement {
+    private TextareaLabelProperty(wrapperId: string, textVal: string): HTMLDivElement {
         const optionsWrapper = document.createElement("div") as HTMLDivElement;
         optionsWrapper.id = wrapperId;
         optionsWrapper.classList.add("mb-3", "pt-3");
@@ -77,7 +80,7 @@ class FormElementProperties {
 
         return optionsWrapper;
     }
-    
+
     private MultiSelectTextAreaProperty(optionsFromMultiSelectEl: NodeListOf<Node>, elementToUpdate: HTMLElement, updateFunc: Function): HTMLDivElement {
         const divTextarea = document.createElement("div") as HTMLDivElement;
         divTextarea.classList.add("form-floating");
@@ -226,7 +229,7 @@ class FormElementProperties {
         //#region Single Choice Options
 
         //#region Label Property Element
-        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("scOptions",  "Single Choice Options");
+        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("scOptions", "Single Choice Options");
         //#endregion
 
         //#region Textarea Property Element
@@ -335,16 +338,28 @@ class FormElementProperties {
         const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
 
-        //#region Date Picker Options
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+    }
+    //#endregion
 
-        //#region Label Property Element
-        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("ddlOptions", "Dropdown Options");
-        //#endregion
+    //#region Time Properties
+    private TimeProperties(dropdownElement: HTMLElement, callback?: Function): void {
+        this.rightDesigner.innerHTML = '';
 
+        const timeLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
+        const timeLabelText: string = timeLabelEl.textContent;
+
+        //#region Time Label Property
+        const fieldLabelPropertyData: FieldLabelPropertyData = {
+            PlaceHolder: "Time",
+            InputVal: timeLabelText,
+            AriaRoleDesc: "Edit Time",
+            ElementToUpdate: timeLabelEl
+        }
+        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
 
         this.rightDesigner.appendChild(editLabelFieldWrapper);
-        this.rightDesigner.appendChild(optionsWrapper);
     }
     //#endregion
 
