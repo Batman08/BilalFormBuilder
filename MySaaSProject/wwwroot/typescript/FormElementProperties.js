@@ -29,6 +29,9 @@ class FormElementProperties {
             case "timeWrapper":
                 this.TimeProperties(element);
                 break;
+            case "numberWrapper":
+                this.NumberProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -130,7 +133,7 @@ class FormElementProperties {
     }
     //#endregion
     //#region Dropdown Properties
-    DropdownProperties(dropdownElement, callback) {
+    DropdownProperties(dropdownElement) {
         this.rightDesigner.innerHTML = '';
         const dropdownLabelEl = dropdownElement.querySelector(".form-label");
         const dropdownLabelText = dropdownLabelEl.textContent;
@@ -172,7 +175,7 @@ class FormElementProperties {
     }
     //#endregion
     //#region Single Choice Properties
-    SingleChoiceProperties(singleChoiceElement, callback) {
+    SingleChoiceProperties(singleChoiceElement) {
         this.rightDesigner.innerHTML = '';
         const singleChoiceLabelEl = singleChoiceElement.querySelector(".form-label");
         const dropdownLabelText = singleChoiceLabelEl.textContent;
@@ -217,7 +220,7 @@ class FormElementProperties {
     }
     //#endregion
     //#region Multiple Choice Properties
-    MultipleChoiceProperties(multipleChoiceElement, callback) {
+    MultipleChoiceProperties(multipleChoiceElement) {
         this.rightDesigner.innerHTML = '';
         const multipleChoiceLabelEl = multipleChoiceElement.querySelector(".form-label");
         const multipleChoiceLabelText = multipleChoiceLabelEl.textContent;
@@ -262,9 +265,9 @@ class FormElementProperties {
     }
     //#endregion
     //#region Date Picker Properties
-    DatePickerProperties(dropdownElement, callback) {
+    DatePickerProperties(datePickerElement) {
         this.rightDesigner.innerHTML = '';
-        const datePickerLabelEl = dropdownElement.querySelector(".form-label");
+        const datePickerLabelEl = datePickerElement.querySelector(".form-label");
         const datePickerLabelText = datePickerLabelEl.textContent;
         //#region Date Picker Label Property
         const fieldLabelPropertyData = {
@@ -279,9 +282,9 @@ class FormElementProperties {
     }
     //#endregion
     //#region Time Properties
-    TimeProperties(dropdownElement, callback) {
+    TimeProperties(timeElement) {
         this.rightDesigner.innerHTML = '';
-        const timeLabelEl = dropdownElement.querySelector(".form-label");
+        const timeLabelEl = timeElement.querySelector(".form-label");
         const timeLabelText = timeLabelEl.textContent;
         //#region Time Label Property
         const fieldLabelPropertyData = {
@@ -289,6 +292,23 @@ class FormElementProperties {
             InputVal: timeLabelText,
             AriaRoleDesc: "Edit Time",
             ElementToUpdate: timeLabelEl
+        };
+        const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
+        //#endregion
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+    }
+    //#endregion
+    //#region Number Properties
+    NumberProperties(numberElement) {
+        this.rightDesigner.innerHTML = '';
+        const numberLabelEl = numberElement.querySelector(".form-label");
+        const numberLabelText = numberLabelEl.textContent;
+        //#region Number Label Property
+        const fieldLabelPropertyData = {
+            PlaceHolder: "Number",
+            InputVal: numberLabelText,
+            AriaRoleDesc: "Edit Number",
+            ElementToUpdate: numberLabelEl
         };
         const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion

@@ -9,11 +9,11 @@
             { name: "Multiple Choice", type: "MultipleChoice", icon: ["fas", "fa-check-square", "fa-sm"] },
             { name: "Date Picker", type: "DatePicker", icon: ["fas", "fa-calendar-alt", "fa-sm"] },
             { name: "Time", type: "Time", icon: ["fas", "fa-clock", "fa-sm"] },
-            { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
             { name: "Number", type: "Number", icon: ["fas", "fa-hashtag", "fa-sm"] },
             { name: "Currency", type: "Currency", icon: ["fas", "fa-dollar-sign", "fa-sm"] },
             { name: "Image", type: "Image", icon: ["fas", "fa-image", "fa-sm"] },
-            { name: "Button", type: "Button", icon: ["fas", "fa-square", "fa-sm"] },
+            { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
+            { name: "Submit", type: "SubmitBtn", icon: ["fas", "fa-square", "fa-sm"] },
             { name: "Survey Components", type: "FieldSectionCategory" },
             { name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },
             { name: "Table", type: "Table", icon: ["fas", "fa-table", "fa-sm"] },
@@ -127,6 +127,8 @@
                 return this.FormElementDatePicker();
             case "Time":
                 return this.FormElementTime();
+            case "Number":
+                return this.FormElementNumber();
             case "Heading":
                 return this.FormElementHeading();
             case "FullName":
@@ -370,6 +372,34 @@
         divTimeWrapper.appendChild(timeInput);
 
         return divTimeWrapper;
+    }
+
+    private FormElementNumber(): HTMLDivElement {
+        const formElementName: string = "number";
+        const divNumberWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
+
+        const divTextStart = document.createElement("div") as HTMLDivElement;
+        divTextStart.classList.add("text-start");
+        divNumberWrapper.appendChild(divTextStart);
+
+        const numberLabel = document.createElement("label") as HTMLLabelElement;
+        numberLabel.classList.add("form-label");
+        numberLabel.innerText = "Number";
+        divTextStart.appendChild(numberLabel);
+
+        const numberInput = document.createElement("input") as HTMLInputElement;
+        const formId = this.GetFormElementId(formElementName) as string;
+
+        numberInput.id = formId;
+        numberInput.type = "number";
+        numberInput.classList.add("form-control");
+        numberInput.setAttribute("name", formElementName)
+        numberInput.setAttribute("data-property-reference", "Number");
+        numberInput.placeholder = "e.g 21";
+        numberInput.disabled = true;
+        divNumberWrapper.appendChild(numberInput);
+
+        return divNumberWrapper;
     }
     //#endregion
 

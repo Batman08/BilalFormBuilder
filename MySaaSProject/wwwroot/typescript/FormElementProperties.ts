@@ -31,6 +31,9 @@ class FormElementProperties {
             case "timeWrapper":
                 this.TimeProperties(element);
                 break;
+            case "numberWrapper":
+                this.NumberProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -156,7 +159,7 @@ class FormElementProperties {
     //#endregion
 
     //#region Dropdown Properties
-    private DropdownProperties(dropdownElement: HTMLElement, callback?: Function): void {
+    private DropdownProperties(dropdownElement: HTMLElement): void {
         this.rightDesigner.innerHTML = '';
 
         const dropdownLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
@@ -209,7 +212,7 @@ class FormElementProperties {
     //#endregion
 
     //#region Single Choice Properties
-    private SingleChoiceProperties(singleChoiceElement: HTMLElement, callback?: Function): void {
+    private SingleChoiceProperties(singleChoiceElement: HTMLElement): void {
         this.rightDesigner.innerHTML = '';
 
         const singleChoiceLabelEl = singleChoiceElement.querySelector(".form-label") as HTMLParagraphElement;
@@ -265,7 +268,7 @@ class FormElementProperties {
     //#endregion
 
     //#region Multiple Choice Properties
-    private MultipleChoiceProperties(multipleChoiceElement: HTMLElement, callback?: Function): void {
+    private MultipleChoiceProperties(multipleChoiceElement: HTMLElement): void {
         this.rightDesigner.innerHTML = '';
 
         const multipleChoiceLabelEl = multipleChoiceElement.querySelector(".form-label") as HTMLParagraphElement;
@@ -322,10 +325,10 @@ class FormElementProperties {
     //#endregion
 
     //#region Date Picker Properties
-    private DatePickerProperties(dropdownElement: HTMLElement, callback?: Function): void {
+    private DatePickerProperties(datePickerElement: HTMLElement): void {
         this.rightDesigner.innerHTML = '';
 
-        const datePickerLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
+        const datePickerLabelEl = datePickerElement.querySelector(".form-label") as HTMLParagraphElement;
         const datePickerLabelText: string = datePickerLabelEl.textContent;
 
         //#region Date Picker Label Property
@@ -343,10 +346,10 @@ class FormElementProperties {
     //#endregion
 
     //#region Time Properties
-    private TimeProperties(dropdownElement: HTMLElement, callback?: Function): void {
+    private TimeProperties(timeElement: HTMLElement): void {
         this.rightDesigner.innerHTML = '';
 
-        const timeLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
+        const timeLabelEl = timeElement.querySelector(".form-label") as HTMLParagraphElement;
         const timeLabelText: string = timeLabelEl.textContent;
 
         //#region Time Label Property
@@ -355,6 +358,27 @@ class FormElementProperties {
             InputVal: timeLabelText,
             AriaRoleDesc: "Edit Time",
             ElementToUpdate: timeLabelEl
+        }
+        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
+        //#endregion
+
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+    }
+    //#endregion
+
+    //#region Number Properties
+    private NumberProperties(numberElement: HTMLElement): void {
+        this.rightDesigner.innerHTML = '';
+
+        const numberLabelEl = numberElement.querySelector(".form-label") as HTMLParagraphElement;
+        const numberLabelText: string = numberLabelEl.textContent;
+
+        //#region Number Label Property
+        const fieldLabelPropertyData: FieldLabelPropertyData = {
+            PlaceHolder: "Number",
+            InputVal: numberLabelText,
+            AriaRoleDesc: "Edit Number",
+            ElementToUpdate: numberLabelEl
         }
         const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
