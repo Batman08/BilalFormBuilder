@@ -34,6 +34,9 @@ class FormElementProperties {
             case "numberWrapper":
                 this.NumberProperties(element);
                 break;
+            case "fileUploadWrapper":
+                this.FileUploadProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -387,6 +390,26 @@ class FormElementProperties {
     }
     //#endregion
 
+    //#region Number Properties
+    private FileUploadProperties(fileUploadElement: HTMLElement): void {
+        this.rightDesigner.innerHTML = '';
+
+        const fileUploadLabelEl = fileUploadElement.querySelector(".form-label") as HTMLParagraphElement;
+        const fileUploadLabelText: string = fileUploadLabelEl.textContent;
+
+        //#region Number Label Property
+        const fieldLabelPropertyData: FieldLabelPropertyData = {
+            PlaceHolder: "File Upload",
+            InputVal: fileUploadLabelText,
+            AriaRoleDesc: "Edit File Upload",
+            ElementToUpdate: fileUploadLabelEl
+        }
+        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
+        //#endregion
+
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+    }
+    //#endregion
     //#endregion
 
     //#region Complex Properties

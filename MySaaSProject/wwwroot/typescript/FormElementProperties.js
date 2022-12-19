@@ -32,6 +32,9 @@ class FormElementProperties {
             case "numberWrapper":
                 this.NumberProperties(element);
                 break;
+            case "fileUploadWrapper":
+                this.FileUploadProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -309,6 +312,23 @@ class FormElementProperties {
             InputVal: numberLabelText,
             AriaRoleDesc: "Edit Number",
             ElementToUpdate: numberLabelEl
+        };
+        const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
+        //#endregion
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+    }
+    //#endregion
+    //#region Number Properties
+    FileUploadProperties(fileUploadElement) {
+        this.rightDesigner.innerHTML = '';
+        const fileUploadLabelEl = fileUploadElement.querySelector(".form-label");
+        const fileUploadLabelText = fileUploadLabelEl.textContent;
+        //#region Number Label Property
+        const fieldLabelPropertyData = {
+            PlaceHolder: "File Upload",
+            InputVal: fileUploadLabelText,
+            AriaRoleDesc: "Edit File Upload",
+            ElementToUpdate: fileUploadLabelEl
         };
         const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion

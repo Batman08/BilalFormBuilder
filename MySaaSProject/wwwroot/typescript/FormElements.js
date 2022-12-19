@@ -11,7 +11,6 @@ class FormElements {
                 { name: "Date Picker", type: "DatePicker", icon: ["fas", "fa-calendar-alt", "fa-sm"] },
                 { name: "Time", type: "Time", icon: ["fas", "fa-clock", "fa-sm"] },
                 { name: "Number", type: "Number", icon: ["fas", "fa-hashtag", "fa-sm"] },
-                { name: "Currency", type: "Currency", icon: ["fas", "fa-dollar-sign", "fa-sm"] },
                 { name: "Image", type: "Image", icon: ["fas", "fa-image", "fa-sm"] },
                 { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
                 { name: "Submit", type: "SubmitBtn", icon: ["fas", "fa-square", "fa-sm"] },
@@ -114,6 +113,10 @@ class FormElements {
                 return this.FormElementTime();
             case "Number":
                 return this.FormElementNumber();
+            case "Image":
+                return null;
+            case "FileUpload":
+                return this.FormElementFileUpload();
             case "Heading":
                 return this.FormElementHeading();
             case "FullName":
@@ -329,6 +332,50 @@ class FormElements {
         numberInput.placeholder = "e.g 21";
         numberInput.disabled = true;
         divNumberWrapper.appendChild(numberInput);
+        return divNumberWrapper;
+    }
+    FormElementImage() {
+        const formElementName = "number";
+        const divNumberWrapper = this.CreateFormElementWrapper(formElementName);
+        const divTextStart = document.createElement("div");
+        divTextStart.classList.add("text-start");
+        divNumberWrapper.appendChild(divTextStart);
+        const numberLabel = document.createElement("label");
+        numberLabel.classList.add("form-label");
+        numberLabel.innerText = "Number";
+        divTextStart.appendChild(numberLabel);
+        const numberInput = document.createElement("input");
+        const formId = this.GetFormElementId(formElementName);
+        numberInput.id = formId;
+        numberInput.type = "number";
+        numberInput.classList.add("form-control");
+        numberInput.setAttribute("name", formElementName);
+        numberInput.setAttribute("data-property-reference", "Number");
+        numberInput.placeholder = "e.g 21";
+        numberInput.disabled = true;
+        divNumberWrapper.appendChild(numberInput);
+        return divNumberWrapper;
+    } //todo
+    FormElementFileUpload() {
+        const formElementName = "fileUpload";
+        const divNumberWrapper = this.CreateFormElementWrapper(formElementName);
+        const divTextStart = document.createElement("div");
+        divTextStart.classList.add("text-start");
+        divNumberWrapper.appendChild(divTextStart);
+        const fileUploadLabel = document.createElement("label");
+        fileUploadLabel.classList.add("form-label");
+        fileUploadLabel.innerText = "File Upload";
+        divTextStart.appendChild(fileUploadLabel);
+        const fileUploadInput = document.createElement("input");
+        const formId = this.GetFormElementId(formElementName);
+        fileUploadInput.id = formId;
+        fileUploadInput.type = "file";
+        fileUploadInput.classList.add("form-control");
+        fileUploadInput.setAttribute("name", formElementName);
+        fileUploadInput.setAttribute("data-property-reference", "File Upload");
+        fileUploadInput.multiple = true;
+        fileUploadInput.disabled = true;
+        divNumberWrapper.appendChild(fileUploadInput);
         return divNumberWrapper;
     }
     //#endregion

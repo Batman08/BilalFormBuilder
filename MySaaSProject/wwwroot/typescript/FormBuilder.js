@@ -44,43 +44,47 @@ class FormBuilder {
             }
         };
     }
-    DisableFormFields(formElement) {
-        formElement.querySelectorAll('input, select, textarea').forEach((el) => {
-            if (!el.disabled) {
-                el.disabled = true;
-                switch (el.nodeName) {
-                    case "INPUT":
-                        const inputEle = el;
-                        switch (inputEle.type) {
-                            case "text":
-                                break;
-                            case "radio":
-                                inputEle.checked = false;
-                                break;
-                            case "checkbox":
-                                inputEle.checked = false;
-                                break;
-                            case "date":
-                                inputEle.value = "";
-                                break;
-                            case "time":
-                                inputEle.value = "";
-                                break;
-                            case "number":
-                                inputEle.value = "";
-                            case "file":
-                                break;
-                        }
+    ResetElementValues(el) {
+        switch (el.nodeName) {
+            case "INPUT":
+                const inputEle = el;
+                switch (inputEle.type) {
+                    case "text":
                         break;
-                    case "TEXTAREA":
-                        const textareaEle = el;
-                        textareaEle.value = "";
+                    case "radio":
+                        inputEle.checked = false;
                         break;
-                    case "SELECT":
-                        const selectEle = el;
-                        selectEle.selectedIndex = 0;
+                    case "checkbox":
+                        inputEle.checked = false;
+                        break;
+                    case "date":
+                        inputEle.value = "";
+                        break;
+                    case "time":
+                        inputEle.value = "";
+                        break;
+                    case "number":
+                        inputEle.value = "";
+                    case "file":
+                        inputEle.value = "";
                         break;
                 }
+                break;
+            case "TEXTAREA":
+                const textareaEle = el;
+                textareaEle.value = "";
+                break;
+            case "SELECT":
+                const selectEle = el;
+                selectEle.selectedIndex = 0;
+                break;
+        }
+    }
+    DisableFormFields(formElement) {
+        formElement.querySelectorAll('input, select, textarea').forEach((el) => {
+            this.ResetElementValues(el);
+            if (!el.disabled) {
+                el.disabled = true;
             }
         });
         const retrievedElementType = formElement.getAttribute("data-wrapper-type");
@@ -94,6 +98,7 @@ class FormBuilder {
     }
     EnableFormFields() {
         this._customFormWrapper.querySelectorAll('input, select, textarea').forEach((el) => {
+            this.ResetElementValues(el);
             if (el.disabled) {
                 el.disabled = false;
                 //#loop through each children of _customFormWrapper and remove onclick

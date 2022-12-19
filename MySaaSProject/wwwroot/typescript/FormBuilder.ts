@@ -54,53 +54,57 @@ class FormBuilder {
         };
     }
 
-    private DisableFormFields(formElement: HTMLDivElement): void {
-        formElement.querySelectorAll('input, select, textarea').forEach((el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
-            if (!el.disabled) {
-                el.disabled = true;
+    private ResetElementValues(el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): void {
+        switch (el.nodeName) {
+            case "INPUT":
+                const inputEle = el as HTMLInputElement;
 
-                switch (el.nodeName) {
-                    case "INPUT":
-                        const inputEle = el as HTMLInputElement;
-
-                        switch (inputEle.type) {
-                            case "text":
-                                break;
-
-                            case "radio":
-                                inputEle.checked = false;
-                                break;
-
-                            case "checkbox":
-                                inputEle.checked = false;
-                                break;
-
-                            case "date":
-                                inputEle.value = "";
-                                break;
-
-                            case "time":
-                                inputEle.value = "";
-                                break;
-
-                            case "number":
-                                inputEle.value = "";
-
-                            case "file":
-                                break;
-                        }
+                switch (inputEle.type) {
+                    case "text":
                         break;
 
-                    case "TEXTAREA":
-                        const textareaEle = el as HTMLTextAreaElement;
-                        textareaEle.value = "";
+                    case "radio":
+                        inputEle.checked = false;
                         break;
 
-                    case "SELECT":
-                        const selectEle = el as HTMLSelectElement;
-                        selectEle.selectedIndex = 0;
+                    case "checkbox":
+                        inputEle.checked = false;
+                        break;
+
+                    case "date":
+                        inputEle.value = "";
+                        break;
+
+                    case "time":
+                        inputEle.value = "";
+                        break;
+
+                    case "number":
+                        inputEle.value = "";
+
+                    case "file":
+                        inputEle.value = "";
                         break;
                 }
+                break;
+
+            case "TEXTAREA":
+                const textareaEle = el as HTMLTextAreaElement;
+                textareaEle.value = "";
+                break;
+
+            case "SELECT":
+                const selectEle = el as HTMLSelectElement;
+                selectEle.selectedIndex = 0;
+                break;
+        }
+    }
+
+    private DisableFormFields(formElement: HTMLDivElement): void {
+        formElement.querySelectorAll('input, select, textarea').forEach((el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
+            this.ResetElementValues(el);
+            if (!el.disabled) {
+                el.disabled = true;
             }
         });
 
@@ -117,6 +121,7 @@ class FormBuilder {
 
     private EnableFormFields(): void {
         this._customFormWrapper.querySelectorAll('input, select, textarea').forEach((el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
+            this.ResetElementValues(el);
             if (el.disabled) {
                 el.disabled = false;
                 //#loop through each children of _customFormWrapper and remove onclick
