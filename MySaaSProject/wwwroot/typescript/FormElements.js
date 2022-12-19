@@ -8,6 +8,7 @@ class FormElements {
                 { name: "Dropdown", type: "Dropdown", icon: ["fas", "fa-caret-square-down", "fa-sm"] },
                 { name: "Single Choice", type: "SingleChoice", icon: ["fas", "fa-dot-circle", "fa-sm"] },
                 { name: "Multiple Choice", type: "MultipleChoice", icon: ["fas", "fa-check-square", "fa-sm"] },
+                { name: "Field Section Category", type: "FieldSectionCategory" },
             ],
             complexFormElements: [
                 { name: "Heading", type: "Heading", icon: ["fas", "fa-heading", "fa-sm"] },
@@ -55,8 +56,14 @@ class FormElements {
         this._complexFormElements.innerHTML = '';
         //loop through all basic components to create
         this._componentsToCreate.basicFormElements.forEach((component) => {
-            const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
-            this._basicFormElements.appendChild(addElementComponent);
+            if (component.type !== "FieldSectionCategory") {
+                const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
+                this._basicFormElements.appendChild(addElementComponent);
+            }
+            else {
+                const addFieldSectionCategory = this.FieldSectionCategoryComponent(component.name);
+                this._basicFormElements.appendChild(addFieldSectionCategory);
+            }
         });
         //loop through all complex components to create
         this._componentsToCreate.complexFormElements.forEach((component) => {
@@ -81,6 +88,19 @@ class FormElements {
         divElementnName.innerText = name;
         listElementWrapper.appendChild(divElementnName);
         return listElementWrapper;
+    }
+    FieldSectionCategoryComponent(name) {
+        const listElementWrapper = document.createElement("li");
+        listElementWrapper.classList.add("listAddFormElementWrapper", "bg-indigo-500");
+        const divIcon = document.createElement("div");
+        divIcon.classList.add("formElementIcon", "bg-indigo-700");
+        listElementWrapper.appendChild(divIcon);
+        return listElementWrapper;
+        //const spanIcon = document.createElement("span") as HTMLSpanElement;
+        //divIcon.appendChild(spanIcon);
+        //const elementIcon = document.createElement("i") as HTMLDivElement;
+        //elementIcon.classList.add(...icon);
+        //spanIcon.appendChild(elementIcon);
     }
     FindFormElementToCreate(formElementToCreate) {
         const prefix = formElementToCreate.substring(0, 11);
@@ -178,6 +198,7 @@ class FormElements {
         select.setAttribute("name", formElementName);
         select.ariaLabel = "Dropdown";
         select.setAttribute("data-property-reference", "Dropdown");
+        select.disabled = true;
         divDropdownWrapper.appendChild(select);
         const ddlOptionData = { dropdownValue: "", dropdownTextContent: "Select an option" };
         const defaultOption = this._utils.CreateDropdownOption(ddlOptionData);

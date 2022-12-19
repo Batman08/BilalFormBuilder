@@ -39,6 +39,15 @@
     //#endregion
 
     //#region Form Utils
+    public RgbToHex(rgbVal: string): string {
+        const rgb: string[] = rgbVal.substring(4, rgbVal.length - 1).replace(/ /g, '').split(',');
+        const r = parseInt(rgb[0], 10).toString(16);
+        const g = parseInt(rgb[1], 10).toString(16);
+        const b = parseInt(rgb[2], 10).toString(16);
+        const hex = "#" + r + g + b;
+        return hex;
+    }
+    
     public CreateDropdownOption(ddlOptionData: DropdownOptionDTO): HTMLOptionElement {
         const ddlOption = document.createElement("option") as HTMLOptionElement;
         ddlOption.value = ddlOptionData.dropdownValue;
@@ -55,6 +64,7 @@
         singleChoiceInput.id = scOptionData.singleChoiceOptionId;
         singleChoiceInput.classList.add("form-check-input");
         singleChoiceInput.name = scOptionData.singleChoiceElName;
+        singleChoiceInput.disabled = true;
         divSinglChoiceWrapper.appendChild(singleChoiceInput);
 
         const singleChoiceLabel = document.createElement("label") as HTMLLabelElement;
@@ -76,6 +86,7 @@
         checkboxInput.id = mcOptionData.multipleChoiceOptionId;
         checkboxInput.name = mcOptionData.multipleChoiceElName;
         checkboxInput.value = mcOptionData.multipleChoiceOptionValue;
+        checkboxInput.disabled = true;
         divCheckboxOption.appendChild(checkboxInput);
 
         const checkboxLabel = document.createElement("label") as HTMLLabelElement;
@@ -87,13 +98,4 @@
         return divCheckboxOption;
     }
     //#endregion
-
-    public RgbToHex(rgbVal: string): string {
-        const rgb: string[] = rgbVal.substring(4, rgbVal.length - 1).replace(/ /g, '').split(',');
-        const r = parseInt(rgb[0], 10).toString(16);
-        const g = parseInt(rgb[1], 10).toString(16);
-        const b = parseInt(rgb[2], 10).toString(16);
-        const hex = "#" + r + g + b;
-        return hex;
-    }
 }

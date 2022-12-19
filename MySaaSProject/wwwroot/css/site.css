@@ -188,3 +188,9 @@ body {
 .hideElement {
     display: none
 }
+
+.togglePreview-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+}

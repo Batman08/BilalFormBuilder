@@ -3,7 +3,10 @@
 /// <reference path="./Utilities.ts" />
 
 class FormBuilder {
-    private _btnFormDesigner = document.querySelector("#btnFormDesigner") as HTMLButtonElement;
+    private _customFormWrapper: HTMLDivElement = document.querySelector('#customFormWrapper') as HTMLDivElement
+
+    private _btnFormElements: HTMLButtonElement = document.querySelector('#btnFormElements');
+    private _btnFormDesigner: HTMLButtonElement = document.querySelector("#btnFormDesigner");
     private _offcanvasDesignerRightLabel = document.querySelector("#offcanvasDesignerRightLabel") as HTMLHeadingElement;
     private _rightDesignerBody: HTMLDivElement = document.querySelector('#rightDesigner');
 
@@ -28,6 +31,7 @@ class FormBuilder {
         const formElement = new FormElements();
         formElement.Init();
 
+        this.PreviewFormOnClick();
         this.FormDesignerOnClick();
         this.AddFormElement();
         this.ManageClicksOutsideFormField();
@@ -49,6 +53,91 @@ class FormBuilder {
             }
         };
     }
+
+    private DisableFormFields(formElement: HTMLDivElement): void {
+        formElement.querySelectorAll('input, select, textarea').forEach((el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
+            if (!el.disabled) {
+                el.disabled = true;
+
+                switch (el.nodeName) {
+                    case "INPUT":
+                        const inputEle = el as HTMLInputElement;
+
+                        switch (inputEle.type) {
+                            case "text":
+                                break;
+
+                            case "radio":
+                                inputEle.checked = false;
+                                break;
+
+                            case "checkbox":
+                                inputEle.checked = false;
+                                break;
+
+                            case "file":
+                                break;
+                        }
+                        break;
+
+                    case "TEXTAREA":
+                        const textareaEle = el as HTMLTextAreaElement;
+                        textareaEle.value = "";
+                        break;
+
+                    case "SELECT":
+                        const selectEle = el as HTMLSelectElement;
+                        selectEle.selectedIndex = 0;
+                        break;
+                }
+            }
+        });
+
+        const retrievedElementType = formElement.getAttribute("data-wrapper-type") as string;
+        if (retrievedElementType === null) {
+            alert("missing components, please refresh the page!!!");
+            return;
+        }
+
+        if (formElement != null) {
+            formElement.onclick = (ev: MouseEvent) => this.SelectedFormElementToEdit(formElement);
+        }
+    }
+
+    private EnableFormFields(): void {
+        this._customFormWrapper.querySelectorAll('input, select, textarea').forEach((el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
+            if (el.disabled) {
+                el.disabled = false;
+                //#loop through each children of _customFormWrapper and remove onclick
+                this._customFormWrapper.querySelectorAll('div').forEach((el: HTMLDivElement) => {
+                    el.onclick = null;
+                });
+            }
+        });
+    }
+
+    //#region Preview Form
+    private PreviewForm(ev: Event, inputEl: HTMLInputElement): void {
+        if (inputEl.checked) {
+            this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
+            this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
+            this._btnFormElements.disabled = true;
+            this._btnFormDesigner.disabled = true;
+            this.EnableFormFields();
+        } else {
+            this._customFormSection.querySelectorAll('[data-wrapper-type]').forEach((el: HTMLDivElement) => {
+                this.DisableFormFields(el);
+            });
+            this._btnFormElements.disabled = false;
+            this._btnFormDesigner.disabled = false;
+        }
+    }
+
+    private PreviewFormOnClick(): void {
+        const switchCheckPreviewForm: HTMLInputElement = document.querySelector('#switchCheckPreviewForm');
+        switchCheckPreviewForm.oninput = (ev: Event) => this.PreviewForm(ev, switchCheckPreviewForm);
+    }
+    //#endregion
 
     //#region Form Designer
     private FormDesigner(ev: MouseEvent): void {
@@ -154,7 +243,7 @@ class FormBuilder {
 
     //#region Create
     private AddFormElement(): void {
-        const _formElements = document.querySelectorAll(".listAddFormElementWrapper") as NodeListOf<HTMLDivElement>;
+        const _formElements = document.querySelectorAll(".listAddFormElementWrapper[data-element-type]") as NodeListOf<HTMLDivElement>;
         _formElements.forEach((element) => {
             this.AddFormClick(element);
         });

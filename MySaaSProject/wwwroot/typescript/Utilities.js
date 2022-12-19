@@ -33,6 +33,14 @@ class Utilities {
     }
     //#endregion
     //#region Form Utils
+    RgbToHex(rgbVal) {
+        const rgb = rgbVal.substring(4, rgbVal.length - 1).replace(/ /g, '').split(',');
+        const r = parseInt(rgb[0], 10).toString(16);
+        const g = parseInt(rgb[1], 10).toString(16);
+        const b = parseInt(rgb[2], 10).toString(16);
+        const hex = "#" + r + g + b;
+        return hex;
+    }
     CreateDropdownOption(ddlOptionData) {
         const ddlOption = document.createElement("option");
         ddlOption.value = ddlOptionData.dropdownValue;
@@ -47,6 +55,7 @@ class Utilities {
         singleChoiceInput.id = scOptionData.singleChoiceOptionId;
         singleChoiceInput.classList.add("form-check-input");
         singleChoiceInput.name = scOptionData.singleChoiceElName;
+        singleChoiceInput.disabled = true;
         divSinglChoiceWrapper.appendChild(singleChoiceInput);
         const singleChoiceLabel = document.createElement("label");
         singleChoiceLabel.classList.add("form-check-label");
@@ -64,6 +73,7 @@ class Utilities {
         checkboxInput.id = mcOptionData.multipleChoiceOptionId;
         checkboxInput.name = mcOptionData.multipleChoiceElName;
         checkboxInput.value = mcOptionData.multipleChoiceOptionValue;
+        checkboxInput.disabled = true;
         divCheckboxOption.appendChild(checkboxInput);
         const checkboxLabel = document.createElement("label");
         checkboxLabel.classList.add("form-check-label");
@@ -71,15 +81,6 @@ class Utilities {
         checkboxLabel.textContent = mcOptionData.multipleChoiceOptionTextContent;
         divCheckboxOption.appendChild(checkboxLabel);
         return divCheckboxOption;
-    }
-    //#endregion
-    RgbToHex(rgbVal) {
-        const rgb = rgbVal.substring(4, rgbVal.length - 1).replace(/ /g, '').split(',');
-        const r = parseInt(rgb[0], 10).toString(16);
-        const g = parseInt(rgb[1], 10).toString(16);
-        const b = parseInt(rgb[2], 10).toString(16);
-        const hex = "#" + r + g + b;
-        return hex;
     }
 }
 //# sourceMappingURL=Utilities.js.map
