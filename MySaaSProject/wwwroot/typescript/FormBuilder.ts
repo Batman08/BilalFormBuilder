@@ -20,7 +20,7 @@ class FormBuilder {
 
     private readonly _tabContent = document.querySelector("#myTabContent") as HTMLDivElement;
 
-    public Init(tinymce: any): void {
+    public Init(tinymce: any, sortableFormElements: any): void {
         /*define default form colours*/
         document.body.style.backgroundColor = "#f8f9fa";
         this._customFormSection.style.backgroundColor = "#FFFFFF";
@@ -31,7 +31,7 @@ class FormBuilder {
         const formElement = new FormElements();
         formElement.Init();
 
-        this.PreviewFormOnClick();
+        this.PreviewFormOnClick(sortableFormElements);
         this.FormDesignerOnClick();
         this.AddFormElement();
         this.ManageClicksOutsideFormField();
@@ -117,25 +117,27 @@ class FormBuilder {
     }
 
     //#region Preview Form
-    private PreviewForm(ev: Event, inputEl: HTMLInputElement): void {
+    private PreviewForm(ev: Event, inputEl: HTMLInputElement, sortableFormElements: any): void {
         if (inputEl.checked) {
             this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
             this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
             this._btnFormElements.disabled = true;
             this._btnFormDesigner.disabled = true;
             this.EnableFormFields();
+            sortableFormElements.options.disabled = true;
         } else {
             this._customFormSection.querySelectorAll('[data-wrapper-type]').forEach((el: HTMLDivElement) => {
                 this.DisableFormFields(el);
             });
+            sortableFormElements.options.disabled = false;
             this._btnFormElements.disabled = false;
             this._btnFormDesigner.disabled = false;
         }
     }
 
-    private PreviewFormOnClick(): void {
+    private PreviewFormOnClick(sortableFormElements: any): void {
         const switchCheckPreviewForm: HTMLInputElement = document.querySelector('#switchCheckPreviewForm');
-        switchCheckPreviewForm.oninput = (ev: Event) => this.PreviewForm(ev, switchCheckPreviewForm);
+        switchCheckPreviewForm.oninput = (ev: Event) => this.PreviewForm(ev, switchCheckPreviewForm, sortableFormElements);
     }
     //#endregion
 

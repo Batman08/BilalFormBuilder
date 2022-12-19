@@ -16,7 +16,7 @@ class FormBuilder {
         this._tabContent = document.querySelector("#myTabContent");
         //#endregion
     }
-    Init(tinymce) {
+    Init(tinymce, sortableFormElements) {
         /*define default form colours*/
         document.body.style.backgroundColor = "#f8f9fa";
         this._customFormSection.style.backgroundColor = "#FFFFFF";
@@ -24,7 +24,7 @@ class FormBuilder {
         this._formElementProperties.Init(tinymce);
         const formElement = new FormElements();
         formElement.Init();
-        this.PreviewFormOnClick();
+        this.PreviewFormOnClick(sortableFormElements);
         this.FormDesignerOnClick();
         this.AddFormElement();
         this.ManageClicksOutsideFormField();
@@ -96,25 +96,27 @@ class FormBuilder {
         });
     }
     //#region Preview Form
-    PreviewForm(ev, inputEl) {
+    PreviewForm(ev, inputEl, sortableFormElements) {
         if (inputEl.checked) {
             this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
             this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
             this._btnFormElements.disabled = true;
             this._btnFormDesigner.disabled = true;
             this.EnableFormFields();
+            sortableFormElements.options.disabled = true;
         }
         else {
             this._customFormSection.querySelectorAll('[data-wrapper-type]').forEach((el) => {
                 this.DisableFormFields(el);
             });
+            sortableFormElements.options.disabled = false;
             this._btnFormElements.disabled = false;
             this._btnFormDesigner.disabled = false;
         }
     }
-    PreviewFormOnClick() {
+    PreviewFormOnClick(sortableFormElements) {
         const switchCheckPreviewForm = document.querySelector('#switchCheckPreviewForm');
-        switchCheckPreviewForm.oninput = (ev) => this.PreviewForm(ev, switchCheckPreviewForm);
+        switchCheckPreviewForm.oninput = (ev) => this.PreviewForm(ev, switchCheckPreviewForm, sortableFormElements);
     }
     //#endregion
     //#region Form Designer

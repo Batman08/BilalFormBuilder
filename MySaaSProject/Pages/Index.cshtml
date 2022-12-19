@@ -79,7 +79,7 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <br />
-            
+
             <div class="tab-pane fade show active" id="general-tab-pane" role="tabpanel" aria-labelledby="general-tab" tabindex="0">
                 <div id="rightDesigner">
                     <div class="mb-3">
@@ -102,13 +102,13 @@
 </div>
 
 @*<div class="text-center">*@
-    <div class="row">
-        <div id="customFormArea" class="col-md-6 mx-auto">
-            <div id="customFormWrapper" style="border-radius: 3px; box-shadow: 0 4px 4px rgb(87 100 126 / 21%);">
+<div class="row">
+    <div id="customFormArea" class="col-md-6 mx-auto">
+        <div id="customFormWrapper" style="border-radius: 3px; box-shadow: 0 4px 4px rgb(87 100 126 / 21%);">
             <div id="customFormSection" style="min-height: 64px;"></div>@*padding:0 38px;*@
-            </div>
         </div>
     </div>
+</div>
 @*</div>*@
 
 @*external scripts*@
@@ -122,10 +122,7 @@
 <script src="/typescript/FormBuilder.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
-        const formBuilder = new FormBuilder();
-        formBuilder.Init(tinymce);
-
-        new Sortable(basicFormElements, {
+        var sortableBasicComponents = new Sortable(basicFormElements, {
             group: {
                 name: 'shared',
                 pull: 'clone',
@@ -136,7 +133,7 @@
             sort: false // To disable sorting: set sort to false
         });
 
-        new Sortable(formElements, {
+        var sortableComplexComponents = new Sortable(formElements, {
             group: {
                 name: 'shared',
                 pull: 'clone',
@@ -146,8 +143,7 @@
             sort: false // To disable sorting: set sort to false
         });
 
-        //Change order of form elements
-        new Sortable(customFormSection, {
+        var sortableFormElements = new Sortable(customFormSection, {
             group: 'shared',
             animation: 150,
             onAdd: function (evt) {
@@ -155,5 +151,8 @@
             },
             ghostClass: 'draggableGhost'
         });
+
+        const formBuilder = new FormBuilder();
+        formBuilder.Init(tinymce, sortableFormElements);
     });
 </script>
