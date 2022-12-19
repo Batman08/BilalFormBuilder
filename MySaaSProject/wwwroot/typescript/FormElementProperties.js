@@ -38,6 +38,9 @@ class FormElementProperties {
             case "imageWrapper":
                 this.ImageProperties(element);
                 break;
+            case "submitWrapper":
+                this.SubmitProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -338,7 +341,7 @@ class FormElementProperties {
         this.rightDesigner.appendChild(editLabelFieldWrapper);
     }
     //#endregion
-    //#region File Upload Properties
+    //#region Image Properties
     ImageProperties(imageElementWrapper) {
         this.rightDesigner.innerHTML = '';
         const imageEl = imageElementWrapper.querySelector("img");
@@ -447,6 +450,117 @@ class FormElementProperties {
         const imagePropertyWrapper = this.UpdateImageProperties(imageEl);
         imagePropertyWrapper.appendChild(imgSizeInputGroupEl);
         this.rightDesigner.appendChild(imagePropertyWrapper);
+    }
+    //#endregion
+    //#region Submit Properties
+    SubmitProperties(submitElementWrapper) {
+        this.rightDesigner.innerHTML = '';
+        const btnSubmitEl = submitElementWrapper.querySelector("[name=submit]");
+        const btnAllignmentEl = btnSubmitEl.parentElement;
+        const submitLabelText = btnSubmitEl.value;
+        const currentAllignment = btnSubmitEl.getAttribute("data-align");
+        //#region Time Label Property
+        //#region Button Text
+        const btnSubmitTextWrapper = document.createElement("div");
+        btnSubmitTextWrapper.classList.add("mb-3");
+        const fieldLabel = document.createElement("label");
+        fieldLabel.htmlFor = "editBtnSubmit";
+        fieldLabel.classList.add("form-label");
+        fieldLabel.textContent = "Button Text";
+        const fieldInput = document.createElement("input");
+        fieldInput.id = "editBtnSubmit";
+        fieldInput.classList.add("form-control");
+        fieldInput.type = "text";
+        fieldInput.placeholder = "Submit";
+        fieldInput.value = submitLabelText;
+        fieldInput.ariaRoleDescription = "Edit Submit Text";
+        fieldInput.oninput = (ev) => { btnSubmitEl.value = fieldInput.value; };
+        btnSubmitTextWrapper.appendChild(fieldLabel);
+        btnSubmitTextWrapper.appendChild(fieldInput);
+        //#endregion
+        //#region Button Allignment
+        const allignmentWrapper = document.createElement("div");
+        allignmentWrapper.classList.add("mb-3");
+        const allignmentLabel = document.createElement("label");
+        allignmentLabel.htmlFor = "editAllignment";
+        allignmentLabel.classList.add("form-label");
+        allignmentLabel.textContent = "Button Allignment";
+        allignmentWrapper.appendChild(allignmentLabel);
+        const divAllignmentGroup = document.createElement("div");
+        divAllignmentGroup.setAttribute("role", "group");
+        divAllignmentGroup.classList.add("btn-group");
+        divAllignmentGroup.ariaLabel = "allignment toggle button group";
+        divAllignmentGroup.style.width = "100%";
+        allignmentWrapper.appendChild(divAllignmentGroup);
+        //#region Left Option
+        const allignLeftInput = document.createElement("input");
+        allignLeftInput.type = "radio";
+        allignLeftInput.classList.add("btn-check");
+        allignLeftInput.name = "btnAllign";
+        allignLeftInput.id = "btnAllignLeft";
+        allignLeftInput.autocomplete = "off";
+        allignLeftInput.oninput = () => this.AdjustButtonAllignment(btnSubmitEl, btnAllignmentEl, "left");
+        const allignLeftLabel = document.createElement("label");
+        allignLeftLabel.classList.add("btn", "btn-outline-primary");
+        allignLeftLabel.htmlFor = "btnAllignLeft";
+        allignLeftLabel.textContent = "LEFT";
+        divAllignmentGroup.appendChild(allignLeftInput);
+        divAllignmentGroup.appendChild(allignLeftLabel);
+        //#endregion
+        //#region Center Option
+        const allignCenterInput = document.createElement("input");
+        allignCenterInput.type = "radio";
+        allignCenterInput.classList.add("btn-check");
+        allignCenterInput.name = "btnAllign";
+        allignCenterInput.id = "btnAllignCenter";
+        allignCenterInput.autocomplete = "off";
+        allignCenterInput.oninput = () => this.AdjustButtonAllignment(btnSubmitEl, btnAllignmentEl, "center");
+        const allignCenterLabel = document.createElement("label");
+        allignCenterLabel.classList.add("btn", "btn-outline-primary");
+        allignCenterLabel.htmlFor = "btnAllignCenter";
+        allignCenterLabel.textContent = "CENTER";
+        divAllignmentGroup.appendChild(allignCenterInput);
+        divAllignmentGroup.appendChild(allignCenterLabel);
+        //#endregion
+        //#region Right Option
+        const allignRightInput = document.createElement("input");
+        allignRightInput.type = "radio";
+        allignRightInput.classList.add("btn-check");
+        allignRightInput.name = "btnAllign";
+        allignRightInput.id = "btnAllignRight";
+        allignRightInput.autocomplete = "off";
+        allignRightInput.oninput = () => this.AdjustButtonAllignment(btnSubmitEl, btnAllignmentEl, "right");
+        const allignRightLabel = document.createElement("label");
+        allignRightLabel.classList.add("btn", "btn-outline-primary");
+        allignRightLabel.htmlFor = "btnAllignRight";
+        allignRightLabel.textContent = "RIGHT";
+        divAllignmentGroup.appendChild(allignRightInput);
+        divAllignmentGroup.appendChild(allignRightLabel);
+        //#endregion
+        if (currentAllignment === "left")
+            allignLeftInput.checked = true;
+        else if (currentAllignment === "center")
+            allignCenterInput.checked = true;
+        else if (currentAllignment === "right")
+            allignRightInput.checked = true;
+        //#endregion
+        //#endregion
+        this.rightDesigner.appendChild(btnSubmitTextWrapper);
+        this.rightDesigner.appendChild(allignmentWrapper);
+    }
+    AdjustButtonAllignment(btnSubmitEl, btnAllignmentEl, allignment) {
+        if (allignment === "left") {
+            btnSubmitEl.setAttribute("data-align", "left");
+            btnAllignmentEl.className = "text-start";
+        }
+        else if (allignment === "center") {
+            btnSubmitEl.setAttribute("data-align", "center");
+            btnAllignmentEl.className = "text-center";
+        }
+        else if (allignment === "right") {
+            btnSubmitEl.setAttribute("data-align", "right");
+            btnAllignmentEl.className = "text-end";
+        }
     }
     //#endregion
     //#endregion

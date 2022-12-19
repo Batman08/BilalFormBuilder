@@ -207,3 +207,8 @@ body {
     text-align: center;
     text-transform: uppercase;
 }
+
+.btnSubmit {
+    min-width: 25%;
+    display: inline-block;
+}

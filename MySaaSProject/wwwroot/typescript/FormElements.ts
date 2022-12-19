@@ -12,7 +12,7 @@
             { name: "Number", type: "Number", icon: ["fas", "fa-hashtag", "fa-sm"] },
             { name: "Image", type: "Image", icon: ["fas", "fa-image", "fa-sm"] },
             { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
-            { name: "Submit", type: "SubmitBtn", icon: ["fas", "fa-square", "fa-sm"] },
+            { name: "Submit", type: "Submit", icon: ["fas", "fa-square", "fa-sm"] },
             { name: "Survey Components", type: "FieldSectionCategory" },
             { name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },
             { name: "Table", type: "Table", icon: ["fas", "fa-table", "fa-sm"] },
@@ -132,6 +132,8 @@
                 return this.FormElementImage();
             case "FileUpload":
                 return this.FormElementFileUpload();
+            case "Submit":
+                return this.FormElementSubmit();
             case "Heading":
                 return this.FormElementHeading();
             case "FullName":
@@ -428,11 +430,11 @@
 
     private FormElementFileUpload(): HTMLDivElement {
         const formElementName: string = "fileUpload";
-        const divNumberWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
+        const divFileUploadWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
 
         const divTextStart = document.createElement("div") as HTMLDivElement;
         divTextStart.classList.add("text-start");
-        divNumberWrapper.appendChild(divTextStart);
+        divFileUploadWrapper.appendChild(divTextStart);
 
         const fileUploadLabel = document.createElement("label") as HTMLLabelElement;
         fileUploadLabel.classList.add("form-label");
@@ -449,9 +451,33 @@
         fileUploadInput.setAttribute("data-property-reference", "File Upload");
         fileUploadInput.multiple = true;
         fileUploadInput.disabled = true;
-        divNumberWrapper.appendChild(fileUploadInput);
+        divFileUploadWrapper.appendChild(fileUploadInput);
 
-        return divNumberWrapper;
+        return divFileUploadWrapper;
+    }
+
+    private FormElementSubmit(): HTMLDivElement {
+        const formElementName: string = "submit";
+        const divSubmitWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
+
+        const divTextCenter = document.createElement("div") as HTMLDivElement;
+        divTextCenter.classList.add("text-center");
+        divSubmitWrapper.appendChild(divTextCenter);
+
+        const btnSubmit = document.createElement("input") as HTMLButtonElement;
+        const formId = this.GetFormElementId(formElementName) as string;
+
+        btnSubmit.id = formId;
+        btnSubmit.type = "submit";
+        btnSubmit.classList.add("btn", "btn-primary", "mx-auto", "btnSubmit");
+        btnSubmit.setAttribute("name", formElementName)
+        btnSubmit.setAttribute("data-property-reference", "Submit");
+        btnSubmit.setAttribute("data-align", "center")
+        btnSubmit.value = "Submit";
+        btnSubmit.disabled = true;
+        divTextCenter.appendChild(btnSubmit);
+
+        return divSubmitWrapper;
     }
     //#endregion
 
