@@ -129,7 +129,7 @@
             case "Number":
                 return this.FormElementNumber();
             case "Image":
-                return null;
+                return this.FormElementImage();
             case "FileUpload":
                 return this.FormElementFileUpload();
             case "Heading":
@@ -406,32 +406,25 @@
     }
 
     private FormElementImage(): HTMLDivElement {
-        const formElementName: string = "number";
-        const divNumberWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
+        const formElementName: string = "image";
+        const divImageWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
 
         const divTextStart = document.createElement("div") as HTMLDivElement;
         divTextStart.classList.add("text-start");
-        divNumberWrapper.appendChild(divTextStart);
+        divImageWrapper.appendChild(divTextStart);
 
-        const numberLabel = document.createElement("label") as HTMLLabelElement;
-        numberLabel.classList.add("form-label");
-        numberLabel.innerText = "Number";
-        divTextStart.appendChild(numberLabel);
-
-        const numberInput = document.createElement("input") as HTMLInputElement;
+        const imageEl = document.createElement("img") as HTMLImageElement;
         const formId = this.GetFormElementId(formElementName) as string;
 
-        numberInput.id = formId;
-        numberInput.type = "number";
-        numberInput.classList.add("form-control");
-        numberInput.setAttribute("name", formElementName)
-        numberInput.setAttribute("data-property-reference", "Number");
-        numberInput.placeholder = "e.g 21";
-        numberInput.disabled = true;
-        divNumberWrapper.appendChild(numberInput);
+        imageEl.id = formId;
+        imageEl.src = "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image-300x203.jpg";
+        imageEl.classList.add("mx-auto", "d-block", "rounded");
+        imageEl.setAttribute("name", formElementName)
+        imageEl.setAttribute("data-property-reference", "Image");
+        divImageWrapper.appendChild(imageEl);
 
-        return divNumberWrapper;
-    } //todo
+        return divImageWrapper;
+    }
 
     private FormElementFileUpload(): HTMLDivElement {
         const formElementName: string = "fileUpload";

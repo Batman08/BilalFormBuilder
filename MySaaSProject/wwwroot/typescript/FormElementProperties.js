@@ -35,6 +35,9 @@ class FormElementProperties {
             case "fileUploadWrapper":
                 this.FileUploadProperties(element);
                 break;
+            case "imageWrapper":
+                this.ImageProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -318,12 +321,12 @@ class FormElementProperties {
         this.rightDesigner.appendChild(editLabelFieldWrapper);
     }
     //#endregion
-    //#region Number Properties
+    //#region File Upload Properties
     FileUploadProperties(fileUploadElement) {
         this.rightDesigner.innerHTML = '';
         const fileUploadLabelEl = fileUploadElement.querySelector(".form-label");
         const fileUploadLabelText = fileUploadLabelEl.textContent;
-        //#region Number Label Property
+        //#region File Upload Label Property
         const fieldLabelPropertyData = {
             PlaceHolder: "File Upload",
             InputVal: fileUploadLabelText,
@@ -333,6 +336,117 @@ class FormElementProperties {
         const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
         //#endregion
         this.rightDesigner.appendChild(editLabelFieldWrapper);
+    }
+    //#endregion
+    //#region File Upload Properties
+    ImageProperties(imageElementWrapper) {
+        this.rightDesigner.innerHTML = '';
+        const imageEl = imageElementWrapper.querySelector("img");
+        //#region Image Property
+        const imgSizeInputGroupEl = this.ImgSizeInputGroup(imageEl);
+        if (imageEl.classList.contains("added")) {
+            const divImagePreview = this.EditImageProperties(imageEl);
+            divImagePreview.appendChild(imgSizeInputGroupEl);
+            this.rightDesigner.appendChild(divImagePreview);
+        }
+        else {
+            const imagePropertyWrapper = this.UpdateImageProperties(imageEl);
+            imagePropertyWrapper.appendChild(imgSizeInputGroupEl);
+            this.rightDesigner.appendChild(imagePropertyWrapper);
+        }
+        //#endregion
+    }
+    ImgSizeInputGroup(imageEl) {
+        const divRow = document.createElement("div");
+        divRow.classList.add("row", "mt-4");
+        const imageWidth = this.ImageSizeInput("imgWidth", "Width", "Image Width", imageEl, "width");
+        const imageHeight = this.ImageSizeInput("imgHeight", "Height", "Image Height", imageEl, "height");
+        divRow.appendChild(imageWidth);
+        divRow.appendChild(imageHeight);
+        return divRow;
+    }
+    ImageSizeInput(id, labelText, placeholder, imageEl, dimensionType) {
+        const divCol = document.createElement("div");
+        divCol.classList.add("col-md-6");
+        const label = document.createElement("label");
+        label.classList.add("form-label");
+        label.htmlFor = id;
+        label.textContent = labelText;
+        divCol.appendChild(label);
+        const imageSizeInput = document.createElement("input");
+        imageSizeInput.id = id;
+        imageSizeInput.type = "number";
+        imageSizeInput.classList.add("form-control");
+        imageSizeInput.placeholder = placeholder;
+        imageSizeInput.value = imageEl.width.toString();
+        imageSizeInput.oninput = () => this.UpdateImageSize(imageSizeInput, imageEl, dimensionType);
+        divCol.appendChild(imageSizeInput);
+        return divCol;
+    }
+    UpdateImageSize(sizeInput, targetImageEl, dimensionType) {
+        if (dimensionType === "width")
+            targetImageEl.width = sizeInput.valueAsNumber;
+        else if (dimensionType === "height")
+            targetImageEl.height = sizeInput.valueAsNumber;
+        else
+            return;
+    }
+    UpdateImageProperties(imageEl) {
+        const imagePropertyWrapper = document.createElement("div");
+        imagePropertyWrapper.classList.add("mb-3");
+        const imageFieldLabel = document.createElement("label");
+        imageFieldLabel.htmlFor = "editImage";
+        imageFieldLabel.classList.add("form-label");
+        imageFieldLabel.textContent = "Image";
+        imagePropertyWrapper.appendChild(imageFieldLabel);
+        const fileUploadImageInput = document.createElement("input");
+        fileUploadImageInput.id = "editImage";
+        fileUploadImageInput.type = "file";
+        fileUploadImageInput.classList.add("form-control");
+        fileUploadImageInput.multiple = true;
+        fileUploadImageInput.onchange = () => this.UpdateImage(fileUploadImageInput, imageEl);
+        imagePropertyWrapper.appendChild(fileUploadImageInput);
+        return imagePropertyWrapper;
+    }
+    EditImageProperties(imageEl) {
+        const divImagePreview = document.createElement("div");
+        const currentImage = document.createElement("img");
+        currentImage.src = imageEl.src;
+        currentImage.classList.add("mx-auto", "d-block", "rounded");
+        currentImage.style.width = "350px";
+        currentImage.style.height = "350px";
+        divImagePreview.appendChild(currentImage);
+        const btnRemoveImage = document.createElement("button");
+        btnRemoveImage.classList.add("btn", "btn-danger", "btn-sm", "mt-2");
+        btnRemoveImage.textContent = "Remove Image";
+        btnRemoveImage.onclick = () => this.RemoveImage(imageEl);
+        divImagePreview.appendChild(btnRemoveImage);
+        return divImagePreview;
+    }
+    UpdateImage(imageInputEl, targetImageEl) {
+        if (imageInputEl.files.length > 0) {
+            const file = imageInputEl.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                targetImageEl.src = e.target.result.toString();
+                this.rightDesigner.innerHTML = "";
+                targetImageEl.classList.add("added");
+                const imgSizeInputGroupEl = this.ImgSizeInputGroup(targetImageEl);
+                const divImagePreview = this.EditImageProperties(targetImageEl);
+                divImagePreview.appendChild(imgSizeInputGroupEl);
+                this.rightDesigner.appendChild(divImagePreview);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    RemoveImage(imageEl) {
+        imageEl.src = "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image-300x203.jpg";
+        imageEl.classList.remove("added");
+        this.rightDesigner.innerHTML = "";
+        const imgSizeInputGroupEl = this.ImgSizeInputGroup(imageEl);
+        const imagePropertyWrapper = this.UpdateImageProperties(imageEl);
+        imagePropertyWrapper.appendChild(imgSizeInputGroupEl);
+        this.rightDesigner.appendChild(imagePropertyWrapper);
     }
     //#endregion
     //#endregion

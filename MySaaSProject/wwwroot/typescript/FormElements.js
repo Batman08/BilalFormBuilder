@@ -114,7 +114,7 @@ class FormElements {
             case "Number":
                 return this.FormElementNumber();
             case "Image":
-                return null;
+                return this.FormElementImage();
             case "FileUpload":
                 return this.FormElementFileUpload();
             case "Heading":
@@ -335,27 +335,21 @@ class FormElements {
         return divNumberWrapper;
     }
     FormElementImage() {
-        const formElementName = "number";
-        const divNumberWrapper = this.CreateFormElementWrapper(formElementName);
+        const formElementName = "image";
+        const divImageWrapper = this.CreateFormElementWrapper(formElementName);
         const divTextStart = document.createElement("div");
         divTextStart.classList.add("text-start");
-        divNumberWrapper.appendChild(divTextStart);
-        const numberLabel = document.createElement("label");
-        numberLabel.classList.add("form-label");
-        numberLabel.innerText = "Number";
-        divTextStart.appendChild(numberLabel);
-        const numberInput = document.createElement("input");
+        divImageWrapper.appendChild(divTextStart);
+        const imageEl = document.createElement("img");
         const formId = this.GetFormElementId(formElementName);
-        numberInput.id = formId;
-        numberInput.type = "number";
-        numberInput.classList.add("form-control");
-        numberInput.setAttribute("name", formElementName);
-        numberInput.setAttribute("data-property-reference", "Number");
-        numberInput.placeholder = "e.g 21";
-        numberInput.disabled = true;
-        divNumberWrapper.appendChild(numberInput);
-        return divNumberWrapper;
-    } //todo
+        imageEl.id = formId;
+        imageEl.src = "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image-300x203.jpg";
+        imageEl.classList.add("mx-auto", "d-block", "rounded");
+        imageEl.setAttribute("name", formElementName);
+        imageEl.setAttribute("data-property-reference", "Image");
+        divImageWrapper.appendChild(imageEl);
+        return divImageWrapper;
+    }
     FormElementFileUpload() {
         const formElementName = "fileUpload";
         const divNumberWrapper = this.CreateFormElementWrapper(formElementName);
