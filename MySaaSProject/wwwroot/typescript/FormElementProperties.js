@@ -23,6 +23,9 @@ class FormElementProperties {
             case "multipleChoiceWrapper":
                 this.MultipleChoiceProperties(element);
                 break;
+            case "datePickerWrapper":
+                this.DatePickerProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -253,6 +256,29 @@ class FormElementProperties {
             const divSinglChoiceWrapper = utils.CreateMultipleChoiceOption(mcOptionData);
             multipleChoicelEl.appendChild(divSinglChoiceWrapper);
         }
+    }
+    //#endregion
+    //#region Date Picker Properties
+    DatePickerProperties(dropdownElement, callback) {
+        this.rightDesigner.innerHTML = '';
+        const datePickerLabelEl = dropdownElement.querySelector(".form-label");
+        const datePickerLabelText = datePickerLabelEl.textContent;
+        //#region Date Picker Label Property
+        const fieldLabelPropertyData = {
+            PlaceHolder: "Date",
+            InputVal: datePickerLabelText,
+            AriaRoleDesc: "Edit Date Picker",
+            ElementToUpdate: datePickerLabelEl
+        };
+        const editLabelFieldWrapper = this.FieldLabelProperty(fieldLabelPropertyData);
+        //#endregion
+        //#region Date Picker Options
+        //#region Label Property Element
+        const optionsWrapper = this.TextareaLabelProperty("ddlOptions", "Dropdown Options");
+        //#endregion
+        //#endregion
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+        this.rightDesigner.appendChild(optionsWrapper);
     }
     //#endregion
     //#endregion

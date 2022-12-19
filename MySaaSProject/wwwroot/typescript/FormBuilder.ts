@@ -75,6 +75,10 @@ class FormBuilder {
                                 inputEle.checked = false;
                                 break;
 
+                            case "date":
+                                inputEle.value = "";
+                                break;
+                            
                             case "file":
                                 break;
                         }

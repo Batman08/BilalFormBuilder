@@ -25,6 +25,9 @@ class FormElementProperties {
             case "multipleChoiceWrapper":
                 this.MultipleChoiceProperties(element);
                 break;
+            case "datePickerWrapper":
+                this.DatePickerProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -312,6 +315,36 @@ class FormElementProperties {
             const divSinglChoiceWrapper: HTMLDivElement = utils.CreateMultipleChoiceOption(mcOptionData);
             multipleChoicelEl.appendChild(divSinglChoiceWrapper);
         }
+    }
+    //#endregion
+
+    //#region Date Picker Properties
+    private DatePickerProperties(dropdownElement: HTMLElement, callback?: Function): void {
+        this.rightDesigner.innerHTML = '';
+
+        const datePickerLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
+        const datePickerLabelText: string = datePickerLabelEl.textContent;
+
+        //#region Date Picker Label Property
+        const fieldLabelPropertyData: FieldLabelPropertyData = {
+            PlaceHolder: "Date",
+            InputVal: datePickerLabelText,
+            AriaRoleDesc: "Edit Date Picker",
+            ElementToUpdate: datePickerLabelEl
+        }
+        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
+        //#endregion
+
+        //#region Date Picker Options
+
+        //#region Label Property Element
+        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("ddlOptions", "Dropdown Options");
+        //#endregion
+
+        //#endregion
+
+        this.rightDesigner.appendChild(editLabelFieldWrapper);
+        this.rightDesigner.appendChild(optionsWrapper);
     }
     //#endregion
 

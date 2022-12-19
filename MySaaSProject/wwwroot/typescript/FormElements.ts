@@ -7,7 +7,7 @@
             { name: "Dropdown", type: "Dropdown", icon: ["fas", "fa-caret-square-down", "fa-sm"] },
             { name: "Single Choice", type: "SingleChoice", icon: ["fas", "fa-dot-circle", "fa-sm"] },
             { name: "Multiple Choice", type: "MultipleChoice", icon: ["fas", "fa-check-square", "fa-sm"] },
-            { name: "Date", type: "Date", icon: ["fas", "fa-calendar-alt", "fa-sm"] },
+            { name: "Date Picker", type: "DatePicker", icon: ["fas", "fa-calendar-alt", "fa-sm"] },
             { name: "Time", type: "Time", icon: ["fas", "fa-clock", "fa-sm"] },
             { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
             { name: "Number", type: "Number", icon: ["fas", "fa-hashtag", "fa-sm"] },
@@ -123,6 +123,8 @@
                 return this.FormElementSingleChoice();
             case "MultipleChoice":
                 return this.FormElementMultipleChoice();
+            case "DatePicker":
+                return this.FormElementDatePicker();
             case "Heading":
                 return this.FormElementHeading();
             case "FullName":
@@ -312,6 +314,33 @@
         }
 
         return divMultipleChoiceWrapper;
+    }
+
+    private FormElementDatePicker(): HTMLDivElement {
+        const formElementName: string = "datePicker";
+        const divDatePickerWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
+
+        const divTextStart = document.createElement("div") as HTMLDivElement;
+        divTextStart.classList.add("text-start");
+        divDatePickerWrapper.appendChild(divTextStart);
+
+        const datePickerLabel = document.createElement("label") as HTMLLabelElement;
+        datePickerLabel.classList.add("form-label");
+        datePickerLabel.innerText = "Date";
+        divTextStart.appendChild(datePickerLabel);
+
+        const datePicker = document.createElement("input") as HTMLInputElement;
+        const formId = this.GetFormElementId(formElementName) as string;
+
+        datePicker.id = formId;
+        datePicker.type = "date";
+        datePicker.classList.add("form-control");
+        datePicker.setAttribute("name", formElementName)
+        datePicker.setAttribute("data-property-reference", "Date Picker");
+        datePicker.disabled = true;
+        divDatePickerWrapper.appendChild(datePicker);
+
+        return divDatePickerWrapper;
     }
     //#endregion
 
