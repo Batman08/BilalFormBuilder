@@ -3,6 +3,8 @@
 /// <reference path="./Utilities.ts" />
 class FormBuilder {
     constructor() {
+        this._customFormWrapper = document.querySelector('#customFormWrapper');
+        this._btnFormElements = document.querySelector('#btnFormElements');
         this._btnFormDesigner = document.querySelector("#btnFormDesigner");
         this._offcanvasDesignerRightLabel = document.querySelector("#offcanvasDesignerRightLabel");
         this._rightDesignerBody = document.querySelector('#rightDesigner');
@@ -22,6 +24,7 @@ class FormBuilder {
         this._formElementProperties.Init(tinymce);
         const formElement = new FormElements();
         formElement.Init();
+        this.PreviewFormOnClick();
         this.FormDesignerOnClick();
         this.AddFormElement();
         this.ManageClicksOutsideFormField();
@@ -41,6 +44,79 @@ class FormBuilder {
             }
         };
     }
+    DisableFormFields(formElement) {
+        formElement.querySelectorAll('input, select, textarea').forEach((el) => {
+            if (!el.disabled) {
+                el.disabled = true;
+                switch (el.nodeName) {
+                    case "INPUT":
+                        const inputEle = el;
+                        switch (inputEle.type) {
+                            case "text":
+                                break;
+                            case "radio":
+                                inputEle.checked = false;
+                                break;
+                            case "checkbox":
+                                inputEle.checked = false;
+                                break;
+                            case "file":
+                                break;
+                        }
+                        break;
+                    case "TEXTAREA":
+                        const textareaEle = el;
+                        textareaEle.value = "";
+                        break;
+                    case "SELECT":
+                        const selectEle = el;
+                        selectEle.selectedIndex = 0;
+                        break;
+                }
+            }
+        });
+        const retrievedElementType = formElement.getAttribute("data-wrapper-type");
+        if (retrievedElementType === null) {
+            alert("missing components, please refresh the page!!!");
+            return;
+        }
+        if (formElement != null) {
+            formElement.onclick = (ev) => this.SelectedFormElementToEdit(formElement);
+        }
+    }
+    EnableFormFields() {
+        this._customFormWrapper.querySelectorAll('input, select, textarea').forEach((el) => {
+            if (el.disabled) {
+                el.disabled = false;
+                //#loop through each children of _customFormWrapper and remove onclick
+                this._customFormWrapper.querySelectorAll('div').forEach((el) => {
+                    el.onclick = null;
+                });
+            }
+        });
+    }
+    //#region Preview Form
+    PreviewForm(ev, inputEl) {
+        if (inputEl.checked) {
+            this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
+            this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
+            this._btnFormElements.disabled = true;
+            this._btnFormDesigner.disabled = true;
+            this.EnableFormFields();
+        }
+        else {
+            this._customFormSection.querySelectorAll('[data-wrapper-type]').forEach((el) => {
+                this.DisableFormFields(el);
+            });
+            this._btnFormElements.disabled = false;
+            this._btnFormDesigner.disabled = false;
+        }
+    }
+    PreviewFormOnClick() {
+        const switchCheckPreviewForm = document.querySelector('#switchCheckPreviewForm');
+        switchCheckPreviewForm.oninput = (ev) => this.PreviewForm(ev, switchCheckPreviewForm);
+    }
+    //#endregion
     //#region Form Designer
     FormDesigner(ev) {
         ev.preventDefault();
@@ -124,7 +200,7 @@ class FormBuilder {
     //#endregion
     //#region Create
     AddFormElement() {
-        const _formElements = document.querySelectorAll(".listAddFormElementWrapper");
+        const _formElements = document.querySelectorAll(".listAddFormElementWrapper[data-element-type]");
         _formElements.forEach((element) => {
             this.AddFormClick(element);
         });

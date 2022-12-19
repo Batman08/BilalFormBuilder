@@ -7,11 +7,16 @@
 type FormComponentDTO = {
     name: string;
     type: string;
-    icon: string[];
+    icon?: string[];
+};
+
+type FieldSectionCategoryDTO = {
+    name: string;
+    type: string;
 };
 
 type ComponentsToCreateDTO = {
-    basicFormElements: FormComponentDTO[];
+    basicFormElements: FormComponentDTO[] | FieldSectionCategoryDTO[];
     complexFormElements: FormComponentDTO[]
 };
 

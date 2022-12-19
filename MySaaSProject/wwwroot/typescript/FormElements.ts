@@ -7,6 +7,20 @@
             { name: "Dropdown", type: "Dropdown", icon: ["fas", "fa-caret-square-down", "fa-sm"] },
             { name: "Single Choice", type: "SingleChoice", icon: ["fas", "fa-dot-circle", "fa-sm"] },
             { name: "Multiple Choice", type: "MultipleChoice", icon: ["fas", "fa-check-square", "fa-sm"] },
+            { name: "Date", type: "Date", icon: ["fas", "fa-calendar-alt", "fa-sm"] },
+            { name: "Time", type: "Time", icon: ["fas", "fa-clock", "fa-sm"] },
+            { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
+            { name: "Number", type: "Number", icon: ["fas", "fa-hashtag", "fa-sm"] },
+            { name: "Currency", type: "Currency", icon: ["fas", "fa-dollar-sign", "fa-sm"] },
+            { name: "Image", type: "Image", icon: ["fas", "fa-image", "fa-sm"] },
+            { name: "Button", type: "Button", icon: ["fas", "fa-square", "fa-sm"] },
+            { name: "Survey Components", type: "FieldSectionCategory" },
+            { name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },
+            { name: "Table", type: "Table", icon: ["fas", "fa-table", "fa-sm"] },
+            { name: "Page Components", type: "FieldSectionCategory" },
+            { name: "Divider", type: "Divider", icon: ["fas", "fa-minus", "fa-sm"] },
+            { name: "Page Break", type: "PageBreak", icon: ["fas", "fa-file-alt", "fa-sm"] },
+            { name: "Section Break", type: "SectionBreak", icon: ["fas", "fa-columns", "fa-sm"] },
         ],
         complexFormElements: [
             { name: "Heading", type: "Heading", icon: ["fas", "fa-heading", "fa-sm"] },
@@ -14,29 +28,12 @@
             { name: "Email", type: "Email", icon: ["fas", "fa-envelope", "fa-sm"] },
             { name: "Phone", type: "Phone", icon: ["fas", "fa-phone", "fa-sm"] },
             { name: "Address", type: "Address", icon: ["fas", "fa-map-marker-alt", "fa-sm"] },
-            { name: "Date", type: "Date", icon: ["fas", "fa-calendar-alt", "fa-sm"] },
-            { name: "Time", type: "Time", icon: ["fas", "fa-clock", "fa-sm"] },
-            { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
-            { name: "Signature", type: "Signature", icon: ["fas", "fa-pen", "fa-sm"] },
-            { name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },
-            { name: "Slider", type: "Slider", icon: ["fas", "fa-sliders-h", "fa-sm"] },
-            { name: "Number", type: "Number", icon: ["fas", "fa-hashtag", "fa-sm"] },
-            { name: "Currency", type: "Currency", icon: ["fas", "fa-dollar-sign", "fa-sm"] },
-            { name: "Website", type: "Website", icon: ["fas", "fa-globe", "fa-sm"] },
-            { name: "Password", type: "Password", icon: ["fas", "fa-key", "fa-sm"] },
-            { name: "Image", type: "Image", icon: ["fas", "fa-image", "fa-sm"] },
             { name: "Video", type: "Video", icon: ["fas", "fa-video", "fa-sm"] },
             { name: "Audio", type: "Audio", icon: ["fas", "fa-volume-up", "fa-sm"] },
             { name: "Barcode", type: "Barcode", icon: ["fas", "fa-barcode", "fa-sm"] },
             { name: "QR Code", type: "QRCode", icon: ["fas", "fa-qrcode", "fa-sm"] },
             { name: "Location", type: "Location", icon: ["fas", "fa-map-marker-alt", "fa-sm"] },
-            { name: "Button", type: "Button", icon: ["fas", "fa-square", "fa-sm"] },
             { name: "Link", type: "Link", icon: ["fas", "fa-link", "fa-sm"] },
-            { name: "HTML", type: "HTML", icon: ["fas", "fa-code", "fa-sm"] },
-            { name: "Divider", type: "Divider", icon: ["fas", "fa-minus", "fa-sm"] },
-            { name: "Page Break", type: "PageBreak", icon: ["fas", "fa-file-alt", "fa-sm"] },
-            { name: "Section Break", type: "SectionBreak", icon: ["fas", "fa-columns", "fa-sm"] },
-            { name: "Table", type: "Table", icon: ["fas", "fa-table", "fa-sm"] },
             { name: "List", type: "List", icon: ["fas", "fa-list", "fa-sm"] },
             { name: "Grid", type: "Grid", icon: ["fas", "fa-th", "fa-sm"] },
             { name: "Tabs", type: "Tabs", icon: ["fas", "fa-window-maximize", "fa-sm"] }
@@ -56,8 +53,14 @@
 
         //loop through all basic components to create
         this._componentsToCreate.basicFormElements.forEach((component) => {
-            const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
-            this._basicFormElements.appendChild(addElementComponent);
+            if (component.type !== "FieldSectionCategory") {
+                const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
+                this._basicFormElements.appendChild(addElementComponent);
+            }
+            else {
+                const addFieldSectionCategory = this.FieldSectionCategoryComponent(component.name);
+                this._basicFormElements.appendChild(addFieldSectionCategory);
+            }
         });
 
         //loop through all complex components to create
@@ -89,6 +92,16 @@
         divElementnName.innerText = name;
         listElementWrapper.appendChild(divElementnName);
 
+        return listElementWrapper;
+    }
+
+    private FieldSectionCategoryComponent(name: string): HTMLLIElement {
+        const listElementWrapper = document.createElement("li") as HTMLLIElement;
+        listElementWrapper.classList.add("filteredComponent");
+
+        const divText = document.createElement("div") as HTMLDivElement;
+        divText.textContent = name;
+        listElementWrapper.appendChild(divText);
         return listElementWrapper;
     }
 
@@ -210,6 +223,7 @@
         select.setAttribute("name", formElementName);
         select.ariaLabel = "Dropdown";
         select.setAttribute("data-property-reference", "Dropdown");
+        select.disabled = true;
         divDropdownWrapper.appendChild(select);
 
         const ddlOptionData: DropdownOptionDTO = { dropdownValue: "", dropdownTextContent: "Select an option" };
