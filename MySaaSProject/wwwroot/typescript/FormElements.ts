@@ -498,9 +498,9 @@
         divTextStart.appendChild(dropdownLabel);
 
         const formId = this.GetFormElementId(formElementName) as string;
-        const tableCols: string[] = ["#", "col 1", "col 1"];
+        const tableCols: string[] = ["#", "col 1", "col 2"];
         const tableRows: string[] = ["row 1", "row 2", "row 3"];
-        const table = this._utils.CreateTable(tableCols, tableRows);
+        const table = this._utils.CreateTable(tableCols, tableRows, "MultipleChoice");
         table.id = formId;
         //table.classList.add("table", "table-bordered", "border-primary");
         table.setAttribute("name", formElementName);

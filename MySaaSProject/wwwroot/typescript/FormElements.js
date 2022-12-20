@@ -408,9 +408,9 @@ class FormElements {
         dropdownLabel.innerText = "Type a question";
         divTextStart.appendChild(dropdownLabel);
         const formId = this.GetFormElementId(formElementName);
-        const tableCols = ["#", "col 1", "col 1"];
+        const tableCols = ["#", "col 1", "col 2"];
         const tableRows = ["row 1", "row 2", "row 3"];
-        const table = this._utils.CreateTable(tableCols, tableRows);
+        const table = this._utils.CreateTable(tableCols, tableRows, "MultipleChoice");
         table.id = formId;
         //table.classList.add("table", "table-bordered", "border-primary");
         table.setAttribute("name", formElementName);

@@ -94,9 +94,9 @@ class Utilities {
         tdQuestion.textContent = tableBodyData;
         return tdQuestion;
     }
-    CreateTable(tblHeaderData, tableBodyData) {
+    CreateTable(tblHeaderData, tableBodyData, optionType) {
         const table = document.createElement("table");
-        table.classList.add("table", "table-striped", "table-hover", "table-bordered", "border-primary");
+        table.classList.add("table", "table-striped", "table-bordered", "border-primary");
         const thead = document.createElement("thead");
         table.appendChild(thead);
         const trHeaderRow = document.createElement("tr");
@@ -115,15 +115,30 @@ class Utilities {
             th.scope = "row";
             th.textContent = row;
             tr.appendChild(th);
-            /*loop throught table header data - 1*/
             for (let i = 0; i < slicedTblHeaderData.length; i++) {
-                const data = {
-                    singleChoiceOptionId: "scOption" + i,
-                    singleChoiceElName: row,
-                    singleChoiceOptionTextContent: slicedTblHeaderData[i]
-                };
-                const scOptionData = this.CreateTableSingleChoiceOption(data);
-                tr.appendChild(scOptionData);
+                switch (optionType) {
+                    case "SingleChoice":
+                        const singleChoiceData = {
+                            singleChoiceOptionId: "scOption" + i,
+                            singleChoiceElName: row,
+                            singleChoiceOptionTextContent: slicedTblHeaderData[i]
+                        };
+                        const scOptionData = this.CreateTableSingleChoiceOption(singleChoiceData);
+                        tr.appendChild(scOptionData);
+                        break;
+                    case "MultipleChoice":
+                        const name = row.split(" ").join("_");
+                        const data = {
+                            multipleChoiceOptionId: `${name}_${i}`,
+                            multipleChoiceElName: `${name}_${i}`,
+                            multipleChoiceOptionValue: slicedTblHeaderData[i],
+                            multipleChoiceOptionTextContent: slicedTblHeaderData[i]
+                        };
+                        const mcOptionData = this.CreateTableMultipleChoiceOption(data);
+                        tr.appendChild(mcOptionData);
+                        break;
+                }
+                ;
             }
         });
         return table;
@@ -138,6 +153,18 @@ class Utilities {
         singleChoiceInput.value = scOptionData.singleChoiceOptionTextContent;
         singleChoiceInput.disabled = true;
         td.appendChild(singleChoiceInput);
+        return td;
+    }
+    CreateTableMultipleChoiceOption(mcOptionData) {
+        const td = document.createElement("td");
+        const checkboxInput = document.createElement("input");
+        checkboxInput.classList.add("form-check-input", "mx-auto", "d-flex");
+        checkboxInput.type = "checkbox";
+        checkboxInput.id = mcOptionData.multipleChoiceOptionId;
+        checkboxInput.name = mcOptionData.multipleChoiceElName;
+        checkboxInput.value = mcOptionData.multipleChoiceOptionValue;
+        checkboxInput.disabled = true;
+        td.appendChild(checkboxInput);
         return td;
     }
 }
