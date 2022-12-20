@@ -134,6 +134,10 @@
                 return this.FormElementFileUpload();
             case "Submit":
                 return this.FormElementSubmit();
+            case "Rating":
+                return null;
+            case "Table":
+                return this.FormElementTable();
             case "Heading":
                 return this.FormElementHeading();
             case "FullName":
@@ -478,6 +482,38 @@
         divTextCenter.appendChild(btnSubmit);
 
         return divSubmitWrapper;
+    }
+
+    private FormElementTable(): HTMLDivElement {
+        const formElementName: string = "dropdown";
+        const divDropdownWrapper = this.CreateFormElementWrapper(formElementName);
+
+        const divTextStart = document.createElement("div") as HTMLDivElement;
+        divTextStart.classList.add("text-start");
+        divDropdownWrapper.appendChild(divTextStart);
+
+        const dropdownLabel = document.createElement("label") as HTMLLabelElement;
+        dropdownLabel.classList.add("form-label");
+        dropdownLabel.innerText = "Type a question";
+        divTextStart.appendChild(dropdownLabel);
+
+        const formId = this.GetFormElementId(formElementName) as string;
+        const tableCols: string[] = ["#", "col 1", "col 1"];
+        const tableRows: string[] = ["row 1", "row 2", "row 3"];
+        const table = this._utils.CreateTable(tableCols, tableRows);
+        table.id = formId;
+        //table.classList.add("table", "table-bordered", "border-primary");
+        table.setAttribute("name", formElementName);
+        table.ariaLabel = "Table";
+        table.setAttribute("data-property-reference", "Table");
+        divDropdownWrapper.appendChild(table);
+
+        const ddlOptionData: DropdownOptionDTO = { dropdownValue: "", dropdownTextContent: "Select an option" };
+        const defaultOption: HTMLOptionElement = this._utils.CreateDropdownOption(ddlOptionData);
+        defaultOption.setAttribute("selected", "");
+        //table.appendChild(defaultOption);
+
+        return divDropdownWrapper;
     }
     //#endregion
 

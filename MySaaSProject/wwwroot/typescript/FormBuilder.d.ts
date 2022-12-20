@@ -43,4 +43,8 @@ type FieldLabelPropertyData = {
     InputVal: string;
     AriaRoleDesc: string;
     ElementToUpdate: HTMLElement;
-}
+};
+
+type TableRowDTO = {
+    tableRow: string[];
+};

@@ -212,3 +212,16 @@ body {
     min-width: 25%;
     display: inline-block;
 }
+
+.propertyLineSeparator {
+    border-bottom: 1px solid #cdcdcd !important;
+    border-top: 1px solid #cdcdcd !important;
+    padding: 15px 0px 15px 0px;
+    /*    border-bottom: 1px solid #520dc2;
+    margin: 0 -38px;
+    padding: 2.5em 52px;
+    border-bottom: 1px solid #333a43 !important;
+    border-top: 1px solid #495261 !important;
+    /*padding: 15px;*/
+    /*#6c757d*/
+}

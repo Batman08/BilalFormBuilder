@@ -82,5 +82,63 @@ class Utilities {
         divCheckboxOption.appendChild(checkboxLabel);
         return divCheckboxOption;
     }
+    //#region Table
+    CreateTableHeader(tableHeaderVal) {
+        const thQuestion = document.createElement("th");
+        thQuestion.scope = "col";
+        thQuestion.textContent = tableHeaderVal;
+        return thQuestion;
+    }
+    CreateTableBody(tableBodyData) {
+        const tdQuestion = document.createElement("td");
+        tdQuestion.textContent = tableBodyData;
+        return tdQuestion;
+    }
+    CreateTable(tblHeaderData, tableBodyData) {
+        const table = document.createElement("table");
+        table.classList.add("table", "table-striped", "table-hover", "table-bordered", "border-primary");
+        const thead = document.createElement("thead");
+        table.appendChild(thead);
+        const trHeaderRow = document.createElement("tr");
+        thead.appendChild(trHeaderRow);
+        tblHeaderData.forEach((col) => {
+            const th = this.CreateTableHeader(col);
+            trHeaderRow.appendChild(th);
+        });
+        const slicedTblHeaderData = tblHeaderData.slice(1);
+        const tbody = document.createElement("tbody");
+        table.appendChild(tbody);
+        tableBodyData.forEach((row) => {
+            const tr = document.createElement("tr");
+            tbody.appendChild(tr);
+            const th = document.createElement("th");
+            th.scope = "row";
+            th.textContent = row;
+            tr.appendChild(th);
+            /*loop throught table header data - 1*/
+            for (let i = 0; i < slicedTblHeaderData.length; i++) {
+                const data = {
+                    singleChoiceOptionId: "scOption" + i,
+                    singleChoiceElName: row,
+                    singleChoiceOptionTextContent: slicedTblHeaderData[i]
+                };
+                const scOptionData = this.CreateTableSingleChoiceOption(data);
+                tr.appendChild(scOptionData);
+            }
+        });
+        return table;
+    }
+    CreateTableSingleChoiceOption(scOptionData) {
+        const td = document.createElement("td");
+        const singleChoiceInput = document.createElement("input");
+        singleChoiceInput.type = "radio";
+        singleChoiceInput.id = scOptionData.singleChoiceOptionId;
+        singleChoiceInput.classList.add("form-check-input", "mx-auto", "d-flex");
+        singleChoiceInput.name = scOptionData.singleChoiceElName;
+        singleChoiceInput.value = scOptionData.singleChoiceOptionTextContent;
+        singleChoiceInput.disabled = true;
+        td.appendChild(singleChoiceInput);
+        return td;
+    }
 }
 //# sourceMappingURL=Utilities.js.map

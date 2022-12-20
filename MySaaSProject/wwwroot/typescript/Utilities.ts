@@ -47,7 +47,7 @@
         const hex = "#" + r + g + b;
         return hex;
     }
-    
+
     public CreateDropdownOption(ddlOptionData: DropdownOptionDTO): HTMLOptionElement {
         const ddlOption = document.createElement("option") as HTMLOptionElement;
         ddlOption.value = ddlOptionData.dropdownValue;
@@ -97,5 +97,82 @@
 
         return divCheckboxOption;
     }
+
+    //#region Table
+    public CreateTableHeader(tableHeaderVal: string): HTMLTableHeaderCellElement {
+        const thQuestion = document.createElement("th") as HTMLTableHeaderCellElement;
+        thQuestion.scope = "col";
+        thQuestion.textContent = tableHeaderVal;
+
+        return thQuestion;
+    }
+
+    public CreateTableBody(tableBodyData: string): HTMLTableCaptionElement {
+        const tdQuestion = document.createElement("td") as HTMLTableDataCellElement;
+        tdQuestion.textContent = tableBodyData;
+
+        return tdQuestion;
+    }
+
+    public CreateTable(tblHeaderData: string[], tableBodyData: string[]): HTMLTableElement {
+        const table = document.createElement("table") as HTMLTableElement;
+        table.classList.add("table", "table-striped", "table-hover", "table-bordered", "border-primary");
+
+        const thead = document.createElement("thead") as HTMLTableSectionElement;
+        table.appendChild(thead);
+
+        const trHeaderRow = document.createElement("tr") as HTMLTableRowElement;
+        thead.appendChild(trHeaderRow);
+
+        tblHeaderData.forEach((col) => {
+            const th = this.CreateTableHeader(col);
+            trHeaderRow.appendChild(th);
+        });
+
+        const slicedTblHeaderData = tblHeaderData.slice(1);
+
+        const tbody = document.createElement("tbody") as HTMLTableSectionElement;
+        table.appendChild(tbody);
+
+        tableBodyData.forEach((row) => {
+            const tr = document.createElement("tr") as HTMLTableRowElement;
+            tbody.appendChild(tr);
+
+            const th = document.createElement("th") as HTMLTableHeaderCellElement;
+            th.scope = "row";
+            th.textContent = row;
+            tr.appendChild(th);
+
+            /*loop throught table header data - 1*/
+            for (let i = 0; i < slicedTblHeaderData.length; i++) {
+                const data: SingleChoiceOptionDTO = {
+                    singleChoiceOptionId: "scOption" + i,
+                    singleChoiceElName: row,
+                    singleChoiceOptionTextContent: slicedTblHeaderData[i]
+                };
+                const scOptionData = this.CreateTableSingleChoiceOption(data);
+                tr.appendChild(scOptionData);
+            }
+        });
+
+        return table;
+    }
+
+    public CreateTableSingleChoiceOption(scOptionData: SingleChoiceOptionDTO): HTMLTableDataCellElement {
+        const td = document.createElement("td") as HTMLTableDataCellElement;
+
+        const singleChoiceInput = document.createElement("input") as HTMLInputElement;
+        singleChoiceInput.type = "radio";
+        singleChoiceInput.id = scOptionData.singleChoiceOptionId;
+        singleChoiceInput.classList.add("form-check-input", "mx-auto", "d-flex");
+        singleChoiceInput.name = scOptionData.singleChoiceElName;
+        singleChoiceInput.value = scOptionData.singleChoiceOptionTextContent;
+        singleChoiceInput.disabled = true;
+        td.appendChild(singleChoiceInput);
+
+        return td;
+    }
+
+    //#endregion
     //#endregion
 }
