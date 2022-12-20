@@ -43,6 +43,11 @@ class FormElementProperties {
             case "submitWrapper":
                 this.SubmitProperties(element);
                 break;
+            case "ratingWrapper":
+                break;
+            case "tableWrapper":
+                this.TableProperties(element);
+                break;
             case "headingWrapper":
                 this.HeadingProperties(element);
                 break;
@@ -93,19 +98,19 @@ class FormElementProperties {
         return optionsWrapper;
     }
 
-    private MultiSelectTextAreaProperty(optionsFromMultiSelectEl: NodeListOf<Node>, elementToUpdate: HTMLElement, updateFunc: Function): HTMLDivElement {
+    private MultiSelectTextAreaProperty(optionsFromMultiSelectEl: NodeListOf<Node>, elementToUpdate: HTMLElement, updateFunc: Function, labelText: string): HTMLDivElement {
         const divTextarea = document.createElement("div") as HTMLDivElement;
         divTextarea.classList.add("form-floating");
 
         const textarea = document.createElement("textarea") as HTMLTextAreaElement;
         textarea.id = "txtAreaOptions";
         textarea.classList.add("form-control");
-        textarea.placeholder = "Enter each option on a new line";
+        textarea.placeholder = labelText;
         textarea.style.height = "100px";
 
         const textareaLabel = document.createElement("label") as HTMLLabelElement;
         textareaLabel.htmlFor = "txtAreaOptions";
-        textareaLabel.textContent = "Enter each option on a new line";
+        textareaLabel.textContent = labelText;
 
         divTextarea.appendChild(textarea);
         divTextarea.appendChild(textareaLabel);
@@ -192,7 +197,7 @@ class FormElementProperties {
         //#endregion
 
         //#region Textarea Property Element
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromDropdown, dropdownElement, this.UpdateDropdownOptions);
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromDropdown, dropdownElement, this.UpdateDropdownOptions, "Enter each option on a new line");
         optionsWrapper.appendChild(textarea);
         //#endregion
 
@@ -245,7 +250,7 @@ class FormElementProperties {
         //#endregion
 
         //#region Textarea Property Element
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromSingleChoice, singleChoiceElement, this.UpdateSingleChoiceOptions);
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromSingleChoice, singleChoiceElement, this.UpdateSingleChoiceOptions, "Enter each option on a new line");
         optionsWrapper.appendChild(textarea);
         //#endregion
 
@@ -301,7 +306,7 @@ class FormElementProperties {
         //#endregion
 
         //#region Textarea Property Element
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromMultipleChoice, multipleChoiceElement, this.UpdateMultipleChoiceOptions);
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromMultipleChoice, multipleChoiceElement, this.UpdateMultipleChoiceOptions, "Enter each option on a new line");
         optionsWrapper.appendChild(textarea);
 
         //#endregion
@@ -689,6 +694,172 @@ class FormElementProperties {
             btnAllignmentEl.className = "text-end"
         }
     }
+    //#endregion
+
+    //#region Table Properties
+    private TableProperties(TableElementWrapper: HTMLElement): void {
+        this.rightDesigner.innerHTML = '';
+
+        const tableEl = TableElementWrapper.querySelector("[name=table]") as HTMLTableElement;
+        const labelEl = TableElementWrapper.querySelector("label") as HTMLLabelElement;
+
+        const btnInputTypesEl = tableEl.parentElement as HTMLDivElement;
+        const tableLabelText: string = labelEl.textContent;
+        const currentInputType: string = tableEl.getAttribute("data-align");
+
+        //current rows/columns
+        const tableRows = tableEl.querySelector("thead").childNodes[0].childNodes as NodeListOf<Node>;
+
+
+        //#region Table Label Property
+
+        //#region Table Label
+        const TableTextWrapper = document.createElement("div") as HTMLDivElement;
+        TableTextWrapper.classList.add("mb-3");
+
+        const fieldLabel = document.createElement("label") as HTMLLabelElement;
+        fieldLabel.htmlFor = "editLabel";
+        fieldLabel.classList.add("form-label");
+        fieldLabel.textContent = "";
+
+        const fieldInput = document.createElement("input") as HTMLInputElement;
+        fieldInput.id = "editLabel";
+        fieldInput.classList.add("form-control");
+        fieldInput.type = "text";
+        fieldInput.placeholder = "type a question";
+        fieldInput.value = tableLabelText;
+        fieldInput.ariaRoleDescription = "Edit Table Label";
+        fieldInput.oninput = (ev: InputEvent) => { labelEl.textContent = fieldInput.value; };
+
+        TableTextWrapper.appendChild(fieldLabel);
+        TableTextWrapper.appendChild(fieldInput);
+        //#endregion
+
+        //#region Button Allignment
+        const allignmentWrapper = document.createElement("div") as HTMLDivElement;
+        allignmentWrapper.classList.add("mb-3");
+
+        const allignmentLabel = document.createElement("label") as HTMLLabelElement;
+        allignmentLabel.htmlFor = "editAllignment";
+        allignmentLabel.classList.add("form-label");
+        allignmentLabel.textContent = "Button Allignment";
+        allignmentWrapper.appendChild(allignmentLabel);
+
+        const divAllignmentGroup = document.createElement("div") as HTMLDivElement;
+        divAllignmentGroup.setAttribute("role", "group");
+        divAllignmentGroup.classList.add("btn-group");
+        divAllignmentGroup.ariaLabel = "allignment toggle button group"
+        divAllignmentGroup.style.width = "100%";
+        allignmentWrapper.appendChild(divAllignmentGroup);
+
+        //#region Left Option
+        const allignLeftInput = document.createElement("input") as HTMLInputElement;
+        allignLeftInput.type = "radio";
+        allignLeftInput.classList.add("btn-check");
+        allignLeftInput.name = "btnAllign";
+        allignLeftInput.id = "btnAllignLeft";
+        allignLeftInput.autocomplete = "off";
+        allignLeftInput.oninput = () => this.AdjustButtonAllignment(tableEl, btnInputTypesEl, "left");
+
+        const allignLeftLabel = document.createElement("label") as HTMLLabelElement;
+        allignLeftLabel.classList.add("btn", "btn-outline-primary");
+        allignLeftLabel.htmlFor = "btnAllignLeft";
+        allignLeftLabel.textContent = "LEFT";
+
+        divAllignmentGroup.appendChild(allignLeftInput);
+        divAllignmentGroup.appendChild(allignLeftLabel);
+        //#endregion
+        //#region Center Option
+        const allignCenterInput = document.createElement("input") as HTMLInputElement;
+        allignCenterInput.type = "radio";
+        allignCenterInput.classList.add("btn-check");
+        allignCenterInput.name = "btnAllign";
+        allignCenterInput.id = "btnAllignCenter";
+        allignCenterInput.autocomplete = "off";
+        allignCenterInput.oninput = () => this.AdjustButtonAllignment(tableEl, btnInputTypesEl, "center");
+
+        const allignCenterLabel = document.createElement("label") as HTMLLabelElement;
+        allignCenterLabel.classList.add("btn", "btn-outline-primary");
+        allignCenterLabel.htmlFor = "btnAllignCenter";
+        allignCenterLabel.textContent = "CENTER";
+
+        divAllignmentGroup.appendChild(allignCenterInput);
+        divAllignmentGroup.appendChild(allignCenterLabel);
+        //#endregion
+        //#region Right Option
+        const allignRightInput = document.createElement("input") as HTMLInputElement;
+        allignRightInput.type = "radio";
+        allignRightInput.classList.add("btn-check");
+        allignRightInput.name = "btnAllign";
+        allignRightInput.id = "btnAllignRight";
+        allignRightInput.autocomplete = "off";
+        allignRightInput.oninput = () => this.AdjustButtonAllignment(tableEl, btnInputTypesEl, "right");
+
+        const allignRightLabel = document.createElement("label") as HTMLLabelElement;
+        allignRightLabel.classList.add("btn", "btn-outline-primary");
+        allignRightLabel.htmlFor = "btnAllignRight";
+        allignRightLabel.textContent = "RIGHT";
+
+        divAllignmentGroup.appendChild(allignRightInput);
+        divAllignmentGroup.appendChild(allignRightLabel);
+        //#endregion
+
+        if (currentInputType === "left")
+            allignLeftInput.checked = true;
+        else if (currentInputType === "center")
+            allignCenterInput.checked = true;
+        else if (currentInputType === "right")
+            allignRightInput.checked = true;
+
+        //#endregion
+
+        //#region rows/columns
+
+        //#region Rows Textarea Property Element
+        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("rows", "Rows");
+
+        const textarea = this.MultiSelectTextAreaProperty(tableRows, tableEl, this.UpdateTableRows, "Enter row labels for table element");
+        optionsWrapper.appendChild(textarea);
+        //#endregion
+
+        //#endregion
+
+        //#endregion
+
+        this.rightDesigner.appendChild(TableTextWrapper);
+        this.rightDesigner.appendChild(allignmentWrapper);
+        this.rightDesigner.appendChild(optionsWrapper);
+    }
+
+    private ChangeInputType(btnSubmitEl: HTMLElement, btnAllignmentEl: HTMLDivElement, allignment: string): void {
+        if (allignment === "left") {
+            btnSubmitEl.setAttribute("data-align", "left");
+            btnAllignmentEl.className = "text-start";
+        }
+        else if (allignment === "center") {
+            btnSubmitEl.setAttribute("data-align", "center");
+            btnAllignmentEl.className = "text-center"
+        }
+        else if (allignment === "right") {
+            btnSubmitEl.setAttribute("data-align", "right");
+            btnAllignmentEl.className = "text-end"
+        }
+    }
+
+    private UpdateTableRows(utils: Utilities, tableElWrapper: HTMLTableElement, rows: string[]): void {
+        const thead = tableElWrapper.querySelector("thead") as HTMLTableSectionElement;
+        thead.innerHTML = "";
+
+        const trHeaderRow = document.createElement("tr") as HTMLTableRowElement;
+        thead.appendChild(trHeaderRow);
+
+        rows.forEach((col) => {
+            const th = utils.CreateTableHeader(col);
+            trHeaderRow.appendChild(th);
+        });
+        rows = [];
+    }
+
     //#endregion
 
     //#endregion

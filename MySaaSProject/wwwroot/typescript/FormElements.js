@@ -119,8 +119,8 @@ class FormElements {
                 return this.FormElementFileUpload();
             case "Submit":
                 return this.FormElementSubmit();
-            case "Rating":
-                return null;
+            //case "Rating":
+            //    return null;
             case "Table":
                 return this.FormElementTable();
             case "Heading":
@@ -398,30 +398,25 @@ class FormElements {
         return divSubmitWrapper;
     }
     FormElementTable() {
-        const formElementName = "dropdown";
-        const divDropdownWrapper = this.CreateFormElementWrapper(formElementName);
+        const formElementName = "table";
+        const divTableWrapper = this.CreateFormElementWrapper(formElementName);
         const divTextStart = document.createElement("div");
         divTextStart.classList.add("text-start");
-        divDropdownWrapper.appendChild(divTextStart);
-        const dropdownLabel = document.createElement("label");
-        dropdownLabel.classList.add("form-label");
-        dropdownLabel.innerText = "Type a question";
-        divTextStart.appendChild(dropdownLabel);
+        divTableWrapper.appendChild(divTextStart);
+        const tableLabel = document.createElement("label");
+        tableLabel.classList.add("form-label");
+        tableLabel.innerText = "Type a question";
+        divTextStart.appendChild(tableLabel);
         const formId = this.GetFormElementId(formElementName);
         const tableCols = ["#", "col 1", "col 2"];
         const tableRows = ["row 1", "row 2", "row 3"];
         const table = this._utils.CreateTable(tableCols, tableRows, "MultipleChoice");
         table.id = formId;
-        //table.classList.add("table", "table-bordered", "border-primary");
         table.setAttribute("name", formElementName);
         table.ariaLabel = "Table";
         table.setAttribute("data-property-reference", "Table");
-        divDropdownWrapper.appendChild(table);
-        const ddlOptionData = { dropdownValue: "", dropdownTextContent: "Select an option" };
-        const defaultOption = this._utils.CreateDropdownOption(ddlOptionData);
-        defaultOption.setAttribute("selected", "");
-        //table.appendChild(defaultOption);
-        return divDropdownWrapper;
+        divTableWrapper.appendChild(table);
+        return divTableWrapper;
     }
     //#endregion
     //#region Complex Form Elements
