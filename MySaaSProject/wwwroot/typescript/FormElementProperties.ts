@@ -467,7 +467,10 @@ class FormElementProperties {
         imageSizeInput.type = "number";
         imageSizeInput.classList.add("form-control");
         imageSizeInput.placeholder = placeholder;
-        imageSizeInput.value = imageEl.width.toString();
+        if (dimensionType === "width")
+            imageSizeInput.value = imageEl.naturalWidth.toString();
+        else if (dimensionType === "height")
+            imageSizeInput.value = imageEl.naturalHeight.toString();
         imageSizeInput.oninput = () => this.UpdateImageSize(imageSizeInput, imageEl, dimensionType);
         divCol.appendChild(imageSizeInput);
         return divCol;
@@ -508,9 +511,9 @@ class FormElementProperties {
 
         const currentImage = document.createElement("img") as HTMLImageElement;
         currentImage.src = imageEl.src;
-        currentImage.classList.add("mx-auto", "d-block", "rounded");
-        currentImage.style.width = "350px";
-        currentImage.style.height = "350px";
+        currentImage.classList.add("d-block", "rounded");
+        currentImage.style.width = "150px";
+        currentImage.style.height = "150px";
         divImagePreview.appendChild(currentImage);
 
         const btnRemoveImage = document.createElement("button") as HTMLButtonElement;
@@ -541,10 +544,12 @@ class FormElementProperties {
     }
 
     private RemoveImage(imageEl: HTMLImageElement): void {
-        imageEl.src = "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image-300x203.jpg";
-        imageEl.classList.remove("added");
-
         this.rightDesigner.innerHTML = "";
+        imageEl.src = "";
+        imageEl.src = "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image-300x203.jpg";
+        imageEl.width = 300;
+        imageEl.height = 203;
+        imageEl.classList.remove("added");
 
         const imgSizeInputGroupEl: HTMLDivElement = this.ImgSizeInputGroup(imageEl);
         const imagePropertyWrapper: HTMLDivElement = this.UpdateImageProperties(imageEl);
