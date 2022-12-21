@@ -114,7 +114,7 @@
         return tdQuestion;
     }
 
-    public CreateTable(tblHeaderData: string[], tableBodyData: string[], optionType: string): HTMLTableElement {
+    public CreateTable(tblHeaderData: string[], tableBodyData: string[], inputType: string): HTMLTableElement {
         const table = document.createElement("table") as HTMLTableElement;
         table.classList.add("table", "table-striped", "table-bordered", "border-primary");
 
@@ -144,7 +144,7 @@
             tr.appendChild(th);
 
             for (let i = 0; i < slicedTblHeaderData.length; i++) {
-                switch (optionType) {
+                switch (inputType) {
                     case "SingleChoice":
                         const singleChoiceData: SingleChoiceOptionDTO = {
                             singleChoiceOptionId: "scOption" + i,

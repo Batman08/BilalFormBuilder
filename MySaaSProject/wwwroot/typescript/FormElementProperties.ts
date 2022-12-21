@@ -709,7 +709,7 @@ class FormElementProperties {
 
         //current rows/columns
         const tableRows = tableEl.querySelector("thead").childNodes[0].childNodes as NodeListOf<Node>;
-
+        const tableColumns = tableEl.querySelector("thead").childNodes as NodeListOf<Node>;
 
         //#region Table Label Property
 
@@ -816,19 +816,23 @@ class FormElementProperties {
         //#region rows/columns
 
         //#region Rows Textarea Property Element
-        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("rows", "Rows");
-
-        const textarea = this.MultiSelectTextAreaProperty(tableRows, tableEl, this.UpdateTableRows, "Enter row labels for table element");
-        optionsWrapper.appendChild(textarea);
+        const rowsWrapper: HTMLDivElement = this.TextareaLabelProperty("rows", "Rows");
+        const rowsTextarea = this.MultiSelectTextAreaProperty(tableRows, tableEl, this.UpdateTableRows, "Enter row labels for table element");
+        rowsWrapper.appendChild(rowsTextarea);
         //#endregion
-
+        //#region Columns Textarea Property Element
+        const columnsWrapper: HTMLDivElement = this.TextareaLabelProperty("columns", "Columns");
+        const columnsTextarea = this.MultiSelectTextAreaProperty(tableColumns, tableEl, this.UpdateTableColumns, "Enter column labels for table element");
+        columnsWrapper.appendChild(columnsTextarea);
+        //#endregion
         //#endregion
 
         //#endregion
 
         this.rightDesigner.appendChild(TableTextWrapper);
         this.rightDesigner.appendChild(allignmentWrapper);
-        this.rightDesigner.appendChild(optionsWrapper);
+        this.rightDesigner.appendChild(rowsWrapper);
+        this.rightDesigner.appendChild(columnsWrapper);
     }
 
     private ChangeInputType(btnSubmitEl: HTMLElement, btnAllignmentEl: HTMLDivElement, allignment: string): void {
@@ -859,6 +863,52 @@ class FormElementProperties {
         });
         rows = [];
     }
+
+    private UpdateTableColumns(utils: Utilities, tableElWrapper: HTMLTableElement, columns: string[]): void {
+        //check child nodes are correct
+        const inputType: string = tableElWrapper.getAttribute("data-table-input-type");
+        const tbody = tableElWrapper.querySelector("tbody") as HTMLTableSectionElement;
+        tbody.innerHTML = "";
+
+        const slicedTblHeaderData = columns.slice(1);
+
+        columns.forEach((col) => {
+            const tr = document.createElement("tr") as HTMLTableRowElement;
+            tbody.appendChild(tr);
+
+            const th = document.createElement("th") as HTMLTableHeaderCellElement;
+            th.scope = "row";
+            th.textContent = col;
+            tr.appendChild(th);
+
+            for (let i = 0; i < slicedTblHeaderData.length; i++) {
+                switch (inputType) {
+                    case "SingleChoice":
+                        const singleChoiceData: SingleChoiceOptionDTO = {
+                            singleChoiceOptionId: "scOption" + i,
+                            singleChoiceElName: col,
+                            singleChoiceOptionTextContent: slicedTblHeaderData[i]
+                        };
+                        const scOptionData = utils.CreateTableSingleChoiceOption(singleChoiceData);
+                        tr.appendChild(scOptionData);
+                        break;
+                    case "MultipleChoice":
+                        const name: string = col.split(" ").join("_");
+                        const data: MultipleChoiceOptionDTO = {
+                            multipleChoiceOptionId: `${name}_${i}`,
+                            multipleChoiceElName: `${name}_${i}`,
+                            multipleChoiceOptionValue: slicedTblHeaderData[i],
+                            multipleChoiceOptionTextContent: slicedTblHeaderData[i]
+                        };
+                        const mcOptionData = utils.CreateTableMultipleChoiceOption(data);
+                        tr.appendChild(mcOptionData);
+                        break;
+                };
+            }
+        });
+        columns = [];
+    }
+
 
     //#endregion
 

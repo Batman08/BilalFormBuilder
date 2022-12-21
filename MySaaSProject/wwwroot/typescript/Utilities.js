@@ -94,7 +94,7 @@ class Utilities {
         tdQuestion.textContent = tableBodyData;
         return tdQuestion;
     }
-    CreateTable(tblHeaderData, tableBodyData, optionType) {
+    CreateTable(tblHeaderData, tableBodyData, inputType) {
         const table = document.createElement("table");
         table.classList.add("table", "table-striped", "table-bordered", "border-primary");
         const thead = document.createElement("thead");
@@ -116,7 +116,7 @@ class Utilities {
             th.textContent = row;
             tr.appendChild(th);
             for (let i = 0; i < slicedTblHeaderData.length; i++) {
-                switch (optionType) {
+                switch (inputType) {
                     case "SingleChoice":
                         const singleChoiceData = {
                             singleChoiceOptionId: "scOption" + i,
