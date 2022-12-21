@@ -111,7 +111,7 @@
             return null;
 
         const elementType: string = formElementToCreate.substring(11);
-        
+
         //switch statement
         switch (elementType) {
             case "Paragraph":
@@ -500,11 +500,13 @@
         const formId = this.GetFormElementId(formElementName) as string;
         const tableCols: string[] = ["#", "col 1", "col 2"];
         const tableRows: string[] = ["row 1", "row 2", "row 3"];
-        const table = this._utils.CreateTable(tableCols, tableRows, "MultipleChoice");
+        const tableInputType: string = "MultipleChoice";
+        const table = this._utils.CreateTable(tableCols, tableRows, tableInputType);
         table.id = formId;
         table.setAttribute("name", formElementName);
         table.ariaLabel = "Table";
         table.setAttribute("data-property-reference", "Table");
+        table.setAttribute("data-input-type", tableInputType);
         divTableWrapper.appendChild(table);
 
         return divTableWrapper;

@@ -98,18 +98,18 @@ class FormElementProperties {
         return optionsWrapper;
     }
 
-    private MultiSelectTextAreaProperty(optionsFromMultiSelectEl: NodeListOf<Node>, elementToUpdate: HTMLElement, updateFunc: Function, labelText: string): HTMLDivElement {
+    private MultiSelectTextAreaProperty(optionsFromMultiSelectEl: NodeListOf<Node>, updateFuncData: any, updateFunc: Function, labelText: string, textareaId: string): HTMLDivElement {
         const divTextarea = document.createElement("div") as HTMLDivElement;
         divTextarea.classList.add("form-floating");
 
         const textarea = document.createElement("textarea") as HTMLTextAreaElement;
-        textarea.id = "txtAreaOptions";
+        textarea.id = textareaId;
         textarea.classList.add("form-control");
         textarea.placeholder = labelText;
         textarea.style.height = "100px";
 
         const textareaLabel = document.createElement("label") as HTMLLabelElement;
-        textareaLabel.htmlFor = "txtAreaOptions";
+        textareaLabel.htmlFor = textareaId;
         textareaLabel.textContent = labelText;
 
         divTextarea.appendChild(textarea);
@@ -127,7 +127,8 @@ class FormElementProperties {
 
         textarea.oninput = (ev: KeyboardEvent) => {
             const options: string[] = this.GetOptionsFromTextarea(textarea);
-            updateFunc(this._utils, elementToUpdate, options);
+            updateFuncData.options = options;
+            updateFunc(updateFuncData);
         };
 
         return divTextarea;
@@ -197,7 +198,11 @@ class FormElementProperties {
         //#endregion
 
         //#region Textarea Property Element
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromDropdown, dropdownElement, this.UpdateDropdownOptions, "Enter each option on a new line");
+        const functionData:DDLUpdateFuncDTO = {
+            utils: this._utils,
+            dropdownElWrapper: dropdownElement
+        }
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromDropdown, functionData, this.UpdateDropdownOptions, "Enter each option on a new line", "optionsTextarea");
         optionsWrapper.appendChild(textarea);
         //#endregion
 
@@ -207,8 +212,8 @@ class FormElementProperties {
         this.rightDesigner.appendChild(optionsWrapper);
     }
 
-    private UpdateDropdownOptions(utils: Utilities, dropdownElWrapper: HTMLElement, options: string[]): void {
-        const ddlEl = dropdownElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
+    private UpdateDropdownOptions(dropdownData: DDLUpdateFuncDTO): void {
+        const ddlEl = dropdownData.dropdownElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
         const currentDropdownOptions = ddlEl.querySelectorAll("option") as NodeListOf<HTMLOptionElement>;
         currentDropdownOptions.forEach((option) => {
             if (option.textContent === "Select an option")
@@ -217,9 +222,9 @@ class FormElementProperties {
             option.remove();
         });
 
-        for (let i = 0; i < options.length; i++) {
-            const ddlOptionData: DropdownOptionDTO = { dropdownValue: options[i], dropdownTextContent: options[i] };
-            const newOption: HTMLOptionElement = utils.CreateDropdownOption(ddlOptionData);
+        for (let i = 0; i < dropdownData.options.length; i++) {
+            const ddlOptionData: DropdownOptionDTO = { dropdownValue: dropdownData.options[i], dropdownTextContent: dropdownData.options[i] };
+            const newOption: HTMLOptionElement = dropdownData.utils.CreateDropdownOption(ddlOptionData);
             ddlEl.appendChild(newOption);
         }
     }
@@ -250,7 +255,11 @@ class FormElementProperties {
         //#endregion
 
         //#region Textarea Property Element
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromSingleChoice, singleChoiceElement, this.UpdateSingleChoiceOptions, "Enter each option on a new line");
+        const functionData: SCLUpdateFuncDTO = {
+            utils: this._utils,
+            singlchoiceElWrapper: singleChoiceElement
+        }
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromSingleChoice, functionData, this.UpdateSingleChoiceOptions, "Enter each option on a new line", "optionsTextarea");
         optionsWrapper.appendChild(textarea);
         //#endregion
 
@@ -260,22 +269,22 @@ class FormElementProperties {
         this.rightDesigner.appendChild(optionsWrapper);
     }
 
-    private UpdateSingleChoiceOptions(utils: Utilities, singlchoiceElWrapper: HTMLElement, options: string[]): void {
-        const singleChoicelEl = singlchoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
+    private UpdateSingleChoiceOptions(scData: SCLUpdateFuncDTO): void {
+        const singleChoicelEl = scData.singlchoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
         singleChoicelEl.innerHTML = "";
 
         const singleChoicelElNumber: string = singleChoicelEl.id.substring(12);
         const singleChoiceElName: string = `${singleChoicelEl.getAttribute("name")}Q${singleChoicelElNumber}`;
-        for (let i = 0; i < options.length; i++) {
+        for (let i = 0; i < scData.options.length; i++) {
             const singleChoiceOptionNum = i + 1;
             const singleChoiceOptionId = `single_choice_${singleChoicelElNumber}_option_${singleChoiceOptionNum}`;
 
             const scOptionData: SingleChoiceOptionDTO = {
                 singleChoiceOptionId: singleChoiceOptionId,
                 singleChoiceElName: singleChoiceElName,
-                singleChoiceOptionTextContent: options[i]
+                singleChoiceOptionTextContent: scData.options[i]
             };
-            const divSinglChoiceWrapper: HTMLDivElement = utils.CreateSingleChoiceOption(scOptionData);
+            const divSinglChoiceWrapper: HTMLDivElement = scData.utils.CreateSingleChoiceOption(scOptionData);
             singleChoicelEl.appendChild(divSinglChoiceWrapper);
         }
     }
@@ -306,7 +315,11 @@ class FormElementProperties {
         //#endregion
 
         //#region Textarea Property Element
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromMultipleChoice, multipleChoiceElement, this.UpdateMultipleChoiceOptions, "Enter each option on a new line");
+        const functionData: MCLUpdateFuncDTO = {
+            utils: this._utils,
+            multipleChoiceElWrapper: multipleChoiceElement
+        }
+        const textarea = this.MultiSelectTextAreaProperty(optionsFromMultipleChoice, functionData, this.UpdateMultipleChoiceOptions, "Enter each option on a new line", "optionsTextarea");
         optionsWrapper.appendChild(textarea);
 
         //#endregion
@@ -317,22 +330,22 @@ class FormElementProperties {
         this.rightDesigner.appendChild(optionsWrapper);
     }
 
-    private UpdateMultipleChoiceOptions(utils: Utilities, multipleChoiceElWrapper: HTMLElement, options: string[]): void {
-        const multipleChoicelEl = multipleChoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
+    private UpdateMultipleChoiceOptions(mcData: MCLUpdateFuncDTO): void {
+        const multipleChoicelEl = mcData.multipleChoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
         multipleChoicelEl.innerHTML = "";
 
         const multipleChoicelElNumber: string = multipleChoicelEl.id.substring(14);
-        for (let i = 0; i < options.length; i++) {
+        for (let i = 0; i < mcData.options.length; i++) {
             const multipleChoiceOptionNum = i;
             const multipleChoiceOptionId = `multiple_choice_${multipleChoicelElNumber}_option_${multipleChoiceOptionNum}`;
 
             const mcOptionData: MultipleChoiceOptionDTO = {
                 multipleChoiceOptionId: multipleChoiceOptionId,
                 multipleChoiceElName: multipleChoiceOptionId,
-                multipleChoiceOptionValue: options[i],
-                multipleChoiceOptionTextContent: options[i]
+                multipleChoiceOptionValue: mcData.options[i],
+                multipleChoiceOptionTextContent: mcData.options[i]
             };
-            const divSinglChoiceWrapper: HTMLDivElement = utils.CreateMultipleChoiceOption(mcOptionData);
+            const divSinglChoiceWrapper: HTMLDivElement = mcData.utils.CreateMultipleChoiceOption(mcOptionData);
             multipleChoicelEl.appendChild(divSinglChoiceWrapper);
         }
     }
@@ -707,11 +720,9 @@ class FormElementProperties {
         const tableLabelText: string = labelEl.textContent;
         const currentInputType: string = tableEl.getAttribute("data-align");
 
-        //current rows/columns
+        //#region current rows/columns
         const tableRows = tableEl.querySelector("thead").childNodes[0].childNodes as NodeListOf<Node>;
-        const tableColumns = tableEl.querySelector("thead").childNodes as NodeListOf<Node>;
-
-        //#region Table Label Property
+        const tableColumns = tableEl.querySelector("tbody").childNodes as NodeListOf<Node>;
 
         //#region Table Label
         const TableTextWrapper = document.createElement("div") as HTMLDivElement;
@@ -817,14 +828,28 @@ class FormElementProperties {
 
         //#region Rows Textarea Property Element
         const rowsWrapper: HTMLDivElement = this.TextareaLabelProperty("rows", "Rows");
-        const rowsTextarea = this.MultiSelectTextAreaProperty(tableRows, tableEl, this.UpdateTableRows, "Enter row labels for table element");
+        const rowsFunctionData: TableUpdateFuncDTO = {
+            utils: this._utils,
+            elementToUpdate: tableEl,
+            getOptionsFromTextarea: this.GetOptionsFromTextarea,
+            updateTableInputs: this.UpdateTableInputs
+        }
+        const rowsTextarea = this.MultiSelectTextAreaProperty(tableRows, rowsFunctionData, this.UpdateTableRows, "Enter row labels for table element", "rowsTextarea");
         rowsWrapper.appendChild(rowsTextarea);
         //#endregion
+        
         //#region Columns Textarea Property Element
         const columnsWrapper: HTMLDivElement = this.TextareaLabelProperty("columns", "Columns");
-        const columnsTextarea = this.MultiSelectTextAreaProperty(tableColumns, tableEl, this.UpdateTableColumns, "Enter column labels for table element");
+        const columnsFunctionData: TableUpdateFuncDTO = {
+            utils: this._utils,
+            elementToUpdate: tableEl,
+            getOptionsFromTextarea: this.GetOptionsFromTextarea,
+            updateTableInputs: this.UpdateTableInputs
+        }
+        const columnsTextarea = this.MultiSelectTextAreaProperty(tableColumns, columnsFunctionData, this.UpdateTableColumns, "Enter column labels for table element", "columnsTextarea");
         columnsWrapper.appendChild(columnsTextarea);
         //#endregion
+
         //#endregion
 
         //#endregion
@@ -850,29 +875,43 @@ class FormElementProperties {
         }
     }
 
-    private UpdateTableRows(utils: Utilities, tableElWrapper: HTMLTableElement, rows: string[]): void {
-        const thead = tableElWrapper.querySelector("thead") as HTMLTableSectionElement;
+    private UpdateTableRows(properties: TableUpdateFuncDTO): void {
+        const inputType: string = properties.elementToUpdate.getAttribute("data-input-type");
+        const thead = properties.elementToUpdate.querySelector("thead") as HTMLTableSectionElement;
         thead.innerHTML = "";
 
         const trHeaderRow = document.createElement("tr") as HTMLTableRowElement;
         thead.appendChild(trHeaderRow);
 
-        rows.forEach((col) => {
-            const th = utils.CreateTableHeader(col);
+        properties.options.forEach((col) => {
+            const th = properties.utils.CreateTableHeader(col);
             trHeaderRow.appendChild(th);
         });
-        rows = [];
-    }
 
-    private UpdateTableColumns(utils: Utilities, tableElWrapper: HTMLTableElement, columns: string[]): void {
-        //check child nodes are correct
-        const inputType: string = tableElWrapper.getAttribute("data-table-input-type");
-        const tbody = tableElWrapper.querySelector("tbody") as HTMLTableSectionElement;
+        const tbody = properties.elementToUpdate.querySelector("tbody") as HTMLTableSectionElement;
         tbody.innerHTML = "";
 
-        const slicedTblHeaderData = columns.slice(1);
+        const columnsTextarea = document.querySelector("#columnsTextarea") as HTMLTextAreaElement;
 
-        columns.forEach((col) => {
+        const rowsFromElement: string[] = properties.getOptionsFromTextarea(columnsTextarea);
+        const slicedTblHeaderData = properties.options.slice(1);
+
+        properties.updateTableInputs(rowsFromElement, tbody, slicedTblHeaderData, inputType, properties.utils);
+    }
+
+    private UpdateTableColumns(properties: TableUpdateFuncDTO): void {
+        const inputType: string = properties.elementToUpdate.getAttribute("data-input-type");
+        const tbody = properties.elementToUpdate.querySelector("tbody") as HTMLTableSectionElement;
+        tbody.innerHTML = "";
+
+        const rowsTextarea = document.querySelector("#rowsTextarea") as HTMLTextAreaElement;
+        const rowsFromElement: string[] = properties.getOptionsFromTextarea(rowsTextarea);
+        const slicedTblHeaderData = rowsFromElement.slice(1);
+        properties.updateTableInputs(properties.options, tbody, slicedTblHeaderData, inputType, properties.utils);
+    }
+
+    private UpdateTableInputs(options: string[], tbody: HTMLTableSectionElement, slicedTblHeaderData: string[], inputType: string, utils: Utilities) {
+        options.forEach((col) => {
             const tr = document.createElement("tr") as HTMLTableRowElement;
             tbody.appendChild(tr);
 
@@ -906,10 +945,7 @@ class FormElementProperties {
                 };
             }
         });
-        columns = [];
     }
-
-
     //#endregion
 
     //#endregion

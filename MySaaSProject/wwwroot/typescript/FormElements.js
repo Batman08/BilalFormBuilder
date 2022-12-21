@@ -410,11 +410,13 @@ class FormElements {
         const formId = this.GetFormElementId(formElementName);
         const tableCols = ["#", "col 1", "col 2"];
         const tableRows = ["row 1", "row 2", "row 3"];
-        const table = this._utils.CreateTable(tableCols, tableRows, "MultipleChoice");
+        const tableInputType = "MultipleChoice";
+        const table = this._utils.CreateTable(tableCols, tableRows, tableInputType);
         table.id = formId;
         table.setAttribute("name", formElementName);
         table.ariaLabel = "Table";
         table.setAttribute("data-property-reference", "Table");
+        table.setAttribute("data-input-type", tableInputType);
         divTableWrapper.appendChild(table);
         return divTableWrapper;
     }
