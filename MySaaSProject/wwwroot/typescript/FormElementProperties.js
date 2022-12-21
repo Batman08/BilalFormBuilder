@@ -594,7 +594,7 @@ class FormElementProperties {
         const labelEl = TableElementWrapper.querySelector("label");
         const btnInputTypesEl = tableEl.parentElement;
         const tableLabelText = labelEl.textContent;
-        const currentInputType = tableEl.getAttribute("data-align");
+        const currentInputType = tableEl.getAttribute("data-input-type");
         //#region current rows/columns
         const tableRows = tableEl.querySelector("thead").childNodes[0].childNodes;
         const tableColumns = tableEl.querySelector("tbody").childNodes;
@@ -616,71 +616,122 @@ class FormElementProperties {
         TableTextWrapper.appendChild(fieldLabel);
         TableTextWrapper.appendChild(fieldInput);
         //#endregion
-        //#region Button Allignment
-        const allignmentWrapper = document.createElement("div");
-        allignmentWrapper.classList.add("mb-3");
+        //#region Button Group
+        const inputGroupWrapper = document.createElement("div");
+        inputGroupWrapper.classList.add("mb-3");
         const allignmentLabel = document.createElement("label");
         allignmentLabel.htmlFor = "editAllignment";
         allignmentLabel.classList.add("form-label");
-        allignmentLabel.textContent = "Button Allignment";
-        allignmentWrapper.appendChild(allignmentLabel);
+        allignmentLabel.textContent = "Input Type";
+        inputGroupWrapper.appendChild(allignmentLabel);
         const divAllignmentGroup = document.createElement("div");
         divAllignmentGroup.setAttribute("role", "group");
-        divAllignmentGroup.classList.add("btn-group");
-        divAllignmentGroup.ariaLabel = "allignment toggle button group";
+        divAllignmentGroup.classList.add("btn-group", "flex-wrap", "btn-group-sm");
+        divAllignmentGroup.ariaLabel = "table input type";
         divAllignmentGroup.style.width = "100%";
-        allignmentWrapper.appendChild(divAllignmentGroup);
-        //#region Left Option
-        const allignLeftInput = document.createElement("input");
-        allignLeftInput.type = "radio";
-        allignLeftInput.classList.add("btn-check");
-        allignLeftInput.name = "btnAllign";
-        allignLeftInput.id = "btnAllignLeft";
-        allignLeftInput.autocomplete = "off";
-        allignLeftInput.oninput = () => this.AdjustButtonAllignment(tableEl, btnInputTypesEl, "left");
-        const allignLeftLabel = document.createElement("label");
-        allignLeftLabel.classList.add("btn", "btn-outline-primary");
-        allignLeftLabel.htmlFor = "btnAllignLeft";
-        allignLeftLabel.textContent = "LEFT";
-        divAllignmentGroup.appendChild(allignLeftInput);
-        divAllignmentGroup.appendChild(allignLeftLabel);
+        inputGroupWrapper.appendChild(divAllignmentGroup);
+        //#region Single Choice Option
+        const inputSingleChoice = document.createElement("input");
+        inputSingleChoice.type = "radio";
+        inputSingleChoice.classList.add("btn-check");
+        inputSingleChoice.name = "tableInputType";
+        inputSingleChoice.id = "inputSingleChoice";
+        inputSingleChoice.autocomplete = "off";
+        inputSingleChoice.oninput = () => this.ChangeInputType(tableEl, "SingleChoice");
+        const singleChoiceLabel = document.createElement("label");
+        singleChoiceLabel.classList.add("btn", "btn-outline-primary");
+        singleChoiceLabel.htmlFor = "inputSingleChoice";
+        singleChoiceLabel.textContent = "Radio Buttons";
+        divAllignmentGroup.appendChild(inputSingleChoice);
+        divAllignmentGroup.appendChild(singleChoiceLabel);
         //#endregion
-        //#region Center Option
-        const allignCenterInput = document.createElement("input");
-        allignCenterInput.type = "radio";
-        allignCenterInput.classList.add("btn-check");
-        allignCenterInput.name = "btnAllign";
-        allignCenterInput.id = "btnAllignCenter";
-        allignCenterInput.autocomplete = "off";
-        allignCenterInput.oninput = () => this.AdjustButtonAllignment(tableEl, btnInputTypesEl, "center");
-        const allignCenterLabel = document.createElement("label");
-        allignCenterLabel.classList.add("btn", "btn-outline-primary");
-        allignCenterLabel.htmlFor = "btnAllignCenter";
-        allignCenterLabel.textContent = "CENTER";
-        divAllignmentGroup.appendChild(allignCenterInput);
-        divAllignmentGroup.appendChild(allignCenterLabel);
+        //#region Multiple Choice Option
+        const inputMultipleChoice = document.createElement("input");
+        inputMultipleChoice.type = "radio";
+        inputMultipleChoice.classList.add("btn-check");
+        inputMultipleChoice.name = "tableInputType";
+        inputMultipleChoice.id = "inputMultipleChoice";
+        inputMultipleChoice.autocomplete = "off";
+        inputMultipleChoice.oninput = () => this.ChangeInputType(tableEl, "MultipleChoice");
+        const multipleChoiceLabel = document.createElement("label");
+        multipleChoiceLabel.classList.add("btn", "btn-outline-primary");
+        multipleChoiceLabel.htmlFor = "inputMultipleChoice";
+        multipleChoiceLabel.textContent = "Checkbox Buttons";
+        divAllignmentGroup.appendChild(inputMultipleChoice);
+        divAllignmentGroup.appendChild(multipleChoiceLabel);
         //#endregion
-        //#region Right Option
-        const allignRightInput = document.createElement("input");
-        allignRightInput.type = "radio";
-        allignRightInput.classList.add("btn-check");
-        allignRightInput.name = "btnAllign";
-        allignRightInput.id = "btnAllignRight";
-        allignRightInput.autocomplete = "off";
-        allignRightInput.oninput = () => this.AdjustButtonAllignment(tableEl, btnInputTypesEl, "right");
-        const allignRightLabel = document.createElement("label");
-        allignRightLabel.classList.add("btn", "btn-outline-primary");
-        allignRightLabel.htmlFor = "btnAllignRight";
-        allignRightLabel.textContent = "RIGHT";
-        divAllignmentGroup.appendChild(allignRightInput);
-        divAllignmentGroup.appendChild(allignRightLabel);
+        //#region Dropdown Option
+        const inputDdl = document.createElement("input");
+        inputDdl.type = "radio";
+        inputDdl.classList.add("btn-check");
+        inputDdl.name = "tableInputType";
+        inputDdl.id = "inputDdl";
+        inputDdl.autocomplete = "off";
+        inputDdl.oninput = () => this.ChangeInputType(tableEl, "Dropdown");
+        const inputDdlLabel = document.createElement("label");
+        inputDdlLabel.classList.add("btn", "btn-outline-primary");
+        inputDdlLabel.htmlFor = "inputDdl";
+        inputDdlLabel.textContent = "Dropdown";
+        divAllignmentGroup.appendChild(inputDdl);
+        divAllignmentGroup.appendChild(inputDdlLabel);
         //#endregion
-        if (currentInputType === "left")
-            allignLeftInput.checked = true;
-        else if (currentInputType === "center")
-            allignCenterInput.checked = true;
-        else if (currentInputType === "right")
-            allignRightInput.checked = true;
+        //#region Textbox Option
+        const inputTxtbox = document.createElement("input");
+        inputTxtbox.type = "radio";
+        inputTxtbox.classList.add("btn-check");
+        inputTxtbox.name = "tableInputType";
+        inputTxtbox.id = "inputTxtbox";
+        inputTxtbox.autocomplete = "off";
+        inputTxtbox.oninput = () => this.ChangeInputType(tableEl, "Textbox");
+        const inputTxtboxLabel = document.createElement("label");
+        inputTxtboxLabel.classList.add("btn", "btn-outline-primary");
+        inputTxtboxLabel.htmlFor = "inputTxtbox";
+        inputTxtboxLabel.textContent = "Textbox";
+        divAllignmentGroup.appendChild(inputTxtbox);
+        divAllignmentGroup.appendChild(inputTxtboxLabel);
+        //#endregion
+        //#region Numeric Option
+        const inputNumeric = document.createElement("input");
+        inputNumeric.type = "radio";
+        inputNumeric.classList.add("btn-check");
+        inputNumeric.name = "tableInputType";
+        inputNumeric.id = "inputNumeric";
+        inputNumeric.autocomplete = "off";
+        inputNumeric.oninput = () => this.ChangeInputType(tableEl, "Numeric");
+        const inputNumericLabel = document.createElement("label");
+        inputNumericLabel.classList.add("btn", "btn-outline-primary");
+        inputNumericLabel.htmlFor = "inputNumeric";
+        inputNumericLabel.textContent = "Numeric";
+        divAllignmentGroup.appendChild(inputNumeric);
+        divAllignmentGroup.appendChild(inputNumericLabel);
+        //#endregion
+        //#region Multi-Type Option
+        const inputMultiType = document.createElement("input");
+        inputMultiType.type = "radio";
+        inputMultiType.classList.add("btn-check");
+        inputMultiType.name = "tableInputType";
+        inputMultiType.id = "inputMultiType";
+        inputMultiType.autocomplete = "off";
+        inputMultiType.oninput = () => this.ChangeInputType(tableEl, "MultiType");
+        const inputMultiTypeLabel = document.createElement("label");
+        inputMultiTypeLabel.classList.add("btn", "btn-outline-primary");
+        inputMultiTypeLabel.htmlFor = "inputMultiType";
+        inputMultiTypeLabel.textContent = "Multi-Type";
+        divAllignmentGroup.appendChild(inputMultiType);
+        divAllignmentGroup.appendChild(inputMultiTypeLabel);
+        //#endregion
+        if (currentInputType === "SingleChoice")
+            inputSingleChoice.checked = true;
+        else if (currentInputType === "MultipleChoice")
+            inputMultipleChoice.checked = true;
+        else if (currentInputType === "Dropdown")
+            inputDdl.checked = true;
+        else if (currentInputType === "Textbox")
+            inputTxtbox.checked = true;
+        else if (currentInputType === "Numeric")
+            inputNumeric.checked = true;
+        else if (currentInputType === "MultiType")
+            inputMultiType.checked = true;
         //#endregion
         //#region rows/columns
         //#region Rows Textarea Property Element
@@ -708,23 +759,34 @@ class FormElementProperties {
         //#endregion
         //#endregion
         this.rightDesigner.appendChild(TableTextWrapper);
-        this.rightDesigner.appendChild(allignmentWrapper);
+        this.rightDesigner.appendChild(inputGroupWrapper);
         this.rightDesigner.appendChild(rowsWrapper);
         this.rightDesigner.appendChild(columnsWrapper);
     }
-    ChangeInputType(btnSubmitEl, btnAllignmentEl, allignment) {
-        if (allignment === "left") {
-            btnSubmitEl.setAttribute("data-align", "left");
-            btnAllignmentEl.className = "text-start";
+    ChangeInputType(tableEl, inputType) {
+        if (inputType === "SingleChoice") {
+            tableEl.setAttribute("data-input-type", "SingleChoice");
         }
-        else if (allignment === "center") {
-            btnSubmitEl.setAttribute("data-align", "center");
-            btnAllignmentEl.className = "text-center";
+        else if (inputType === "MultipleChoice") {
+            tableEl.setAttribute("data-input-type", "MultipleChoice");
         }
-        else if (allignment === "right") {
-            btnSubmitEl.setAttribute("data-align", "right");
-            btnAllignmentEl.className = "text-end";
+        else if (inputType === "Dropdown") {
+            tableEl.setAttribute("data-input-type", "Dropdown");
         }
+        else if (inputType === "Textbox") {
+            tableEl.setAttribute("data-input-type", "Textbox");
+        }
+        else if (inputType === "Numeric") {
+            tableEl.setAttribute("data-input-type", "Numeric");
+        }
+        else if (inputType === "MultiType") {
+            tableEl.setAttribute("data-input-type", "MultiType");
+        }
+        //get table row data
+        //get table column data
+        //get table input type
+        //create new table header
+        //create new table body
     }
     UpdateTableRows(properties) {
         const inputType = properties.elementToUpdate.getAttribute("data-input-type");
