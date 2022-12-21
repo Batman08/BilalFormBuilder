@@ -137,6 +137,15 @@ class Utilities {
                         const mcOptionData = this.CreateTableMultipleChoiceOption(data);
                         tr.appendChild(mcOptionData);
                         break;
+                    case "Dropdown":
+                        const dropdownData = {
+                            ddlOptionId: `ddlOption${i}`,
+                            ddlName: row,
+                            ddlOption: slicedTblHeaderData,
+                        };
+                        const ddlOptionData = this.CreateTableDropdown(dropdownData);
+                        tr.appendChild(ddlOptionData);
+                        break;
                 }
                 ;
             }
@@ -165,6 +174,25 @@ class Utilities {
         checkboxInput.value = mcOptionData.multipleChoiceOptionValue;
         checkboxInput.disabled = true;
         td.appendChild(checkboxInput);
+        return td;
+    }
+    CreateTableDropdown(ddlOptionData) {
+        const td = document.createElement("td");
+        const ddlInput = document.createElement("select");
+        ddlInput.classList.add("form-select");
+        ddlInput.id = ddlOptionData.ddlOptionId;
+        ddlInput.name = ddlOptionData.ddlName;
+        ddlInput.disabled = true;
+        td.appendChild(ddlInput);
+        //loop through ddlOptionData.ddlOption and create options
+        ddlOptionData.ddlOption.forEach((option) => {
+            const optionData = {
+                dropdownValue: option,
+                dropdownTextContent: option
+            };
+            const ddlOption = this.CreateDropdownOption(optionData);
+            ddlInput.appendChild(ddlOption);
+        });
         return td;
     }
 }

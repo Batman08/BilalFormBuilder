@@ -49,6 +49,8 @@ type TableRowDTO = {
     tableRow: string[];
 };
 
+
+
 type DDLUpdateFuncDTO = {
     utils: Utilities;
     dropdownElWrapper: HTMLElement;
@@ -74,3 +76,17 @@ type TableUpdateFuncDTO = {
     updateTableInputs: Function;
     options?: string[];
 };
+
+type TableUpdateDDLDTO = {
+    utils: Utilities;
+    elementToUpdate: HTMLElement;
+    getOptionsFromTextarea: Function;
+    updateTableInputs: Function;
+    options?: string[];
+};
+
+type TableDDLOptionDTO = {
+    ddlOptionId: string;
+    ddlName: string;
+    ddlOption: string[];
+}

@@ -106,6 +106,7 @@ class FormElementProperties {
                 return;
             optionsFromElement.push(option.textContent);
         });
+        console.log(optionsFromElement);
         this.UpdateTextAreaOptions(textarea, optionsFromElement);
         textarea.oninput = (ev) => {
             const options = this.GetOptionsFromTextarea(textarea);
@@ -592,7 +593,6 @@ class FormElementProperties {
         this.rightDesigner.innerHTML = '';
         const tableEl = TableElementWrapper.querySelector("[name=table]");
         const labelEl = TableElementWrapper.querySelector("label");
-        const btnInputTypesEl = tableEl.parentElement;
         const tableLabelText = labelEl.textContent;
         const currentInputType = tableEl.getAttribute("data-input-type");
         //#region current rows/columns
@@ -742,7 +742,7 @@ class FormElementProperties {
             getOptionsFromTextarea: this.GetOptionsFromTextarea,
             updateTableInputs: this.UpdateTableInputs
         };
-        const rowsTextarea = this.MultiSelectTextAreaProperty(tableRows, rowsFunctionData, this.UpdateTableRows, "Enter row labels for table element", "rowsTextarea");
+        const rowsTextarea = this.TableElTextarea(tableEl, tableRows, rowsFunctionData, this.UpdateTableRows, "Enter row labels for table element", "rowsTextarea");
         rowsWrapper.appendChild(rowsTextarea);
         //#endregion
         //#region Columns Textarea Property Element
@@ -753,8 +753,25 @@ class FormElementProperties {
             getOptionsFromTextarea: this.GetOptionsFromTextarea,
             updateTableInputs: this.UpdateTableInputs
         };
-        const columnsTextarea = this.MultiSelectTextAreaProperty(tableColumns, columnsFunctionData, this.UpdateTableColumns, "Enter column labels for table element", "columnsTextarea");
+        const columnsTextarea = this.TableElTextarea(tableEl, tableColumns, columnsFunctionData, this.UpdateTableColumns, "Enter column labels for table element", "columnsTextarea");
         columnsWrapper.appendChild(columnsTextarea);
+        //#endregion
+        //#region Dropdown Options Textarea Property Element
+        const ddlTextareaWrapper = this.TextareaLabelProperty("tableDdlOptions", "Dropdown Options");
+        const ddlFunctionData = {
+            utils: this._utils,
+            elementToUpdate: tableEl,
+            getOptionsFromTextarea: this.GetOptionsFromTextarea,
+            updateTableInputs: this.UpdateTableInputs,
+        };
+        const ddlOptionsTextarea = this.TableElTextarea(tableEl, tableColumns, ddlFunctionData, this.UpdateTableColumns, "Enter dropdown options", "ddlOptions");
+        ddlTextareaWrapper.appendChild(ddlOptionsTextarea);
+        if (currentInputType === "Dropdown") {
+            ddlTextareaWrapper.style.display = "block";
+        }
+        else {
+            ddlTextareaWrapper.style.display = "none";
+        }
         //#endregion
         //#endregion
         //#endregion
@@ -762,8 +779,16 @@ class FormElementProperties {
         this.rightDesigner.appendChild(inputGroupWrapper);
         this.rightDesigner.appendChild(rowsWrapper);
         this.rightDesigner.appendChild(columnsWrapper);
+        this.rightDesigner.appendChild(ddlTextareaWrapper);
     }
     ChangeInputType(tableEl, inputType) {
+        const optionsTextarea = document.querySelector("#tableDdlOptions");
+        if (inputType === "Dropdown") {
+            optionsTextarea.style.display = "block";
+        }
+        else {
+            optionsTextarea.style.display = "none";
+        }
         if (inputType === "SingleChoice") {
             tableEl.setAttribute("data-input-type", "SingleChoice");
         }
@@ -782,11 +807,16 @@ class FormElementProperties {
         else if (inputType === "MultiType") {
             tableEl.setAttribute("data-input-type", "MultiType");
         }
-        //get table row data
-        //get table column data
-        //get table input type
-        //create new table header
-        //create new table body
+        const rowsTextarea = document.querySelector("#rowsTextarea");
+        const options = this.GetOptionsFromTextarea(rowsTextarea);
+        const tableTypeData = {
+            utils: this._utils,
+            elementToUpdate: tableEl,
+            getOptionsFromTextarea: this.GetOptionsFromTextarea,
+            updateTableInputs: this.UpdateTableInputs,
+            options: options
+        };
+        this.UpdateTableRows(tableTypeData);
     }
     UpdateTableRows(properties) {
         const inputType = properties.elementToUpdate.getAttribute("data-input-type");
@@ -803,7 +833,7 @@ class FormElementProperties {
         const columnsTextarea = document.querySelector("#columnsTextarea");
         const rowsFromElement = properties.getOptionsFromTextarea(columnsTextarea);
         const slicedTblHeaderData = properties.options.slice(1);
-        properties.updateTableInputs(rowsFromElement, tbody, slicedTblHeaderData, inputType, properties.utils);
+        properties.updateTableInputs(rowsFromElement, tbody, slicedTblHeaderData, inputType, properties.utils, properties.getOptionsFromTextarea);
     }
     UpdateTableColumns(properties) {
         const inputType = properties.elementToUpdate.getAttribute("data-input-type");
@@ -812,9 +842,9 @@ class FormElementProperties {
         const rowsTextarea = document.querySelector("#rowsTextarea");
         const rowsFromElement = properties.getOptionsFromTextarea(rowsTextarea);
         const slicedTblHeaderData = rowsFromElement.slice(1);
-        properties.updateTableInputs(properties.options, tbody, slicedTblHeaderData, inputType, properties.utils);
+        properties.updateTableInputs(properties.options, tbody, slicedTblHeaderData, inputType, properties.utils, properties.getOptionsFromTextarea);
     }
-    UpdateTableInputs(options, tbody, slicedTblHeaderData, inputType, utils) {
+    UpdateTableInputs(options, tbody, slicedTblHeaderData, inputType, utils, getOptionsFromTextarea) {
         options.forEach((col) => {
             const tr = document.createElement("tr");
             tbody.appendChild(tr);
@@ -822,6 +852,7 @@ class FormElementProperties {
             th.scope = "row";
             th.textContent = col;
             tr.appendChild(th);
+            console.log(slicedTblHeaderData);
             for (let i = 0; i < slicedTblHeaderData.length; i++) {
                 switch (inputType) {
                     case "SingleChoice":
@@ -844,10 +875,91 @@ class FormElementProperties {
                         const mcOptionData = utils.CreateTableMultipleChoiceOption(data);
                         tr.appendChild(mcOptionData);
                         break;
+                    case "Dropdown":
+                        const tableDdlOptions = document.querySelector("#ddlOptions");
+                        const optionData = getOptionsFromTextarea(tableDdlOptions);
+                        const ddlName = col.split(" ").join("_");
+                        const ddlData = {
+                            ddlOptionId: `${ddlName}_${i}`,
+                            ddlName: `${ddlName}_${i}`,
+                            ddlOption: optionData
+                        };
+                        const ddlOptionData = utils.CreateTableDropdown(ddlData);
+                        tr.appendChild(ddlOptionData);
+                        break;
                 }
                 ;
             }
         });
+    }
+    TableElTextarea(targetEl, optionsFromEl, updateFuncData, updateFunc, labelText, textareaId) {
+        const divTextarea = document.createElement("div");
+        divTextarea.classList.add("form-floating");
+        const textarea = document.createElement("textarea");
+        textarea.id = textareaId;
+        textarea.classList.add("form-control");
+        textarea.placeholder = labelText;
+        textarea.style.height = "100px";
+        const textareaLabel = document.createElement("label");
+        textareaLabel.htmlFor = textareaId;
+        textareaLabel.textContent = labelText;
+        divTextarea.appendChild(textarea);
+        divTextarea.appendChild(textareaLabel);
+        let optionsFromElement = [];
+        switch (targetEl.getAttribute("data-input-type")) {
+            case "SingleChoice":
+                optionsFromEl.forEach((option) => {
+                    optionsFromElement.push(option.textContent);
+                });
+                break;
+            case "MultipleChoice":
+                optionsFromEl.forEach((option) => {
+                    optionsFromElement.push(option.textContent);
+                });
+                break;
+            case "Dropdown":
+                switch (textarea.id) {
+                    case "ddlOptions":
+                        const ddlOptions = targetEl.querySelector("select").childNodes;
+                        ddlOptions.forEach((option) => {
+                            optionsFromElement.push(option.textContent);
+                        });
+                        break;
+                    case "columnsTextarea":
+                        console.log(optionsFromEl);
+                        optionsFromEl.forEach((option) => {
+                            optionsFromElement.push(option.firstChild.textContent);
+                        });
+                        break;
+                    case "rowsTextarea":
+                        optionsFromEl.forEach((option) => {
+                            optionsFromElement.push(option.firstChild.textContent);
+                        });
+                        break;
+                }
+                ;
+                break;
+            case "Numberic":
+                break;
+            case "MultiType":
+                break;
+        }
+        console.log(optionsFromElement);
+        this.UpdateTextAreaOptions(textarea, optionsFromElement);
+        textarea.oninput = (ev) => {
+            let options = [];
+            const ddlOptions = document.querySelector("#ddlOptions");
+            if (textarea === ddlOptions) {
+                const columnsTextarea = document.querySelector("#columnsTextarea");
+                options = this.GetOptionsFromTextarea(columnsTextarea);
+            }
+            else {
+                options = this.GetOptionsFromTextarea(textarea);
+            }
+            updateFuncData.options = options;
+            updateFunc(updateFuncData);
+        };
+        return divTextarea;
     }
     //#endregion
     //#endregion

@@ -500,7 +500,7 @@
         const formId = this.GetFormElementId(formElementName) as string;
         const tableCols: string[] = ["#", "col 1", "col 2"];
         const tableRows: string[] = ["row 1", "row 2", "row 3"];
-        const tableInputType: string = "MultipleChoice";
+        const tableInputType: string = "Dropdown";
         const table = this._utils.CreateTable(tableCols, tableRows, tableInputType);
         table.id = formId;
         table.setAttribute("name", formElementName);
