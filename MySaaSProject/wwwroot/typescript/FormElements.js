@@ -410,7 +410,7 @@ class FormElements {
         const formId = this.GetFormElementId(formElementName);
         const tableCols = ["#", "col 1", "col 2"];
         const tableRows = ["row 1", "row 2", "row 3"];
-        const tableInputType = "Dropdown";
+        const tableInputType = "Numeric";
         const table = this._utils.CreateTable(tableCols, tableRows, tableInputType);
         table.id = formId;
         table.setAttribute("name", formElementName);

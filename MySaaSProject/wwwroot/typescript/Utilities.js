@@ -146,6 +146,21 @@ class Utilities {
                         const ddlOptionData = this.CreateTableDropdown(dropdownData);
                         tr.appendChild(ddlOptionData);
                         break;
+                    case "Textbox":
+                        const textboxData = {
+                            txtOptionId: `txtOption${i}`,
+                            txtName: row
+                        };
+                        const txtOptionData = this.CreateTableTextbox(textboxData);
+                        tr.appendChild(txtOptionData);
+                        break;
+                    case "Numeric":
+                        const numericData = {
+                            numericOptionId: `txtOption${i}`,
+                            numericName: row
+                        };
+                        const numericOptionData = this.CreateTableNumeric(numericData);
+                        tr.appendChild(numericOptionData);
                 }
                 ;
             }
@@ -193,6 +208,28 @@ class Utilities {
             const ddlOption = this.CreateDropdownOption(optionData);
             ddlInput.appendChild(ddlOption);
         });
+        return td;
+    }
+    CreateTableTextbox(txtOptionData) {
+        const td = document.createElement("td");
+        const txtInput = document.createElement("input");
+        txtInput.classList.add("form-control", "mx-auto", "d-flex");
+        txtInput.type = "text";
+        txtInput.id = txtOptionData.txtOptionId;
+        txtInput.name = txtOptionData.txtName;
+        txtInput.disabled = true;
+        td.appendChild(txtInput);
+        return td;
+    }
+    CreateTableNumeric(numericOptionData) {
+        const td = document.createElement("td");
+        const numericInput = document.createElement("input");
+        numericInput.classList.add("form-control", "mx-auto", "d-flex", "text-center");
+        numericInput.type = "number";
+        numericInput.id = numericOptionData.numericOptionId;
+        numericInput.name = numericOptionData.numericName;
+        numericInput.disabled = true;
+        td.appendChild(numericInput);
         return td;
     }
 }

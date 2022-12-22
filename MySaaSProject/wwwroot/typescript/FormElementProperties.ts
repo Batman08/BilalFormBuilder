@@ -1027,7 +1027,7 @@ class FormElementProperties {
             th.scope = "row";
             th.textContent = col;
             tr.appendChild(th);
-            
+
             console.log(slicedTblHeaderData);
             for (let i = 0; i < slicedTblHeaderData.length; i++) {
                 switch (inputType) {
@@ -1065,6 +1065,26 @@ class FormElementProperties {
                         };
                         const ddlOptionData = utils.CreateTableDropdown(ddlData);
                         tr.appendChild(ddlOptionData);
+                        break;
+
+                    case "Textbox":
+                        const textboxName: string = col.split(" ").join("_");
+                        const textboxData: TxtOptionDTO = {
+                            txtOptionId: `${textboxName}`,
+                            txtName: `${textboxName}_${i}`
+                        };
+                        const txtOptionData = utils.CreateTableTextbox(textboxData);
+                        tr.appendChild(txtOptionData);
+                        break;
+
+                    case "Numeric":
+                        const numericName: string = col.split(" ").join("_");
+                        const numericData: NumericOptionDTO = {
+                            numericOptionId: `${numericName}`,
+                            numericName: `${numericName}_${i}`
+                        };
+                        const numericOptionData = utils.CreateTableNumeric(numericData);
+                        tr.appendChild(numericOptionData);
                         break;
                 };
             }
@@ -1124,7 +1144,16 @@ class FormElementProperties {
                 };
                 break;
 
-            case "Numberic":
+            case "Textbox":
+                optionsFromEl.forEach((option) => {
+                    optionsFromElement.push(option.textContent);
+                });
+                break;
+
+            case "Numeric":
+                optionsFromEl.forEach((option) => {
+                    optionsFromElement.push(option.textContent);
+                });
                 break;
 
             case "MultiType":
@@ -1141,7 +1170,7 @@ class FormElementProperties {
                 options = this.GetOptionsFromTextarea(columnsTextarea);
             }
             else {
-            options = this.GetOptionsFromTextarea(textarea);
+                options = this.GetOptionsFromTextarea(textarea);
             }
             updateFuncData.options = options;
             updateFunc(updateFuncData);

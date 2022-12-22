@@ -154,6 +154,7 @@
                         const scOptionData = this.CreateTableSingleChoiceOption(singleChoiceData);
                         tr.appendChild(scOptionData);
                         break;
+
                     case "MultipleChoice":
                         const name: string = row.split(" ").join("_");
                         const data: MultipleChoiceOptionDTO = {
@@ -165,6 +166,7 @@
                         const mcOptionData = this.CreateTableMultipleChoiceOption(data);
                         tr.appendChild(mcOptionData);
                         break;
+                    
                     case "Dropdown":
                         const dropdownData: TableDDLOptionDTO = {
                             ddlOptionId: `ddlOption${i}`,
@@ -174,6 +176,23 @@
                         const ddlOptionData = this.CreateTableDropdown(dropdownData);
                         tr.appendChild(ddlOptionData);
                         break;
+
+                    case "Textbox":
+                        const textboxData: TxtOptionDTO = {
+                            txtOptionId: `txtOption${i}`,
+                            txtName: row
+                        };
+                        const txtOptionData = this.CreateTableTextbox(textboxData);
+                        tr.appendChild(txtOptionData);
+                        break;
+
+                    case "Numeric":
+                        const numericData: NumericOptionDTO = {
+                            numericOptionId: `txtOption${i}`,
+                            numericName: row
+                        };
+                        const numericOptionData = this.CreateTableNumeric(numericData);
+                        tr.appendChild(numericOptionData);
                 };
             }
         });
@@ -230,6 +249,34 @@
             const ddlOption = this.CreateDropdownOption(optionData);
             ddlInput.appendChild(ddlOption);
         });
+
+        return td;
+    }
+
+    public CreateTableTextbox(txtOptionData: TxtOptionDTO): HTMLTableDataCellElement {
+        const td = document.createElement("td") as HTMLTableDataCellElement;
+
+        const txtInput = document.createElement("input") as HTMLInputElement;
+        txtInput.classList.add("form-control", "mx-auto", "d-flex");
+        txtInput.type = "text";
+        txtInput.id = txtOptionData.txtOptionId;
+        txtInput.name = txtOptionData.txtName;
+        txtInput.disabled = true;
+        td.appendChild(txtInput);
+
+        return td;
+    }
+
+    public CreateTableNumeric(numericOptionData: NumericOptionDTO): HTMLTableDataCellElement {
+        const td = document.createElement("td") as HTMLTableDataCellElement;
+
+        const numericInput = document.createElement("input") as HTMLInputElement;
+        numericInput.classList.add("form-control", "mx-auto", "d-flex", "text-center");
+        numericInput.type = "number";
+        numericInput.id = numericOptionData.numericOptionId;
+        numericInput.name = numericOptionData.numericName;
+        numericInput.disabled = true;
+        td.appendChild(numericInput);
 
         return td;
     }

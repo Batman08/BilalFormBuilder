@@ -887,6 +887,24 @@ class FormElementProperties {
                         const ddlOptionData = utils.CreateTableDropdown(ddlData);
                         tr.appendChild(ddlOptionData);
                         break;
+                    case "Textbox":
+                        const textboxName = col.split(" ").join("_");
+                        const textboxData = {
+                            txtOptionId: `${textboxName}`,
+                            txtName: `${textboxName}_${i}`
+                        };
+                        const txtOptionData = utils.CreateTableTextbox(textboxData);
+                        tr.appendChild(txtOptionData);
+                        break;
+                    case "Numeric":
+                        const numericName = col.split(" ").join("_");
+                        const numericData = {
+                            numericOptionId: `${numericName}`,
+                            numericName: `${numericName}_${i}`
+                        };
+                        const numericOptionData = utils.CreateTableNumeric(numericData);
+                        tr.appendChild(numericOptionData);
+                        break;
                 }
                 ;
             }
@@ -939,7 +957,15 @@ class FormElementProperties {
                 }
                 ;
                 break;
-            case "Numberic":
+            case "Textbox":
+                optionsFromEl.forEach((option) => {
+                    optionsFromElement.push(option.textContent);
+                });
+                break;
+            case "Numeric":
+                optionsFromEl.forEach((option) => {
+                    optionsFromElement.push(option.textContent);
+                });
                 break;
             case "MultiType":
                 break;

@@ -90,3 +90,13 @@ type TableDDLOptionDTO = {
     ddlName: string;
     ddlOption: string[];
 }
+
+type TxtOptionDTO = {
+    txtOptionId: string;
+    txtName: string;
+};
+
+type NumericOptionDTO = {
+    numericOptionId: string;
+    numericName: string;
+};
