@@ -1,28 +1,28 @@
 ﻿class Utilities {
     //#region Boostrap Modals
-    public BTSP_GetOffCanvas(selector: string): bootstrap.Offcanvas {
+    public static BTSP_GetOffCanvas(selector: string): bootstrap.Offcanvas {
         const offCanvasElement = document.querySelector(selector) as HTMLDivElement
         return new bootstrap.Offcanvas(offCanvasElement);
     }
 
-    public BTSP_OpenOffCanvas(offCanvas: bootstrap.Offcanvas): void {
+    public static BTSP_OpenOffCanvas(offCanvas: bootstrap.Offcanvas): void {
         offCanvas.show();
     }
 
-    public BTSP_CloseOffCanvas(offCanvas: bootstrap.Offcanvas): void {
+    public static BTSP_CloseOffCanvas(offCanvas: bootstrap.Offcanvas): void {
         offCanvas.hide();
     }
     //#endregion
 
     //#region TinyMCE
-    public InitTinyMCE(tinymce: any, editorSelector: string) {
+    public static InitTinyMCE(tinymce: any, editorSelector: string) {
         // Initialize tinymce editor
         tinymce.init({
             selector: editorSelector
         });
     }
 
-    public AddTinymceListeners(tinymce: any, element: HTMLElement, callback: Function): void {
+    public static AddTinymceListeners(tinymce: any, element: HTMLElement, callback: Function): void {
         const btnTinymceUpgrade = document.querySelector('.tox-promotion') as HTMLDivElement;
         btnTinymceUpgrade.classList.add("hideElement");
         const iconTinymce = document.querySelector('.tox-statusbar__branding') as HTMLSpanElement;
@@ -39,7 +39,7 @@
     //#endregion
 
     //#region Form Utils
-    public RgbToHex(rgbVal: string): string {
+    public static RgbToHex(rgbVal: string): string {
         const rgb: string[] = rgbVal.substring(4, rgbVal.length - 1).replace(/ /g, '').split(',');
         const r = parseInt(rgb[0], 10).toString(16);
         const g = parseInt(rgb[1], 10).toString(16);
@@ -48,14 +48,14 @@
         return hex;
     }
 
-    public CreateDropdownOption(ddlOptionData: DropdownOptionDTO): HTMLOptionElement {
+    public static CreateDropdownOption(ddlOptionData: DropdownOptionDTO): HTMLOptionElement {
         const ddlOption = document.createElement("option") as HTMLOptionElement;
         ddlOption.value = ddlOptionData.dropdownValue;
         ddlOption.textContent = ddlOptionData.dropdownTextContent;
         return ddlOption;
     }
 
-    public CreateSingleChoiceOption(scOptionData: SingleChoiceOptionDTO): HTMLDivElement {
+    public static CreateSingleChoiceOption(scOptionData: SingleChoiceOptionDTO): HTMLDivElement {
         const divSinglChoiceWrapper = document.createElement("div") as HTMLDivElement;
         divSinglChoiceWrapper.classList.add("form-check");
 
@@ -76,7 +76,7 @@
         return divSinglChoiceWrapper;
     }
 
-    public CreateMultipleChoiceOption(mcOptionData: MultipleChoiceOptionDTO): HTMLDivElement {
+    public static CreateMultipleChoiceOption(mcOptionData: MultipleChoiceOptionDTO): HTMLDivElement {
         const divCheckboxOption = document.createElement("div") as HTMLDivElement;
         divCheckboxOption.classList.add("form-check");
 
@@ -99,7 +99,7 @@
     }
 
     //#region Table
-    public CreateTableHeader(tableHeaderVal: string): HTMLTableHeaderCellElement {
+    public static CreateTableHeader(tableHeaderVal: string): HTMLTableHeaderCellElement {
         const thQuestion = document.createElement("th") as HTMLTableHeaderCellElement;
         thQuestion.scope = "col";
         thQuestion.textContent = tableHeaderVal;
@@ -107,16 +107,16 @@
         return thQuestion;
     }
 
-    public CreateTableBody(tableBodyData: string): HTMLTableCaptionElement {
+    public static CreateTableBody(tableBodyData: string): HTMLTableCaptionElement {
         const tdQuestion = document.createElement("td") as HTMLTableDataCellElement;
         tdQuestion.textContent = tableBodyData;
 
         return tdQuestion;
     }
 
-    public CreateTable(tblHeaderData: string[], tableBodyData: string[], inputType: string): HTMLTableElement {
+    public static CreateTable(tblHeaderData: string[], tableBodyData: string[], inputType: string): HTMLTableElement {
         const table = document.createElement("table") as HTMLTableElement;
-        table.classList.add("table", "table-striped", "table-bordered", "border-primary");
+        table.classList.add("table", "table-striped", "table-bordered", "border-secondary");
 
         const thead = document.createElement("thead") as HTMLTableSectionElement;
         table.appendChild(thead);
@@ -200,7 +200,7 @@
         return table;
     }
 
-    public CreateTableSingleChoiceOption(scOptionData: SingleChoiceOptionDTO): HTMLTableDataCellElement {
+    public static CreateTableSingleChoiceOption(scOptionData: SingleChoiceOptionDTO): HTMLTableDataCellElement {
         const td = document.createElement("td") as HTMLTableDataCellElement;
 
         const singleChoiceInput = document.createElement("input") as HTMLInputElement;
@@ -215,7 +215,7 @@
         return td;
     }
 
-    public CreateTableMultipleChoiceOption(mcOptionData: MultipleChoiceOptionDTO): HTMLTableDataCellElement {
+    public static CreateTableMultipleChoiceOption(mcOptionData: MultipleChoiceOptionDTO): HTMLTableDataCellElement {
         const td = document.createElement("td") as HTMLTableDataCellElement;
 
         const checkboxInput = document.createElement("input") as HTMLInputElement;
@@ -230,11 +230,11 @@
         return td;
     }
 
-    public CreateTableDropdown(ddlOptionData: TableDDLOptionDTO): HTMLTableDataCellElement {
+    public static CreateTableDropdown(ddlOptionData: TableDDLOptionDTO): HTMLTableDataCellElement {
         const td = document.createElement("td") as HTMLTableDataCellElement;
 
         const ddlInput = document.createElement("select") as HTMLSelectElement;
-        ddlInput.classList.add("form-select");
+        ddlInput.classList.add("fosrm-select");
         ddlInput.id = ddlOptionData.ddlOptionId;
         ddlInput.name = ddlOptionData.ddlName;
         ddlInput.disabled = true;
@@ -253,7 +253,7 @@
         return td;
     }
 
-    public CreateTableTextbox(txtOptionData: TxtOptionDTO): HTMLTableDataCellElement {
+    public static CreateTableTextbox(txtOptionData: TxtOptionDTO): HTMLTableDataCellElement {
         const td = document.createElement("td") as HTMLTableDataCellElement;
 
         const txtInput = document.createElement("input") as HTMLInputElement;
@@ -267,7 +267,7 @@
         return td;
     }
 
-    public CreateTableNumeric(numericOptionData: NumericOptionDTO): HTMLTableDataCellElement {
+    public static CreateTableNumeric(numericOptionData: NumericOptionDTO): HTMLTableDataCellElement {
         const td = document.createElement("td") as HTMLTableDataCellElement;
 
         const numericInput = document.createElement("input") as HTMLInputElement;

@@ -39,8 +39,6 @@
         ]
     }
 
-    private _utils: Utilities = new Utilities();
-
     public Init(): void {
         this.CreateFormElementAddComponent();
     }
@@ -138,6 +136,8 @@
             //    return null;
             case "Table":
                 return this.FormElementTable();
+            case "Divider":
+                return this.FormElementDivider();
             case "Heading":
                 return this.FormElementHeading();
             case "FullName":
@@ -242,7 +242,7 @@
         divDropdownWrapper.appendChild(select);
 
         const ddlOptionData: DropdownOptionDTO = { dropdownValue: "", dropdownTextContent: "Select an option" };
-        const defaultOption: HTMLOptionElement = this._utils.CreateDropdownOption(ddlOptionData);
+        const defaultOption: HTMLOptionElement = Utilities.CreateDropdownOption(ddlOptionData);
         defaultOption.setAttribute("selected", "");
         select.appendChild(defaultOption);
 
@@ -280,7 +280,7 @@
             const singleChoiceOptionId = `single_choice_${singleChoicelElNumber}_option_${singleChoiceOptionNum}`;
 
             const scOptionData: SingleChoiceOptionDTO = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: `Option ${itemNum}` };
-            const divSinglChoiceWrapper: HTMLDivElement = this._utils.CreateSingleChoiceOption(scOptionData);
+            const divSinglChoiceWrapper: HTMLDivElement = Utilities.CreateSingleChoiceOption(scOptionData);
             divRadioBtnsContainer.appendChild(divSinglChoiceWrapper);
         }
 
@@ -322,7 +322,7 @@
                 multipleChoiceOptionValue: `Option ${itemNum}`,
                 multipleChoiceOptionTextContent: `Option ${itemNum}`
             };
-            const divMultipleChoiceWrapper: HTMLDivElement = this._utils.CreateMultipleChoiceOption(mcOptionData);
+            const divMultipleChoiceWrapper: HTMLDivElement = Utilities.CreateMultipleChoiceOption(mcOptionData);
             divCheckboxBtnsContainer.appendChild(divMultipleChoiceWrapper);
         }
 
@@ -501,7 +501,7 @@
         const tableCols: string[] = ["#", "col 1", "col 2"];
         const tableRows: string[] = ["row 1", "row 2", "row 3"];
         const tableInputType: string = "Numeric";
-        const table = this._utils.CreateTable(tableCols, tableRows, tableInputType);
+        const table = Utilities.CreateTable(tableCols, tableRows, tableInputType);
         table.id = formId;
         table.setAttribute("name", formElementName);
         table.ariaLabel = "Table";
@@ -511,8 +511,24 @@
 
         return divTableWrapper;
     }
-    //#endregion
 
+    private FormElementDivider(): HTMLDivElement {
+        const formElementName: string = "divider";
+        const divWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
+
+        const div = document.createElement("div") as HTMLDivElement;
+        const formId = this.GetFormElementId(formElementName) as string;
+        div.id = formId;
+        div.classList.add("divider");
+        
+        div.setAttribute("name", formElementName)
+        div.setAttribute("data-property-reference", "Divider");
+        divWrapper.appendChild(div);
+
+        return divWrapper;
+    }
+    //#endregion
+    
     //#region Complex Form Elements
     private FormElementHeading(): HTMLDivElement {
         const formElementName: string = "heading";

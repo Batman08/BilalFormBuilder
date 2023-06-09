@@ -52,25 +52,21 @@ type TableRowDTO = {
 
 
 type DDLUpdateFuncDTO = {
-    utils: Utilities;
     dropdownElWrapper: HTMLElement;
     options?: string[];
 };
 
 type SCLUpdateFuncDTO = {
-    utils: Utilities;
     singlchoiceElWrapper: HTMLElement;
     options?: string[];
 };
 
 type MCLUpdateFuncDTO = {
-    utils: Utilities;
     multipleChoiceElWrapper: HTMLElement;
     options?: string[];
 };
 
 type TableUpdateFuncDTO = {
-    utils: Utilities;
     elementToUpdate: HTMLElement;
     getOptionsFromTextarea: Function;
     updateTableInputs: Function;
@@ -78,7 +74,6 @@ type TableUpdateFuncDTO = {
 };
 
 type TableUpdateDDLDTO = {
-    utils: Utilities;
     elementToUpdate: HTMLElement;
     getOptionsFromTextarea: Function;
     updateTableInputs: Function;

@@ -14,9 +14,8 @@ class FormBuilder {
     private _currentSelectedFormElement: HTMLDivElement;
 
     private _formElementProperties: FormElementProperties = new FormElementProperties();
-    private _utils: Utilities = new Utilities();
-    private _formElementsOffCanvas: bootstrap.Offcanvas = this._utils.BTSP_GetOffCanvas('#offcanvasScrolling');
-    private _formDesignerOffCanvas: bootstrap.Offcanvas = this._utils.BTSP_GetOffCanvas('#offcanvasRight');
+    private _formElementsOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#ofsfcanvasScrolling');
+    private _formDesignerOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasRight');
 
     private readonly _tabContent = document.querySelector("#myTabContent") as HTMLDivElement;
 
@@ -49,7 +48,7 @@ class FormBuilder {
                 if (btnControls != null)
                     btnControls.remove();
                 this.RemoveSelectedFormElementStyle();
-                //this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
+                //Utilities.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
             }
         };
     }
@@ -135,8 +134,8 @@ class FormBuilder {
     //#region Preview Form
     private PreviewForm(ev: Event, inputEl: HTMLInputElement, sortableFormElements: any): void {
         if (inputEl.checked) {
-            this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
-            this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
+            Utilities.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
+            Utilities.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
             this._btnFormElements.disabled = true;
             this._btnFormDesigner.disabled = true;
             this.EnableFormFields();
@@ -179,7 +178,7 @@ class FormBuilder {
         inputPageColor.classList.add("form-control");
         inputPageColor.id = "inputPageColor";
 
-        const currentPageColor = this._utils.RgbToHex(document.body.style.backgroundColor);
+        const currentPageColor = Utilities.RgbToHex(document.body.style.backgroundColor);
         inputPageColor.value = currentPageColor;
 
         this.UpdateFormDesign("pageColor", inputPageColor, document.body);
@@ -201,7 +200,7 @@ class FormBuilder {
         inputFormColor.classList.add("form-control");
         inputFormColor.id = "inputFormColor";
 
-        const currentFormColor = this._utils.RgbToHex(this._customFormSection.style.backgroundColor);
+        const currentFormColor = Utilities.RgbToHex(this._customFormSection.style.backgroundColor);
         inputFormColor.value = currentFormColor;
 
         this.UpdateFormDesign("formColor", inputFormColor, this._customFormSection);
@@ -223,7 +222,7 @@ class FormBuilder {
         inputFontColor.classList.add("form-control");
         inputFontColor.id = "inputFontColor";
 
-        const currentFontColor = this._utils.RgbToHex(this._customFormSection.style.color);
+        const currentFontColor = Utilities.RgbToHex(this._customFormSection.style.color);
         inputFontColor.value = currentFontColor;
 
         this.UpdateFormDesign("fontColor", inputFontColor, this._customFormSection);
@@ -348,14 +347,14 @@ class FormBuilder {
         const selectedControlBtnProperty = this._currentSelectedFormElement.querySelector('#selectedControlBtnProperty') as HTMLDivElement;
         selectedControlBtnProperty.onclick = (ev: MouseEvent) => {
             this.Edit();
-            this._utils.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
-            this._utils.BTSP_OpenOffCanvas(this._formDesignerOffCanvas);
+            Utilities.BTSP_CloseOffCanvas(this._formElementsOffCanvas);
+            Utilities.BTSP_OpenOffCanvas(this._formDesignerOffCanvas);
         }
 
         const selectedControlDeleteBtn = this._currentSelectedFormElement.querySelector('#selectedControlBtnDelete') as HTMLDivElement;
         selectedControlDeleteBtn.onclick = (ev: MouseEvent) => {
             this.RemoveFormElement(element);
-            this._utils.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
+            Utilities.BTSP_CloseOffCanvas(this._formDesignerOffCanvas);
         }
         //#endregion
     }
