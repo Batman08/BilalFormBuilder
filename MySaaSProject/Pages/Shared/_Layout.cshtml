@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MySaaSProject</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/brands.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/solid.css" />
@@ -21,14 +21,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                    <ul class="navbar-nav flex-grow-1"></ul>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" role="switch" id="switchCheckPreviewForm">
                         <label class="form-check-label" for="switchCheckPreviewForm">Preview Form</label>
@@ -45,7 +38,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - MySaaSProject - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; BilalFormBuilder 2022 - @DateTime.Now.Date.Year
         </div>
     </footer>
 
