@@ -10,11 +10,14 @@ class FormBuilder {
     private _offcanvasDesignerRightLabel = document.querySelector("#offcanvasDesignerRightLabel") as HTMLHeadingElement;
     private _rightDesignerBody: HTMLDivElement = document.querySelector('#rightDesigner');
 
+    private _formBuilderArea = document.querySelector('#FormBuilderArea') as HTMLFormElement;
+    private _formHtmlCodeInput = document.querySelector('#formHtmlCode') as HTMLTextAreaElement;
+
     private _customFormSection = document.querySelector("#customFormSection") as HTMLDivElement;
     private _currentSelectedFormElement: HTMLDivElement;
 
     private _formElementProperties: FormElementProperties = new FormElementProperties();
-    private _formElementsOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#ofsfcanvasScrolling');
+    private _formElementsOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasScrolling');
     private _formDesignerOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasRight');
 
     private readonly _tabContent = document.querySelector("#myTabContent") as HTMLDivElement;
@@ -34,6 +37,8 @@ class FormBuilder {
         this.FormDesignerOnClick();
         this.AddFormElement();
         this.ManageClicksOutsideFormField();
+
+        this.Bind_ShowFormHtml();
     }
 
     private ManageClicksOutsideFormField(): void {
@@ -153,6 +158,53 @@ class FormBuilder {
     private PreviewFormOnClick(sortableFormElements: any): void {
         const switchCheckPreviewForm: HTMLInputElement = document.querySelector('#switchCheckPreviewForm');
         switchCheckPreviewForm.oninput = (ev: Event) => this.PreviewForm(ev, switchCheckPreviewForm, sortableFormElements);
+    }
+
+    //#endregion
+
+    //#region Form Html
+    private PreviewFormHtml(): string {
+        //make copy of this._formBuilderArea
+        const originalFormEl = this._formBuilderArea.cloneNode(true) as HTMLFormElement;
+        let sanitizedFormEl: HTMLFormElement = originalFormEl;
+
+        //remove selectedFormElementControl element if it exists
+        if (sanitizedFormEl.querySelector('#selectedFormElementControl') != null) sanitizedFormEl.querySelector('#selectedFormElementControl').remove();
+
+        sanitizedFormEl.removeAttribute("id");
+        sanitizedFormEl.querySelector('#customFormArea').removeAttribute('id');
+        sanitizedFormEl.querySelector('#customFormWrapper').removeAttribute('id');
+        sanitizedFormEl.querySelector('#customFormSection').removeAttribute('id');
+        
+        //remove all createdFormElement and formElementSelected classes from sanitizedFormEl
+        sanitizedFormEl.querySelectorAll('[data-wrapper-type]').forEach((el: HTMLDivElement) => {
+            el.classList.remove('createdFormElement');
+            el.classList.remove('formElementSelected');
+            el.classList.remove('sortable-chosen');
+            
+            el.removeAttribute('data-wrapper-type');
+            el.removeAttribute('draggable');
+
+            el.querySelector('[data-property-reference]').removeAttribute('data-property-reference');
+        });
+
+        sanitizedFormEl.querySelectorAll('input, select, textarea').forEach((el: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) => {
+            if (el.disabled) {
+                el.disabled = false;
+            }
+        });
+
+        //convert sanitizedFormEl to string
+        const formHtml: string = sanitizedFormEl.outerHTML;
+        console.log(formHtml);
+
+        return formHtml;
+    }
+
+    private Bind_ShowFormHtml(): void {
+        window.onkeydown = (ev: KeyboardEvent) => this._formHtmlCodeInput.value = this.PreviewFormHtml();
+        window.onmouseup = (ev: MouseEvent) => this._formHtmlCodeInput.value = this.PreviewFormHtml();
+        //window.onmousedown = (ev: MouseEvent) => this._formHtmlCodeInput.value = this.PreviewFormHtml();
     }
     //#endregion
 
