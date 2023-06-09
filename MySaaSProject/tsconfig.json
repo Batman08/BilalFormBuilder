@@ -7,7 +7,7 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "target": "ES6",
-    "outDir": "wwwroot/typescript"
+    "outDir": "wwwroot/js"
   },
   "exclude": [
     "node_modules"
