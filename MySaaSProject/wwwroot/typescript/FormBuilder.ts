@@ -39,6 +39,7 @@ class FormBuilder {
         this.ManageClicksOutsideFormField();
 
         this.Bind_ShowFormHtml();
+        this.Bind_CopyFormHtml();
     }
 
     private ManageClicksOutsideFormField(): void {
@@ -118,9 +119,7 @@ class FormBuilder {
             return;
         }
 
-        if (formElement != null) {
-            formElement.onclick = (ev: MouseEvent) => this.SelectedFormElementToEdit(formElement);
-        }
+        if (formElement != null) formElement.onclick = (ev: MouseEvent) => this.SelectedFormElementToEdit(formElement);
     }
 
     private EnableFormFields(): void {
@@ -163,7 +162,7 @@ class FormBuilder {
     //#endregion
 
     //#region Form Html
-    private PreviewFormHtml(): string {
+    private ExtractFormHtml(): string {
         //make copy of this._formBuilderArea
         const originalFormEl = this._formBuilderArea.cloneNode(true) as HTMLFormElement;
         let sanitizedFormEl: HTMLFormElement = originalFormEl;
@@ -202,9 +201,24 @@ class FormBuilder {
     }
 
     private Bind_ShowFormHtml(): void {
-        window.onkeydown = (ev: KeyboardEvent) => this._formHtmlCodeInput.value = this.PreviewFormHtml();
-        window.onmouseup = (ev: MouseEvent) => this._formHtmlCodeInput.value = this.PreviewFormHtml();
+        window.onkeydown = (ev: KeyboardEvent) => this._formHtmlCodeInput.value = this.ExtractFormHtml();
+        window.onmouseup = (ev: MouseEvent) => this._formHtmlCodeInput.value = this.ExtractFormHtml();
         //window.onmousedown = (ev: MouseEvent) => this._formHtmlCodeInput.value = this.PreviewFormHtml();
+    }
+
+    private CopyFormHtml(btnCopyFormHtml: HTMLButtonElement): void {
+        const formHtml: string = this.ExtractFormHtml();
+        Utilities.CopyToClipboard(formHtml);
+
+        Utilities.BTSP_UpdateTooltip(btnCopyFormHtml, 'Copied!');
+    }
+
+    private Bind_CopyFormHtml(): void {
+        const btnCopyFormHtml: HTMLButtonElement = document.querySelector('#btnCopyFormHtml');
+        const tooltipElement = bootstrap.Tooltip.getInstance(btnCopyFormHtml) as bootstrap.Tooltip;
+        tooltipElement.toggleEnabled();
+        
+        btnCopyFormHtml.onclick = (ev: MouseEvent) => this.CopyFormHtml(btnCopyFormHtml);
     }
     //#endregion
 

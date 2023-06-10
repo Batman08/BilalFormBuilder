@@ -1,5 +1,5 @@
 ﻿class Utilities {
-    //#region Boostrap Modals
+    //#region Bootstrap Modals
     public static BTSP_GetOffCanvas(selector: string): bootstrap.Offcanvas {
         const offCanvasElement = document.querySelector(selector) as HTMLDivElement
         return new bootstrap.Offcanvas(offCanvasElement);
@@ -11,6 +11,27 @@
 
     public static BTSP_CloseOffCanvas(offCanvas: bootstrap.Offcanvas): void {
         offCanvas.hide();
+    }
+    //#endregion
+
+    //#region Bootstrap Tooltips
+    public static BTSP_InitTooltips(): any {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }
+
+    public static BTSP_UpdateTooltip(el: HTMLElement, newText:string): void {
+        const tooltipElement = bootstrap.Tooltip.getInstance(el) as bootstrap.Tooltip;
+
+        if (tooltipElement) {
+            el.setAttribute("data-bs-original-title", newText);
+            tooltipElement.toggleEnabled();
+            tooltipElement.hide();
+            tooltipElement.show();
+            tooltipElement.toggleEnabled();
+        }
     }
     //#endregion
 
@@ -282,4 +303,9 @@
     }
     //#endregion
     //#endregion
+
+    public static CopyToClipboard(valueToCopy: string): void {
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(valueToCopy);
+    }
 }
