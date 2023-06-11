@@ -14,12 +14,12 @@
             { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
             { name: "Submit", type: "Submit", icon: ["fas", "fa-square", "fa-sm"] },
             { name: "Survey Components", type: "FieldSectionCategory" },
-            { name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },
+            /*{ name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },*/
             { name: "Table", type: "Table", icon: ["fas", "fa-table", "fa-sm"] },
             { name: "Page Components", type: "FieldSectionCategory" },
             { name: "Divider", type: "Divider", icon: ["fas", "fa-minus", "fa-sm"] },
-            { name: "Page Break", type: "PageBreak", icon: ["fas", "fa-file-alt", "fa-sm"] },
-            { name: "Section Break", type: "SectionBreak", icon: ["fas", "fa-columns", "fa-sm"] },
+            //{ name: "Page Break", type: "PageBreak", icon: ["fas", "fa-file-alt", "fa-sm"] },
+            //{ name: "Section Break", type: "SectionBreak", icon: ["fas", "fa-columns", "fa-sm"] },
         ],
         complexFormElements: [
             { name: "Heading", type: "Heading", icon: ["fas", "fa-heading", "fa-sm"] },
@@ -500,7 +500,7 @@
         const formId = this.GetFormElementId(formElementName) as string;
         const tableCols: string[] = ["#", "col 1", "col 2"];
         const tableRows: string[] = ["row 1", "row 2", "row 3"];
-        const tableInputType: string = "Numeric";
+        const tableInputType: string = "Textbox";
         const table = Utilities.CreateTable(tableCols, tableRows, tableInputType);
         table.id = formId;
         table.setAttribute("name", formElementName);
