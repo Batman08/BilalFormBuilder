@@ -25,8 +25,6 @@ class FormBuilder {
     private _formElementsOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasScrolling');
     private _formDesignerOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasRight');
 
-    private readonly _tabContent = document.querySelector("#myTabContent") as HTMLDivElement;
-
     public Init(tinymce: any, sortableFormElements: any): void {
         /*define default form colours*/
         document.body.style.backgroundColor = "#f8f9fa";
@@ -252,28 +250,6 @@ class FormBuilder {
         this._offcanvasDesignerRightLabel.textContent = "Form Designer";
         this._rightDesignerBody.innerHTML = "";
 
-        //#region Page Color
-        const divPageColor = document.createElement("div") as HTMLDivElement;
-        divPageColor.classList.add("mb-3");
-
-        const labelPageColor = document.createElement("label") as HTMLLabelElement;
-        labelPageColor.htmlFor = "inputPageColor";
-        labelPageColor.classList.add("form-label");
-        labelPageColor.textContent = "Page Color";
-        divPageColor.appendChild(labelPageColor);
-
-        const inputPageColor = document.createElement("input") as HTMLInputElement;
-        inputPageColor.type = "color";
-        inputPageColor.classList.add("form-control");
-        inputPageColor.id = "inputPageColor";
-
-        const currentPageColor = Utilities.RgbToHex(document.body.style.backgroundColor);
-        inputPageColor.value = currentPageColor;
-
-        this.UpdateFormDesign("pageColor", inputPageColor, document.body);
-        divPageColor.appendChild(inputPageColor);
-        //#endregion
-
         //#region Form Color
         const divFormColor = document.createElement("div") as HTMLDivElement;
         divFormColor.classList.add("mb-3");
@@ -318,7 +294,6 @@ class FormBuilder {
         divFontColor.appendChild(inputFontColor);
         //#endregion
 
-        this._rightDesignerBody.appendChild(divPageColor);
         this._rightDesignerBody.appendChild(divFormColor);
         this._rightDesignerBody.appendChild(divFontColor);
     }
