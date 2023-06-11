@@ -10,6 +10,11 @@ class FormBuilder {
     private _offcanvasDesignerRightLabel = document.querySelector("#offcanvasDesignerRightLabel") as HTMLHeadingElement;
     private _rightDesignerBody: HTMLDivElement = document.querySelector('#rightDesigner');
 
+    private _generalTab = document.querySelector('#general-tab') as HTMLButtonElement;
+    private _generalTabPane = document.querySelector('#general-tab-pane') as HTMLDivElement;
+    private _formHtmlTab = document.querySelector('#form-html-tab') as HTMLButtonElement;
+    private _formHtmlTabPane = document.querySelector('#form-html-tab-pane') as HTMLDivElement;
+    
     private _formBuilderArea = document.querySelector('#FormBuilderArea') as HTMLFormElement;
     private _formHtmlCodeInput = document.querySelector('#formHtmlCode') as HTMLTextAreaElement;
 
@@ -40,6 +45,7 @@ class FormBuilder {
 
         this.Bind_ShowFormHtml();
         this.Bind_CopyFormHtml();
+        this.Bind_CopyBootstrapLinkTag();
     }
 
     private ManageClicksOutsideFormField(): void {
@@ -220,12 +226,29 @@ class FormBuilder {
         
         btnCopyFormHtml.onclick = (ev: MouseEvent) => this.CopyFormHtml(btnCopyFormHtml);
     }
+
+    private Bind_CopyBootstrapLinkTag(): void {
+        const inputBootstrapLinkText: HTMLInputElement = document.querySelector('#txtBootstrapLinkTag');
+        inputBootstrapLinkText.value = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css";
+        
+        const btnCopyBootstrapLinkTag: HTMLButtonElement = document.querySelector('#btnCopyBootstrapLinkTag');
+        const tooltipElement = bootstrap.Tooltip.getInstance(btnCopyBootstrapLinkTag) as bootstrap.Tooltip;
+        tooltipElement.toggleEnabled();
+
+        const bootstrapLinkTag = '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">';
+        btnCopyBootstrapLinkTag.onclick = (ev: MouseEvent) => {
+            Utilities.CopyToClipboard(bootstrapLinkTag);
+            Utilities.BTSP_UpdateTooltip(btnCopyBootstrapLinkTag, 'Copied!');
+        }
+    }
     //#endregion
 
     //#region Form Designer
     private FormDesigner(ev: MouseEvent): void {
         ev.preventDefault();
 
+        this._formHtmlTab.parentElement.classList.remove("d-none");
+        
         this._offcanvasDesignerRightLabel.textContent = "Form Designer";
         this._rightDesignerBody.innerHTML = "";
 
@@ -383,6 +406,13 @@ class FormBuilder {
 
     //#region Edit
     public SelectedFormElementToEdit(element: HTMLDivElement): void {
+        this._formHtmlTab.parentElement.classList.add("d-none");
+        this._formHtmlTab.classList.remove("active", "show");
+        this._formHtmlTabPane.classList.remove("active", "show");
+        
+        this._generalTab.classList.add("active", "show");
+        this._generalTabPane.classList.add("active", "show");
+        
         const formElement = new FormElements();
 
         this.AddEditDesign(element);
@@ -430,12 +460,8 @@ class FormBuilder {
         const elementName: string = this._currentSelectedFormElement.querySelector("[data-property-reference]").getAttribute("data-property-reference");
         this._offcanvasDesignerRightLabel.textContent = `${elementName} Properties`;
 
-        if (elementWrapper === "paragraphWrapper") {
-            this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement, this.UpdateFormElement);
-        }
-        else {
-            this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement);
-        }
+        if (elementWrapper === "paragraphWrapper") this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement, this.UpdateFormElement);
+        else this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement);
     }
 
     private AddEditDesign(element: HTMLDivElement): void {

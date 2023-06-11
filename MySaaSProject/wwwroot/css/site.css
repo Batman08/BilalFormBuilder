@@ -225,3 +225,9 @@ body {
     /*padding: 15px;*/
     /*#6c757d*/
 }
+
+.divider {
+    border-bottom: 1px solid;
+    height: 1px;
+    margin: 5px 0;
+}
