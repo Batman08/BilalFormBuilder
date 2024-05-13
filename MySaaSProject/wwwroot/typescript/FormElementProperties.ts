@@ -3,17 +3,12 @@
 
 class FormElementProperties {
     private readonly rightDesigner = document.querySelector('#rightDesigner') as HTMLDivElement;
-    private _tinymce: any;
 
-    public Init(tinymce: any): void {
-        this._tinymce = tinymce;
-    }
-
-    public GetElementProperties(elementType: string, element: HTMLElement, callback?: Function) {
+    public GetElementProperties(elementType: string, element: HTMLElement) {
 
         switch (elementType) {
             case "paragraphWrapper":
-                this.ParagraphProperties(element, callback);
+                this.ParagraphProperties(element);
                 break;
             case "singleChoiceWrapper":
                 this.SingleChoiceProperties(element);
@@ -151,24 +146,22 @@ class FormElementProperties {
     //#region Basic Properties
 
     //#region Paragraph Properties
-    private ParagraphProperties(paragraphElement: HTMLElement, callback?: Function): void {
+    private ParagraphProperties(paragraphElement: HTMLElement): void {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
         const currentText: string = elementToUpdateText.textContent;
 
         this.rightDesigner.innerHTML = '';
         const textArea = document.createElement('textarea') as HTMLTextAreaElement;
         textArea.id = 'paragraph-editor';
-        this.rightDesigner.appendChild(textArea);
-        //this._tinymce.activeEditor.setContent("this is a test");
+        textArea.classList.add('form-control');
+        textArea.value = currentText;
+        this.UpdateParagraph(elementToUpdateText, textArea);
 
-        //delay to init tinymce
-        setTimeout(() => {//todo: should only show right designer when tinymce editor has been initialized
-            Utilities.InitTinyMCE(this._tinymce, 'textarea#paragraph-editor');
-            setTimeout(() => {//todo: should only show right designer when tinymce editor has been initialized
-                this._tinymce.activeEditor.setContent(currentText);
-                Utilities.AddTinymceListeners(this._tinymce, elementToUpdateText, callback);
-            }, 1000);
-        }, 0.0001);
+        this.rightDesigner.appendChild(textArea);
+    }
+
+    private UpdateParagraph(elementToUpdateText: HTMLElement, inputEl: HTMLTextAreaElement): void {
+        inputEl.oninput = (ev: InputEvent) => { elementToUpdateText.textContent = inputEl.value; };
     }
     //#endregion
 

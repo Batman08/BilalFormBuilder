@@ -35,30 +35,6 @@
     }
     //#endregion
 
-    //#region TinyMCE
-    public static InitTinyMCE(tinymce: any, editorSelector: string) {
-        // Initialize tinymce editor
-        tinymce.init({
-            selector: editorSelector
-        });
-    }
-
-    public static AddTinymceListeners(tinymce: any, element: HTMLElement, callback: Function): void {
-        const btnTinymceUpgrade = document.querySelector('.tox-promotion') as HTMLDivElement;
-        btnTinymceUpgrade.classList.add("hideElement");
-        const iconTinymce = document.querySelector('.tox-statusbar__branding') as HTMLSpanElement;
-        iconTinymce.classList.add("hideElement");
-
-        //add input event listner for tinymce
-        tinymce.activeEditor.getBody().oninput = (ev: InputEvent) => {
-            if (ev.target) {
-                //update paragraph element
-                callback(tinymce, element);
-            }
-        };
-    }
-    //#endregion
-
     //#region Form Utils
     public static RgbToHex(rgbVal: string): string {
         const rgb: string[] = rgbVal.substring(4, rgbVal.length - 1).replace(/ /g, '').split(',');
