@@ -25,13 +25,11 @@ class FormBuilder {
     private _formElementsOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasScrolling');
     private _formDesignerOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasRight');
 
-    public Init(tinymce: any, sortableFormElements: any): void {
+    public Init(sortableFormElements: any): void {
         /*define default form colours*/
         document.body.style.backgroundColor = "#f8f9fa";
         this._customFormSection.style.backgroundColor = "#FFFFFF";
         this._customFormSection.style.color = "#000000";
-
-        this._formElementProperties.Init(tinymce);
 
         const formElement = new FormElements();
         formElement.Init();
@@ -435,8 +433,7 @@ class FormBuilder {
         const elementName: string = this._currentSelectedFormElement.querySelector("[data-property-reference]").getAttribute("data-property-reference");
         this._offcanvasDesignerRightLabel.textContent = `${elementName} Properties`;
 
-        if (elementWrapper === "paragraphWrapper") this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement, this.UpdateFormElement);
-        else this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement);
+        this._formElementProperties.GetElementProperties(elementWrapper, this._currentSelectedFormElement);
     }
 
     private AddEditDesign(element: HTMLDivElement): void {
@@ -451,13 +448,6 @@ class FormBuilder {
         createdFormElements.forEach((element) => {
             element.classList.remove("formElementSelected");
         });
-    }
-    //#endregion
-
-    //#region Update
-    private UpdateFormElement(tinymce: any, element: HTMLDivElement): void {
-        console.log(element);
-        element.innerHTML = tinymce.activeEditor.getContent();
     }
     //#endregion
 
