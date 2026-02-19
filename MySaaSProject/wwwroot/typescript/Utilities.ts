@@ -1,4 +1,6 @@
-﻿class Utilities {
+﻿/// <reference types="./Utilities" />
+
+class Utilities {
     //#region Bootstrap Modals
     public static BTSP_GetOffCanvas(selector: string): bootstrap.Offcanvas {
         const offCanvasElement = document.querySelector(selector) as HTMLDivElement
@@ -22,7 +24,7 @@
         })
     }
 
-    public static BTSP_UpdateTooltip(el: HTMLElement, newText:string): void {
+    public static BTSP_UpdateTooltip(el: HTMLElement, newText: string): void {
         const tooltipElement = bootstrap.Tooltip.getInstance(el) as bootstrap.Tooltip;
 
         if (tooltipElement) {
@@ -163,7 +165,7 @@
                         const mcOptionData = this.CreateTableMultipleChoiceOption(data);
                         tr.appendChild(mcOptionData);
                         break;
-                    
+
                     case "Dropdown":
                         const dropdownData: TableDDLOptionDTO = {
                             ddlOptionId: `ddlOption${i}`,
@@ -283,5 +285,12 @@
     public static CopyToClipboard(valueToCopy: string): void {
         // Copy the text inside the text field
         navigator.clipboard.writeText(valueToCopy);
+    }
+
+    public static CreateFormElementNames(elementName: string): FormElementNames {
+        return {
+            Name: elementName,
+            Reference: elementName.charAt(0).toUpperCase() + elementName.slice(1),
+        };
     }
 }

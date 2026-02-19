@@ -103,51 +103,55 @@
     }
 
     public FindFormElementToCreate(formElementToCreate: string): HTMLDivElement | null {
-        const prefix: string = formElementToCreate.substring(0, 11);
-
-        if (prefix !== "formElement")
-            return null;
-
-        const elementType: string = formElementToCreate.substring(11);
-
-        //switch statement
-        switch (elementType) {
-            case "Paragraph":
-                return this.FormElementParagraph();
-            case "Dropdown":
-                return this.FormElementDropdown();
-            case "SingleChoice":
-                return this.FormElementSingleChoice();
-            case "MultipleChoice":
-                return this.FormElementMultipleChoice();
-            case "DatePicker":
-                return this.FormElementDatePicker();
-            case "Time":
-                return this.FormElementTime();
-            case "Number":
-                return this.FormElementNumber();
-            case "Image":
-                return this.FormElementImage();
-            case "FileUpload":
-                return this.FormElementFileUpload();
-            case "Submit":
-                return this.FormElementSubmit();
-            //case "Rating":
-            //    return null;
-            case "Table":
-                return this.FormElementTable();
-            case "Divider":
-                return this.FormElementDivider();
-            case "Heading":
-                return this.FormElementHeading();
-            case "FullName":
-                return this.FormElementFullName();
-            case "Email":
-                return this.FormElementEmail();
-            default:
-                return null;
-        }
+        return FormElementFactory.Create(formElementToCreate);
     }
+
+    //public FindFormElementToCreate2(formElementToCreate: string): HTMLDivElement | null {
+    //    const prefix: string = formElementToCreate.substring(0, 11);
+
+    //    if (prefix !== "formElement")
+    //        return null;
+
+    //    const elementType: string = formElementToCreate.substring(11);
+
+    //    //switch statement
+    //    switch (elementType) {
+    //        case "Paragraph":
+    //            return this.FormElementParagraph();
+    //        case "Dropdown":
+    //            return this.FormElementDropdown();
+    //        case "SingleChoice":
+    //            return this.FormElementSingleChoice();
+    //        case "MultipleChoice":
+    //            return this.FormElementMultipleChoice();
+    //        case "DatePicker":
+    //            return this.FormElementDatePicker();
+    //        case "Time":
+    //            return this.FormElementTime();
+    //        case "Number":
+    //            return this.FormElementNumber();
+    //        case "Image":
+    //            return this.FormElementImage();
+    //        case "FileUpload":
+    //            return this.FormElementFileUpload();
+    //        case "Submit":
+    //            return this.FormElementSubmit();
+    //        //case "Rating":
+    //        //    return null;
+    //        case "Table":
+    //            return this.FormElementTable();
+    //        case "Divider":
+    //            return this.FormElementDivider();
+    //        case "Heading":
+    //            return this.FormElementHeading();
+    //        case "FullName":
+    //            return this.FormElementFullName();
+    //        case "Email":
+    //            return this.FormElementEmail();
+    //        default:
+    //            return null;
+    //    }
+    //}
 
     public FormElementControls(): HTMLDivElement {
         const divSelectedControls = document.createElement("div") as HTMLDivElement;
@@ -201,22 +205,6 @@
     //#endregion
 
     //#region Basic Form Elements
-    private FormElementParagraph(): HTMLDivElement {
-        const formElementName: string = "paragraph";
-        const divParagraphWrapper = this.CreateFormElementWrapper(formElementName);
-
-        const paragraph = document.createElement("p") as HTMLParagraphElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        paragraph.id = formId;
-        paragraph.classList.add("text-break");
-        paragraph.setAttribute("name", formElementName)
-        paragraph.setAttribute("data-property-reference", "Paragraph");
-        paragraph.innerText = "This is a paragraph";
-        divParagraphWrapper.appendChild(paragraph);
-
-        return divParagraphWrapper;
-    }
 
     private FormElementDropdown(): HTMLDivElement {
         const formElementName: string = "dropdown";
@@ -520,7 +508,7 @@
         const formId = this.GetFormElementId(formElementName) as string;
         div.id = formId;
         div.classList.add("divider");
-        
+
         div.setAttribute("name", formElementName)
         div.setAttribute("data-property-reference", "Divider");
         divWrapper.appendChild(div);
@@ -528,7 +516,7 @@
         return divWrapper;
     }
     //#endregion
-    
+
     //#region Complex Form Elements
     private FormElementHeading(): HTMLDivElement {
         const formElementName: string = "heading";
