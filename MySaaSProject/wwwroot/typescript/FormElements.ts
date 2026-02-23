@@ -125,37 +125,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementDropdown(): HTMLDivElement {
-        const formElementName: string = "dropdown";
-        const divDropdownWrapper = this.CreateFormElementWrapper(formElementName);
-
-        const divTextStart = document.createElement("div") as HTMLDivElement;
-        divTextStart.classList.add("text-start");
-        divDropdownWrapper.appendChild(divTextStart);
-
-        const dropdownLabel = document.createElement("label") as HTMLLabelElement;
-        dropdownLabel.classList.add("form-label");
-        dropdownLabel.innerText = "Type a question";
-        divTextStart.appendChild(dropdownLabel);
-
-        const select = document.createElement("select") as HTMLSelectElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-        select.id = formId;
-        select.classList.add("form-select");
-        select.setAttribute("name", formElementName);
-        select.ariaLabel = "Dropdown";
-        select.setAttribute("data-property-reference", "Dropdown");
-        select.disabled = true;
-        divDropdownWrapper.appendChild(select);
-
-        const ddlOptionData: DropdownOptionDTO = { dropdownValue: "", dropdownTextContent: "Select an option" };
-        const defaultOption: HTMLOptionElement = Utilities.CreateDropdownOption(ddlOptionData);
-        defaultOption.setAttribute("selected", "");
-        select.appendChild(defaultOption);
-
-        return divDropdownWrapper;
-    }
-
     private FormElementSingleChoice(): HTMLDivElement {
         const formElementName: string = "singleChoice";
         const divSingleChoiceWrapper = this.CreateFormElementWrapper(formElementName);

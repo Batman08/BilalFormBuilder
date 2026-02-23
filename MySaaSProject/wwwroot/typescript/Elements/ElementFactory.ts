@@ -2,7 +2,7 @@
     // Map the string type to the Class constructor
     private static registry: Record<string, new () => BaseElement> = {
         "Paragraph": ParagraphElement,
-        //"Dropdown": Elements.DropdownElement,
+        "Dropdown": DropdownElement,
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };
