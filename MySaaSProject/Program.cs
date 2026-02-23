@@ -45,7 +45,7 @@ void RegisterDIMarkers()
         }
     }
 
-    string[] assemblies = { "MySaaSProject.Server.dll", "Domain.dll" };
+    string[] assemblies = { "MySaaSProject.dll", "Domain.dll" };
     foreach (var assemblyPathName in assemblies)
     {
         string assemblyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyPathName);

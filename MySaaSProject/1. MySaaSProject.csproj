@@ -4,6 +4,9 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>MySaaSProject</AssemblyName>
+    <AssemblyTitle>MySaaSProject</AssemblyTitle>
+    <RootNamespace>MySaaSProject</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
