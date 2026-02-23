@@ -14,7 +14,7 @@ class FormBuilder {
     private _generalTabPane = document.querySelector('#general-tab-pane') as HTMLDivElement;
     private _formHtmlTab = document.querySelector('#form-html-tab') as HTMLButtonElement;
     private _formHtmlTabPane = document.querySelector('#form-html-tab-pane') as HTMLDivElement;
-    
+
     private _formBuilderArea = document.querySelector('#FormBuilderArea') as HTMLFormElement;
     private _formHtmlCodeInput = document.querySelector('#formHtmlCode') as HTMLTextAreaElement;
 
@@ -25,14 +25,14 @@ class FormBuilder {
     private _formElementsOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasScrolling');
     private _formDesignerOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasRight');
 
-    public Init(sortableFormElements: any): void {
+    public Init(sortableFormElements: any, componentsToCreate: ComponentsToCreateDTO): void {
         /*define default form colours*/
         document.body.style.backgroundColor = "#f8f9fa";
         this._customFormSection.style.backgroundColor = "#FFFFFF";
         this._customFormSection.style.color = "#000000";
 
         const formElement = new FormElements();
-        formElement.Init();
+        formElement.Init(componentsToCreate);
 
         this.PreviewFormOnClick(sortableFormElements);
         this.FormDesignerOnClick();
@@ -176,13 +176,13 @@ class FormBuilder {
         sanitizedFormEl.querySelector('#customFormArea').removeAttribute('id');
         sanitizedFormEl.querySelector('#customFormWrapper').removeAttribute('id');
         sanitizedFormEl.querySelector('#customFormSection').removeAttribute('id');
-        
+
         //remove all createdFormElement and formElementSelected classes from sanitizedFormEl
         sanitizedFormEl.querySelectorAll('[data-wrapper-type]').forEach((el: HTMLDivElement) => {
             el.classList.remove('createdFormElement');
             el.classList.remove('formElementSelected');
             el.classList.remove('sortable-chosen');
-            
+
             el.removeAttribute('data-wrapper-type');
             el.removeAttribute('draggable');
 
@@ -219,14 +219,14 @@ class FormBuilder {
         const btnCopyFormHtml: HTMLButtonElement = document.querySelector('#btnCopyFormHtml');
         const tooltipElement = bootstrap.Tooltip.getInstance(btnCopyFormHtml) as bootstrap.Tooltip;
         tooltipElement.toggleEnabled();
-        
+
         btnCopyFormHtml.onclick = (ev: MouseEvent) => this.CopyFormHtml(btnCopyFormHtml);
     }
 
     private Bind_CopyBootstrapLinkTag(): void {
         const inputBootstrapLinkText: HTMLInputElement = document.querySelector('#txtBootstrapLinkTag');
         inputBootstrapLinkText.value = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css";
-        
+
         const btnCopyBootstrapLinkTag: HTMLButtonElement = document.querySelector('#btnCopyBootstrapLinkTag');
         const tooltipElement = bootstrap.Tooltip.getInstance(btnCopyBootstrapLinkTag) as bootstrap.Tooltip;
         tooltipElement.toggleEnabled();
@@ -244,7 +244,7 @@ class FormBuilder {
         ev.preventDefault();
 
         this._formHtmlTab.parentElement.classList.remove("d-none");
-        
+
         this._offcanvasDesignerRightLabel.textContent = "Form Designer";
         this._rightDesignerBody.innerHTML = "";
 
@@ -382,10 +382,10 @@ class FormBuilder {
         this._formHtmlTab.parentElement.classList.add("d-none");
         this._formHtmlTab.classList.remove("active", "show");
         this._formHtmlTabPane.classList.remove("active", "show");
-        
+
         this._generalTab.classList.add("active", "show");
         this._generalTabPane.classList.add("active", "show");
-        
+
         const formElement = new FormElements();
 
         this.AddEditDesign(element);

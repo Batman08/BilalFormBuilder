@@ -179,7 +179,8 @@
             ghostClass: 'draggableGhost'
         });
 
+        const componentsToCreateConfig = @Html.Raw(Json.Serialize(Model.ComponentsToCreate));
         const formBuilder = new FormBuilder();
-        formBuilder.Init(sortableFormElements);
+        formBuilder.Init(sortableFormElements, componentsToCreateConfig);
     });
 </script>

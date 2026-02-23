@@ -5,19 +5,19 @@
 };
 
 type FormComponentDTO = {
-    name: string;
-    type: string;
-    icon?: string[];
+    Name: string;
+    Type: string;
+    Icon?: string[];
 };
 
 type FieldSectionCategoryDTO = {
-    name: string;
-    type: string;
+    Name: string;
+    Type: string;
 };
 
 type ComponentsToCreateDTO = {
-    basicFormElements: FormComponentDTO[] | FieldSectionCategoryDTO[];
-    complexFormElements: FormComponentDTO[]
+    BasicFormElements: FormComponentDTO[] | FieldSectionCategoryDTO[];
+    ComplexFormElements: FormComponentDTO[]
 };
 
 type DropdownOptionDTO = {

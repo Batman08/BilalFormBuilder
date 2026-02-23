@@ -1,20 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Features.FormElements;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MySaaSProject.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        public ComponentsToCreateDTO ComponentsToCreate { get; set; } = new();
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly IWebHostEnvironment _env;
+        private readonly IFormElementQueries _formElementQueries;
+
+        public IndexModel(IWebHostEnvironment env, IFormElementQueries formElementQueries)
         {
-            _logger = logger;
+            _env = env;
+            _formElementQueries = formElementQueries;
         }
 
         public void OnGet()
         {
-
+            var jsonFilePath = Path.Combine(_env.ContentRootPath, "Code", "Data", "FormElements.json");
+            if (System.IO.File.Exists(jsonFilePath))
+            {
+                var jsonString = System.IO.File.ReadAllText(jsonFilePath);
+                ComponentsToCreate = _formElementQueries.GetAvailableComponents(jsonString);
+            }
         }
     }
 }

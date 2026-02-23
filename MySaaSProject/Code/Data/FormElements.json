@@ -1,0 +1,147 @@
+{
+  "BasicFormElements": [
+    {
+      "Name": "Paragraph",
+      "Type": "Paragraph",
+      "Icon": [ "fas", "fa-paragraph", "fa-sm" ]
+    },
+    {
+      "Name": "Dropdown",
+      "Type": "Dropdown",
+      "Icon": [ "fas", "fa-caret-square-down", "fa-sm" ]
+    },
+    {
+      "Name": "Single Choice",
+      "Type": "SingleChoice",
+      "Icon": [ "fas", "fa-dot-circle", "fa-sm" ]
+    },
+    {
+      "Name": "Multiple Choice",
+      "Type": "MultipleChoice",
+      "Icon": [ "fas", "fa-check-square", "fa-sm" ]
+    },
+    {
+      "Name": "Date Picker",
+      "Type": "DatePicker",
+      "Icon": [ "fas", "fa-calendar-alt", "fa-sm" ]
+    },
+    {
+      "Name": "Time",
+      "Type": "Time",
+      "Icon": [ "fas", "fa-clock", "fa-sm" ]
+    },
+    {
+      "Name": "Number",
+      "Type": "Number",
+      "Icon": [ "fas", "fa-hashtag", "fa-sm" ]
+    },
+    {
+      "Name": "Image",
+      "Type": "Image",
+      "Icon": [ "fas", "fa-image", "fa-sm" ]
+    },
+    {
+      "Name": "File Upload",
+      "Type": "FileUpload",
+      "Icon": [ "fas", "fa-file-upload", "fa-sm" ]
+    },
+    {
+      "Name": "Submit",
+      "Type": "Submit",
+      "Icon": [ "fas", "fa-square", "fa-sm" ]
+    },
+    {
+      "Name": "Survey Components",
+      "Type": "FieldSectionCategory"
+    },
+    /*{ name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },*/
+    {
+      "Name": "Table",
+      "Type": "Table",
+      "Icon": [ "fas", "fa-table", "fa-sm" ]
+    },
+    {
+      "Name": "Page Components",
+      "Type": "FieldSectionCategory"
+    },
+    {
+      "Name": "Divider",
+      "Type": "Divider",
+      "Icon": [ "fas", "fa-minus", "fa-sm" ]
+    }
+    //{ name: "Page Break", type: "PageBreak", icon: ["fas", "fa-file-alt", "fa-sm"] },
+    //{ name: "Section Break", type: "SectionBreak", icon: ["fas", "fa-columns", "fa-sm"] },
+  ],
+  "ComplexFormElements": [
+    {
+      "Name": "Heading",
+      "Type": "Heading",
+      "Icon": [ "fas", "fa-heading", "fa-sm" ]
+    },
+    {
+      "Name": "Full Name",
+      "Type": "FullName",
+      "Icon": [ "fas", "fa-user", "fa-sm" ]
+    },
+    {
+      "Name": "Email",
+      "Type": "Email",
+      "Icon": [ "fas", "fa-envelope", "fa-sm" ]
+    },
+    {
+      "Name": "Phone",
+      "Type": "Phone",
+      "Icon": [ "fas", "fa-phone", "fa-sm" ]
+    },
+    {
+      "Name": "Address",
+      "Type": "Address",
+      "Icon": [ "fas", "fa-map-marker-alt", "fa-sm" ]
+    },
+    {
+      "Name": "Video",
+      "Type": "Video",
+      "Icon": [ "fas", "fa-video", "fa-sm" ]
+    },
+    {
+      "Name": "Audio",
+      "Type": "Audio",
+      "Icon": [ "fas", "fa-volume-up", "fa-sm" ]
+    },
+    {
+      "Name": "Barcode",
+      "Type": "Barcode",
+      "Icon": [ "fas", "fa-barcode", "fa-sm" ]
+    },
+    {
+      "Name": "QR Code",
+      "Type": "QRCode",
+      "Icon": [ "fas", "fa-qrcode", "fa-sm" ]
+    },
+    {
+      "Name": "Location",
+      "Type": "Location",
+      "Icon": [ "fas", "fa-map-marker-alt", "fa-sm" ]
+    },
+    {
+      "Name": "Link",
+      "Type": "Link",
+      "Icon": [ "fas", "fa-link", "fa-sm" ]
+    },
+    {
+      "Name": "List",
+      "Type": "List",
+      "Icon": [ "fas", "fa-list", "fa-sm" ]
+    },
+    {
+      "Name": "Grid",
+      "Type": "Grid",
+      "Icon": [ "fas", "fa-th", "fa-sm" ]
+    },
+    {
+      "Name": "Tabs",
+      "Type": "Tabs",
+      "Icon": [ "fas", "fa-window-maximize", "fa-sm" ]
+    }
+  ]
+}

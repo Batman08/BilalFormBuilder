@@ -1,45 +1,11 @@
 ﻿class FormElements {
+    private static _componentsToCreate: ComponentsToCreateDTO;
+
     private readonly _basicFormElements = document.querySelector("#basicFormElements") as HTMLDivElement;
     private readonly _complexFormElements = document.querySelector("#formElements") as HTMLDivElement;
-    private readonly _componentsToCreate: ComponentsToCreateDTO = {
-        basicFormElements: [
-            { name: "Paragraph", type: "Paragraph", icon: ["fas", "fa-paragraph", "fa-sm"] },
-            { name: "Dropdown", type: "Dropdown", icon: ["fas", "fa-caret-square-down", "fa-sm"] },
-            { name: "Single Choice", type: "SingleChoice", icon: ["fas", "fa-dot-circle", "fa-sm"] },
-            { name: "Multiple Choice", type: "MultipleChoice", icon: ["fas", "fa-check-square", "fa-sm"] },
-            { name: "Date Picker", type: "DatePicker", icon: ["fas", "fa-calendar-alt", "fa-sm"] },
-            { name: "Time", type: "Time", icon: ["fas", "fa-clock", "fa-sm"] },
-            { name: "Number", type: "Number", icon: ["fas", "fa-hashtag", "fa-sm"] },
-            { name: "Image", type: "Image", icon: ["fas", "fa-image", "fa-sm"] },
-            { name: "File Upload", type: "FileUpload", icon: ["fas", "fa-file-upload", "fa-sm"] },
-            { name: "Submit", type: "Submit", icon: ["fas", "fa-square", "fa-sm"] },
-            { name: "Survey Components", type: "FieldSectionCategory" },
-            /*{ name: "Rating", type: "Rating", icon: ["fas", "fa-star", "fa-sm"] },*/
-            { name: "Table", type: "Table", icon: ["fas", "fa-table", "fa-sm"] },
-            { name: "Page Components", type: "FieldSectionCategory" },
-            { name: "Divider", type: "Divider", icon: ["fas", "fa-minus", "fa-sm"] },
-            //{ name: "Page Break", type: "PageBreak", icon: ["fas", "fa-file-alt", "fa-sm"] },
-            //{ name: "Section Break", type: "SectionBreak", icon: ["fas", "fa-columns", "fa-sm"] },
-        ],
-        complexFormElements: [
-            { name: "Heading", type: "Heading", icon: ["fas", "fa-heading", "fa-sm"] },
-            { name: "Full Name", type: "FullName", icon: ["fas", "fa-user", "fa-sm"] },
-            { name: "Email", type: "Email", icon: ["fas", "fa-envelope", "fa-sm"] },
-            { name: "Phone", type: "Phone", icon: ["fas", "fa-phone", "fa-sm"] },
-            { name: "Address", type: "Address", icon: ["fas", "fa-map-marker-alt", "fa-sm"] },
-            { name: "Video", type: "Video", icon: ["fas", "fa-video", "fa-sm"] },
-            { name: "Audio", type: "Audio", icon: ["fas", "fa-volume-up", "fa-sm"] },
-            { name: "Barcode", type: "Barcode", icon: ["fas", "fa-barcode", "fa-sm"] },
-            { name: "QR Code", type: "QRCode", icon: ["fas", "fa-qrcode", "fa-sm"] },
-            { name: "Location", type: "Location", icon: ["fas", "fa-map-marker-alt", "fa-sm"] },
-            { name: "Link", type: "Link", icon: ["fas", "fa-link", "fa-sm"] },
-            { name: "List", type: "List", icon: ["fas", "fa-list", "fa-sm"] },
-            { name: "Grid", type: "Grid", icon: ["fas", "fa-th", "fa-sm"] },
-            { name: "Tabs", type: "Tabs", icon: ["fas", "fa-window-maximize", "fa-sm"] }
-        ]
-    }
 
-    public Init(): void {
+    public Init(componentsToCreate: ComponentsToCreateDTO): void {
+        FormElements._componentsToCreate = componentsToCreate;
         this.CreateFormElementAddComponent();
     }
 
@@ -49,20 +15,20 @@
         this._complexFormElements.innerHTML = '';
 
         //loop through all basic components to create
-        this._componentsToCreate.basicFormElements.forEach((component) => {
-            if (component.type !== "FieldSectionCategory") {
-                const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
+        FormElements._componentsToCreate.BasicFormElements.forEach((component) => {
+            if (component.Type !== "FieldSectionCategory") {
+                const addElementComponent = this.FormElementComponent(component.Name, component.Type, component.Icon);
                 this._basicFormElements.appendChild(addElementComponent);
             }
             else {
-                const addFieldSectionCategory = this.FieldSectionCategoryComponent(component.name);
+                const addFieldSectionCategory = this.FieldSectionCategoryComponent(component.Name);
                 this._basicFormElements.appendChild(addFieldSectionCategory);
             }
         });
 
         //loop through all complex components to create
-        this._componentsToCreate.complexFormElements.forEach((component) => {
-            const addElementComponent = this.FormElementComponent(component.name, component.type, component.icon);
+        FormElements._componentsToCreate.ComplexFormElements.forEach((component) => {
+            const addElementComponent = this.FormElementComponent(component.Name, component.Type, component.Icon);
             this._complexFormElements.appendChild(addElementComponent);
         });
     }
@@ -105,53 +71,6 @@
     public FindFormElementToCreate(formElementToCreate: string): HTMLDivElement | null {
         return FormElementFactory.Create(formElementToCreate);
     }
-
-    //public FindFormElementToCreate2(formElementToCreate: string): HTMLDivElement | null {
-    //    const prefix: string = formElementToCreate.substring(0, 11);
-
-    //    if (prefix !== "formElement")
-    //        return null;
-
-    //    const elementType: string = formElementToCreate.substring(11);
-
-    //    //switch statement
-    //    switch (elementType) {
-    //        case "Paragraph":
-    //            return this.FormElementParagraph();
-    //        case "Dropdown":
-    //            return this.FormElementDropdown();
-    //        case "SingleChoice":
-    //            return this.FormElementSingleChoice();
-    //        case "MultipleChoice":
-    //            return this.FormElementMultipleChoice();
-    //        case "DatePicker":
-    //            return this.FormElementDatePicker();
-    //        case "Time":
-    //            return this.FormElementTime();
-    //        case "Number":
-    //            return this.FormElementNumber();
-    //        case "Image":
-    //            return this.FormElementImage();
-    //        case "FileUpload":
-    //            return this.FormElementFileUpload();
-    //        case "Submit":
-    //            return this.FormElementSubmit();
-    //        //case "Rating":
-    //        //    return null;
-    //        case "Table":
-    //            return this.FormElementTable();
-    //        case "Divider":
-    //            return this.FormElementDivider();
-    //        case "Heading":
-    //            return this.FormElementHeading();
-    //        case "FullName":
-    //            return this.FormElementFullName();
-    //        case "Email":
-    //            return this.FormElementEmail();
-    //        default:
-    //            return null;
-    //    }
-    //}
 
     public FormElementControls(): HTMLDivElement {
         const divSelectedControls = document.createElement("div") as HTMLDivElement;
