@@ -293,4 +293,97 @@ class Utilities {
             Reference: elementName.charAt(0).toUpperCase() + elementName.slice(1),
         };
     }
+
+
+    //#region Property Panel Utilities
+
+    public static FieldLabelProperty(data: FieldLabelPropertyData): HTMLDivElement {
+        const fieldLabelWrapper = document.createElement("div") as HTMLDivElement;
+        fieldLabelWrapper.classList.add("mb-3");
+
+        const fieldLabel = document.createElement("label") as HTMLLabelElement;
+        fieldLabel.htmlFor = "editField";
+        fieldLabel.classList.add("form-label");
+        fieldLabel.textContent = "Field Label";
+
+        const fieldLabelInput = document.createElement("input") as HTMLInputElement;
+        fieldLabelInput.id = "editField";
+        fieldLabelInput.classList.add("form-control");
+        fieldLabelInput.type = "text";
+        fieldLabelInput.placeholder = data.PlaceHolder;
+        fieldLabelInput.value = data.InputVal;
+        fieldLabelInput.ariaRoleDescription = data.AriaRoleDesc;
+        fieldLabelInput.oninput = (ev: InputEvent) => { data.ElementToUpdate.textContent = fieldLabelInput.value; };
+
+        fieldLabelWrapper.appendChild(fieldLabel);
+        fieldLabelWrapper.appendChild(fieldLabelInput);
+
+        return fieldLabelWrapper;
+    }
+
+    public static TextareaLabelProperty(wrapperId: string, textVal: string): HTMLDivElement {
+        const optionsWrapper = document.createElement("div") as HTMLDivElement;
+        optionsWrapper.id = wrapperId;
+        optionsWrapper.classList.add("mb-3", "pt-3");
+
+        const optionsLabel = document.createElement("label") as HTMLLabelElement;
+        optionsLabel.classList.add("form-label");
+        optionsLabel.htmlFor = "txtAreaOptions";
+        optionsLabel.textContent = textVal;
+        optionsWrapper.appendChild(optionsLabel);
+
+        return optionsWrapper;
+    }
+
+    public static MultiSelectTextAreaProperty(optionsFromMultiSelectEl: NodeListOf<Node>, updateFuncData: any, updateFunc: Function, labelText: string, textareaId: string): HTMLDivElement {
+        const divTextarea = document.createElement("div") as HTMLDivElement;
+        divTextarea.classList.add("form-floating");
+
+        const textarea = document.createElement("textarea") as HTMLTextAreaElement;
+        textarea.id = textareaId;
+        textarea.classList.add("form-control");
+        textarea.placeholder = labelText;
+        textarea.style.height = "100px";
+
+        const textareaLabel = document.createElement("label") as HTMLLabelElement;
+        textareaLabel.htmlFor = textareaId;
+        textareaLabel.textContent = labelText;
+
+        divTextarea.appendChild(textarea);
+        divTextarea.appendChild(textareaLabel);
+
+        let optionsFromElement: string[] = [];
+        optionsFromMultiSelectEl.forEach((option) => {
+            if (option.textContent === "Select an option")
+                return;
+
+            optionsFromElement.push(option.textContent);
+        });
+
+        console.log(optionsFromElement);
+        this.UpdateTextAreaOptions(textarea, optionsFromElement);
+
+        textarea.oninput = (ev: KeyboardEvent) => {
+            const options: string[] = this.GetOptionsFromTextarea(textarea);
+            updateFuncData.options = options;
+            updateFunc(updateFuncData);
+        };
+
+        return divTextarea;
+    }
+
+    public static UpdateTextAreaOptions(textarea: HTMLTextAreaElement, options: string[]): void {
+        //add options to textarea
+        if (options !== null && options !== undefined) {
+            textarea.value = options.join('\n');
+        }
+    }
+
+    public static GetOptionsFromTextarea(textarea: HTMLTextAreaElement): string[] {
+        //split data into array
+        const options = textarea.value.split(/[\n,]+/);
+        return options;
+    }
+
+    //#endregion
 }
