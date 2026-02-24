@@ -364,5 +364,5 @@ FodyWeavers.xsd
 
 
 # Typescript
-/MySaaSProject/wwwroot/js/**/*.js
-/MySaaSProject/wwwroot/js/**/*.js.map
+/MySaaSProject/wwwroot/typescript/**/*.js
+/MySaaSProject/wwwroot/typescript/**/*.js.map
