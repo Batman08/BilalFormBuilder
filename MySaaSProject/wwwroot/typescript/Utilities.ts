@@ -288,9 +288,15 @@ class Utilities {
     }
 
     public static CreateFormElementNames(elementName: string): FormElementNames {
+        // Convert snake_case to camelCase for the Name property
+        const camelCaseName = elementName.replace(/_./g, match => match.charAt(1).toUpperCase());
+
+        // Convert snake_case to PascalCase for the Reference property
+        const pascalCaseReference = camelCaseName.charAt(0).toUpperCase() + camelCaseName.slice(1);
+
         return {
-            Name: elementName,
-            Reference: elementName.charAt(0).toUpperCase() + elementName.slice(1),
+            Name: camelCaseName,
+            Reference: pascalCaseReference,
         };
     }
 

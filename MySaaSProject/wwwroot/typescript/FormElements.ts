@@ -58,44 +58,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementSingleChoice(): HTMLDivElement {
-        const formElementName: string = "singleChoice";
-        const divSingleChoiceWrapper = this.CreateFormElementWrapper(formElementName);
-
-        const divTextStart = document.createElement("div") as HTMLDivElement;
-        divTextStart.classList.add("text-start");
-        divSingleChoiceWrapper.appendChild(divTextStart);
-
-        const singleChoiceLabel = document.createElement("label") as HTMLLabelElement;
-        singleChoiceLabel.classList.add("form-label");
-        singleChoiceLabel.innerText = "Type a question";
-        divTextStart.appendChild(singleChoiceLabel);
-
-        const divRadioBtnsContainer = document.createElement("div") as HTMLDivElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        divRadioBtnsContainer.id = formId;
-        divRadioBtnsContainer.setAttribute("name", formElementName);
-        divRadioBtnsContainer.ariaLabel = "Single Choice";
-        divRadioBtnsContainer.setAttribute("data-property-reference", "Single Choice");
-        divSingleChoiceWrapper.appendChild(divRadioBtnsContainer);
-
-        const singleChoicelElNumber: string = formId.substring(12);
-        const singleChoiceElName: string = `${formElementName}Q${singleChoicelElNumber}`;
-        const defaultCreateNumber = 3 as number;
-        for (var i = 0; i < defaultCreateNumber; i++) {
-            const itemNum: string = (i + 1).toString();
-            const singleChoiceOptionNum = i;
-            const singleChoiceOptionId = `single_choice_${singleChoicelElNumber}_option_${singleChoiceOptionNum}`;
-
-            const scOptionData: SingleChoiceOptionDTO = { singleChoiceOptionId: singleChoiceOptionId, singleChoiceElName: singleChoiceElName, singleChoiceOptionTextContent: `Option ${itemNum}` };
-            const divSinglChoiceWrapper: HTMLDivElement = Utilities.CreateSingleChoiceOption(scOptionData);
-            divRadioBtnsContainer.appendChild(divSinglChoiceWrapper);
-        }
-
-        return divSingleChoiceWrapper;
-    }
-
     private FormElementMultipleChoice(): HTMLDivElement {
         const formElementName: string = "multipleChoice";
         const divMultipleChoiceWrapper = this.CreateFormElementWrapper(formElementName);

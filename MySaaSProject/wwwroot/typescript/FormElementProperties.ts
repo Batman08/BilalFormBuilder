@@ -11,6 +11,8 @@ class FormElementProperties {
             return;
         }
 
+        this.rightDesigner.innerHTML = "";
+
         // Type guard
         const isPropertyEditable = typeof instance.RenderPropertiesPanel === "function";
         if (isPropertyEditable) {
@@ -18,19 +20,12 @@ class FormElementProperties {
         }
         else {
             //in the future prevent from opening properties designer draw/panel
-            this.rightDesigner.innerHTML = "";
         }
     }
 
     public GetElementProperties2(elementType: string, element: HTMLElement) {
 
         switch (elementType) {
-            case "singleChoiceWrapper":
-                this.SingleChoiceProperties(element);
-                break;
-            case "dropdownWrapper":
-                this.DropdownProperties(element);
-                break;
             case "multipleChoiceWrapper":
                 this.MultipleChoiceProperties(element);
                 break;
@@ -155,119 +150,6 @@ class FormElementProperties {
         //split data into array
         const options = textarea.value.split(/[\n,]+/);
         return options;
-    }
-    //#endregion
-
-    //#region Basic Properties
-
-    //#region Dropdown Properties
-    private DropdownProperties(dropdownElement: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-
-        const dropdownLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
-        const dropdownLabelText: string = dropdownLabelEl.textContent;
-        const optionsFromDropdown = dropdownElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
-
-        //#region Dropdown Label Property
-        const fieldLabelPropertyData: FieldLabelPropertyData = {
-            PlaceHolder: "type a question",
-            InputVal: dropdownLabelText,
-            AriaRoleDesc: "Edit Dropdown Question",
-            ElementToUpdate: dropdownLabelEl
-        }
-        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
-
-        //#region Dropdown Options
-
-        //#region Label Property Element
-        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("ddlOptions", "Dropdown Options");
-        //#endregion
-
-        //#region Textarea Property Element
-        const functionData: DDLUpdateFuncDTO = { dropdownElWrapper: dropdownElement }
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromDropdown, functionData, this.UpdateDropdownOptions, "Enter each option on a new line", "optionsTextarea");
-        optionsWrapper.appendChild(textarea);
-        //#endregion
-
-        //#endregion
-
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
-        this.rightDesigner.appendChild(optionsWrapper);
-    }
-
-    private UpdateDropdownOptions(dropdownData: DDLUpdateFuncDTO): void {
-        const ddlEl = dropdownData.dropdownElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
-        const currentDropdownOptions = ddlEl.querySelectorAll("option") as NodeListOf<HTMLOptionElement>;
-        currentDropdownOptions.forEach((option) => {
-            if (option.textContent === "Select an option")
-                return;
-
-            option.remove();
-        });
-
-        for (let i = 0; i < dropdownData.options.length; i++) {
-            const ddlOptionData: DropdownOptionDTO = { dropdownValue: dropdownData.options[i], dropdownTextContent: dropdownData.options[i] };
-            const newOption: HTMLOptionElement = Utilities.CreateDropdownOption(ddlOptionData);
-            ddlEl.appendChild(newOption);
-        }
-    }
-    //#endregion
-
-    //#region Single Choice Properties
-    private SingleChoiceProperties(singleChoiceElement: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-
-        const singleChoiceLabelEl = singleChoiceElement.querySelector(".form-label") as HTMLParagraphElement;
-        const dropdownLabelText: string = singleChoiceLabelEl.textContent;
-        const optionsFromSingleChoice = singleChoiceElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
-
-        //#region Single Choice Label Property
-        const fieldLabelPropertyData: FieldLabelPropertyData = {
-            PlaceHolder: "type a question",
-            InputVal: dropdownLabelText,
-            AriaRoleDesc: "Edit Single Choice Question",
-            ElementToUpdate: singleChoiceLabelEl
-        }
-        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
-
-        //#region Single Choice Options
-
-        //#region Label Property Element
-        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("scOptions", "Single Choice Options");
-        //#endregion
-
-        //#region Textarea Property Element
-        const functionData: SCLUpdateFuncDTO = { singlchoiceElWrapper: singleChoiceElement }
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromSingleChoice, functionData, this.UpdateSingleChoiceOptions, "Enter each option on a new line", "optionsTextarea");
-        optionsWrapper.appendChild(textarea);
-        //#endregion
-
-        //#endregion
-
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
-        this.rightDesigner.appendChild(optionsWrapper);
-    }
-
-    private UpdateSingleChoiceOptions(scData: SCLUpdateFuncDTO): void {
-        const singleChoicelEl = scData.singlchoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
-        singleChoicelEl.innerHTML = "";
-
-        const singleChoicelElNumber: string = singleChoicelEl.id.substring(12);
-        const singleChoiceElName: string = `${singleChoicelEl.getAttribute("name")}Q${singleChoicelElNumber}`;
-        for (let i = 0; i < scData.options.length; i++) {
-            const singleChoiceOptionNum = i + 1;
-            const singleChoiceOptionId = `single_choice_${singleChoicelElNumber}_option_${singleChoiceOptionNum}`;
-
-            const scOptionData: SingleChoiceOptionDTO = {
-                singleChoiceOptionId: singleChoiceOptionId,
-                singleChoiceElName: singleChoiceElName,
-                singleChoiceOptionTextContent: scData.options[i]
-            };
-            const divSinglChoiceWrapper: HTMLDivElement = Utilities.CreateSingleChoiceOption(scOptionData);
-            singleChoicelEl.appendChild(divSinglChoiceWrapper);
-        }
     }
     //#endregion
 

@@ -3,6 +3,7 @@
     private static registry: Record<string, new () => BaseElement> = {
         "Paragraph": ParagraphElement,
         "Dropdown": DropdownElement,
+        "SingleChoice": SingleChoiceElement,
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };

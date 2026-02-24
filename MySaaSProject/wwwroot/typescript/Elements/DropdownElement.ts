@@ -47,8 +47,6 @@
     //#region RenderPropertiesPanel
 
     public RenderPropertiesPanel(dropdownElement: HTMLElement, rightDesigner: HTMLDivElement): void {
-        rightDesigner.innerHTML = '';
-
         const dropdownLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
         const dropdownLabelText: string = dropdownLabelEl.textContent;
         const optionsFromDropdown = dropdownElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;

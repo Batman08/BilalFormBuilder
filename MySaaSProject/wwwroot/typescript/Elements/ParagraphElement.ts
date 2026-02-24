@@ -33,7 +33,6 @@
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
         const currentText: string = elementToUpdateText.textContent;
 
-        rightDesigner.innerHTML = '';
         const textArea = document.createElement('textarea') as HTMLTextAreaElement;
         textArea.id = 'paragraph-editor';
         textArea.classList.add('form-control');
