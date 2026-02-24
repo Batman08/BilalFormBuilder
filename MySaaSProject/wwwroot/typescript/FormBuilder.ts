@@ -25,14 +25,11 @@ class FormBuilder {
     private _formElementsOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasScrolling');
     private _formDesignerOffCanvas: bootstrap.Offcanvas = Utilities.BTSP_GetOffCanvas('#offcanvasRight');
 
-    public Init(sortableFormElements: any, componentsToCreate: ComponentsToCreateDTO): void {
+    public Init(sortableFormElements: any): void {
         /*define default form colours*/
         document.body.style.backgroundColor = "#f8f9fa";
         this._customFormSection.style.backgroundColor = "#FFFFFF";
         this._customFormSection.style.color = "#000000";
-
-        const formElement = new FormElements();
-        formElement.Init(componentsToCreate);
 
         this.PreviewFormOnClick(sortableFormElements);
         this.FormDesignerOnClick();

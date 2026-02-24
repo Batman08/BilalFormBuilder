@@ -143,6 +143,7 @@
 <script src="/js/Elements/DropdownElement.js"></script>
 <script src="/js/Elements/ElementFactory.js"></script>
 
+<script src="/js/FormSidebar.js"></script>
 <script src="/js/FormElements.js"></script>
 <script src="/js/FormElementProperties.js"></script>
 <script src="/js/FormBuilder.js"></script>
@@ -181,7 +182,8 @@
         });
 
         const componentsToCreateConfig = @Html.Raw(Json.Serialize(Model.ComponentsToCreate));
+        FormSidebar.Init(componentsToCreateConfig);
         const formBuilder = new FormBuilder();
-        formBuilder.Init(sortableFormElements, componentsToCreateConfig);
+        formBuilder.Init(sortableFormElements);
     });
 </script>
