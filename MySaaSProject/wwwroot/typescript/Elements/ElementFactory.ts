@@ -7,8 +7,9 @@
         // Add new ones here...
     };
 
+    private static instanceMap = new WeakMap<HTMLElement, BaseElement>();
+
     public static Create(type: string): HTMLDivElement | null {
-        debugger
         const cleanType = type.replace("formElement", "");
         const ElementClass = this.registry[cleanType];
 
@@ -17,6 +18,19 @@
             return null;
         }
 
-        return new ElementClass().Render();
+        //return new ElementClass().RenderElement();
+
+        const instance = new ElementClass();
+        const wrapper = instance.RenderElement();
+
+        //attach instance directly to DOM node
+        //(wrapper as any).__instance = instance;
+        this.instanceMap.set(wrapper, instance);
+
+        return wrapper;
+    }
+
+    public static GetInstance(wrapper: HTMLElement): BaseElement | undefined {
+        return this.instanceMap.get(wrapper);
     }
 }

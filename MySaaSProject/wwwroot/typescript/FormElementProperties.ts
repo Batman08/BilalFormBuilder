@@ -4,12 +4,27 @@
 class FormElementProperties {
     private readonly rightDesigner = document.querySelector('#rightDesigner') as HTMLDivElement;
 
-    public GetElementProperties(elementType: string, element: HTMLElement) {
+    public GetElementProperties(elementType: string, elementWrapper: HTMLElement) {
+        const instance = FormElementFactory.GetInstance(elementWrapper);
+        if (!instance) {
+            console.warn("No instance attached to wrapper.");
+            return;
+        }
+
+        // Type guard
+        const isPropertyEditable = typeof instance.RenderPropertiesPanel === "function";
+        if (isPropertyEditable) {
+            instance.RenderPropertiesPanel(elementWrapper, this.rightDesigner);
+        }
+        else {
+            //in the future prevent from opening properties designer draw/panel
+            this.rightDesigner.innerHTML = "";
+        }
+    }
+
+    public GetElementProperties2(elementType: string, element: HTMLElement) {
 
         switch (elementType) {
-            case "paragraphWrapper":
-                this.ParagraphProperties(element);
-                break;
             case "singleChoiceWrapper":
                 this.SingleChoiceProperties(element);
                 break;
@@ -144,26 +159,6 @@ class FormElementProperties {
     //#endregion
 
     //#region Basic Properties
-
-    //#region Paragraph Properties
-    private ParagraphProperties(paragraphElement: HTMLElement): void {
-        const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
-        const currentText: string = elementToUpdateText.textContent;
-
-        this.rightDesigner.innerHTML = '';
-        const textArea = document.createElement('textarea') as HTMLTextAreaElement;
-        textArea.id = 'paragraph-editor';
-        textArea.classList.add('form-control');
-        textArea.value = currentText;
-        this.UpdateParagraph(elementToUpdateText, textArea);
-
-        this.rightDesigner.appendChild(textArea);
-    }
-
-    private UpdateParagraph(elementToUpdateText: HTMLElement, inputEl: HTMLTextAreaElement): void {
-        inputEl.oninput = (ev: InputEvent) => { elementToUpdateText.textContent = inputEl.value; };
-    }
-    //#endregion
 
     //#region Dropdown Properties
     private DropdownProperties(dropdownElement: HTMLElement): void {

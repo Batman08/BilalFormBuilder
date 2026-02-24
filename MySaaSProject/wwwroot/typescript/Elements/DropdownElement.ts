@@ -1,4 +1,4 @@
-﻿class DropdownElement extends BaseElement {
+﻿class DropdownElement extends BaseElement implements IPropertyEditable {
     protected static readonly formElementBase: string = "dropdown";
     protected readonly formElementNames: FormElementNames;
 
@@ -8,7 +8,9 @@
         this.formElementNames = formElementNames;
     }
 
-    public Render(): HTMLDivElement {
+    //#region RenderElement
+
+    public RenderElement(): HTMLDivElement {
         const divWrapper = this.CreateFormElementWrapper();
         const dropdownId = this.GetUniqueId();
 
@@ -38,4 +40,63 @@
 
         return divWrapper;
     }
+
+    //#endregion
+
+
+    //#region RenderPropertiesPanel
+
+    public RenderPropertiesPanel(dropdownElement: HTMLElement, rightDesigner: HTMLDivElement): void {
+        rightDesigner.innerHTML = '';
+
+        const dropdownLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
+        const dropdownLabelText: string = dropdownLabelEl.textContent;
+        const optionsFromDropdown = dropdownElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
+
+        //#region Dropdown Label Property
+        const fieldLabelPropertyData: FieldLabelPropertyData = {
+            PlaceHolder: "type a question",
+            InputVal: dropdownLabelText,
+            AriaRoleDesc: "Edit Dropdown Question",
+            ElementToUpdate: dropdownLabelEl
+        }
+        const editLabelFieldWrapper: HTMLDivElement = Utilities.FieldLabelProperty(fieldLabelPropertyData);
+        //#endregion
+
+        //#region Dropdown Options
+
+        //#region Label Property Element
+        const optionsWrapper: HTMLDivElement = Utilities.TextareaLabelProperty("ddlOptions", "Dropdown Options");
+        //#endregion
+
+        //#region Textarea Property Element
+        const functionData: DDLUpdateFuncDTO = { dropdownElWrapper: dropdownElement }
+        const textarea = Utilities.MultiSelectTextAreaProperty(optionsFromDropdown, functionData, this.UpdateDropdownOptions, "Enter each option on a new line", "optionsTextarea");
+        optionsWrapper.appendChild(textarea);
+        //#endregion
+
+        //#endregion
+
+        rightDesigner.appendChild(editLabelFieldWrapper);
+        rightDesigner.appendChild(optionsWrapper);
+    }
+
+    private UpdateDropdownOptions(dropdownData: DDLUpdateFuncDTO): void {
+        const ddlEl = dropdownData.dropdownElWrapper.querySelector("[data-property-reference]") as HTMLSelectElement;
+        const currentDropdownOptions = ddlEl.querySelectorAll("option") as NodeListOf<HTMLOptionElement>;
+        currentDropdownOptions.forEach((option) => {
+            if (option.textContent === "Select an option")
+                return;
+
+            option.remove();
+        });
+
+        for (let i = 0; i < dropdownData.options.length; i++) {
+            const ddlOptionData: DropdownOptionDTO = { dropdownValue: dropdownData.options[i], dropdownTextContent: dropdownData.options[i] };
+            const newOption: HTMLOptionElement = Utilities.CreateDropdownOption(ddlOptionData);
+            ddlEl.appendChild(newOption);
+        }
+    }
+
+    //#endregion
 }

@@ -42,5 +42,8 @@
     }
 
     // Every child must implement this
-    public abstract Render(): HTMLDivElement;
+    public abstract RenderElement(): HTMLDivElement;
+
+    // Optional - may not exist on all elements
+    public RenderPropertiesPanel?(paragraphElement: HTMLElement, rightDesigner: HTMLDivElement): void;
 }
