@@ -17,6 +17,7 @@ class FormElementProperties {
         const isPropertyEditable = typeof instance.RenderPropertiesPanel === "function";
         if (isPropertyEditable) {
             instance.RenderPropertiesPanel(elementWrapper, this.rightDesigner);
+            //this.rightDesigner.appendChild(instance.RenderPropertiesPanel(elementWrapper, this.rightDesigner));
         }
         else {
             //in the future prevent from opening properties designer draw/panel
@@ -26,9 +27,6 @@ class FormElementProperties {
     public GetElementProperties2(elementType: string, element: HTMLElement) {
 
         switch (elementType) {
-            case "numberWrapper":
-                this.NumberProperties(element);
-                break;
             case "fileUploadWrapper":
                 this.FileUploadProperties(element);
                 break;
@@ -141,27 +139,6 @@ class FormElementProperties {
         //split data into array
         const options = textarea.value.split(/[\n,]+/);
         return options;
-    }
-    //#endregion
-
-    //#region Number Properties
-    private NumberProperties(numberElement: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-
-        const numberLabelEl = numberElement.querySelector(".form-label") as HTMLParagraphElement;
-        const numberLabelText: string = numberLabelEl.textContent;
-
-        //#region Number Label Property
-        const fieldLabelPropertyData: FieldLabelPropertyData = {
-            PlaceHolder: "Number",
-            InputVal: numberLabelText,
-            AriaRoleDesc: "Edit Number",
-            ElementToUpdate: numberLabelEl
-        }
-        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
-
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
     }
     //#endregion
 

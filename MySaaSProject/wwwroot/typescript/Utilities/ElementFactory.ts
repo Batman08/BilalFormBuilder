@@ -7,6 +7,7 @@
         "MultipleChoice": MultipleChoiceElement,
         "DatePicker": DatePickerElement,
         "Time": TimeElement,
+        "Number": NumberElement,
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };

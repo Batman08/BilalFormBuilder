@@ -58,34 +58,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementNumber(): HTMLDivElement {
-        const formElementName: string = "number";
-        const divNumberWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
-
-        const divTextStart = document.createElement("div") as HTMLDivElement;
-        divTextStart.classList.add("text-start");
-        divNumberWrapper.appendChild(divTextStart);
-
-        const numberLabel = document.createElement("label") as HTMLLabelElement;
-        numberLabel.classList.add("form-label");
-        numberLabel.innerText = "Number";
-        divTextStart.appendChild(numberLabel);
-
-        const numberInput = document.createElement("input") as HTMLInputElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        numberInput.id = formId;
-        numberInput.type = "number";
-        numberInput.classList.add("form-control");
-        numberInput.setAttribute("name", formElementName)
-        numberInput.setAttribute("data-property-reference", "Number");
-        numberInput.placeholder = "e.g 21";
-        numberInput.disabled = true;
-        divNumberWrapper.appendChild(numberInput);
-
-        return divNumberWrapper;
-    }
-
     private FormElementImage(): HTMLDivElement {
         const formElementName: string = "image";
         const divImageWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
