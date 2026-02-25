@@ -4,6 +4,7 @@
         "Paragraph": ParagraphElement,
         "Dropdown": DropdownElement,
         "SingleChoice": SingleChoiceElement,
+        "MultipleChoice": MultipleChoiceElement,
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };

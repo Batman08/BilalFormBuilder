@@ -26,9 +26,6 @@ class FormElementProperties {
     public GetElementProperties2(elementType: string, element: HTMLElement) {
 
         switch (elementType) {
-            case "multipleChoiceWrapper":
-                this.MultipleChoiceProperties(element);
-                break;
             case "datePickerWrapper":
                 this.DatePickerProperties(element);
                 break;
@@ -150,64 +147,6 @@ class FormElementProperties {
         //split data into array
         const options = textarea.value.split(/[\n,]+/);
         return options;
-    }
-    //#endregion
-
-    //#region Multiple Choice Properties
-    private MultipleChoiceProperties(multipleChoiceElement: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-
-        const multipleChoiceLabelEl = multipleChoiceElement.querySelector(".form-label") as HTMLParagraphElement;
-        const multipleChoiceLabelText: string = multipleChoiceLabelEl.textContent;
-        const optionsFromMultipleChoice = multipleChoiceElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
-
-        //#region Multiple Choice Label Property
-        const fieldLabelPropertyData: FieldLabelPropertyData = {
-            PlaceHolder: "type a question",
-            InputVal: multipleChoiceLabelText,
-            AriaRoleDesc: "Edit Multiple Choice Question",
-            ElementToUpdate: multipleChoiceLabelEl
-        }
-        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
-
-        //#region Multiple Choice Options
-
-        //#region Label Property Element
-        const optionsWrapper: HTMLDivElement = this.TextareaLabelProperty("mcOptions", "Multiple Choice Options");
-        //#endregion
-
-        //#region Textarea Property Element
-        const functionData: MCLUpdateFuncDTO = { multipleChoiceElWrapper: multipleChoiceElement };
-        const textarea = this.MultiSelectTextAreaProperty(optionsFromMultipleChoice, functionData, this.UpdateMultipleChoiceOptions, "Enter each option on a new line", "optionsTextarea");
-        optionsWrapper.appendChild(textarea);
-
-        //#endregion
-
-        //#endregion
-
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
-        this.rightDesigner.appendChild(optionsWrapper);
-    }
-
-    private UpdateMultipleChoiceOptions(mcData: MCLUpdateFuncDTO): void {
-        const multipleChoicelEl = mcData.multipleChoiceElWrapper.querySelector("[data-property-reference]") as HTMLDivElement;
-        multipleChoicelEl.innerHTML = "";
-
-        const multipleChoicelElNumber: string = multipleChoicelEl.id.substring(14);
-        for (let i = 0; i < mcData.options.length; i++) {
-            const multipleChoiceOptionNum = i;
-            const multipleChoiceOptionId = `multiple_choice_${multipleChoicelElNumber}_option_${multipleChoiceOptionNum}`;
-
-            const mcOptionData: MultipleChoiceOptionDTO = {
-                multipleChoiceOptionId: multipleChoiceOptionId,
-                multipleChoiceElName: multipleChoiceOptionId,
-                multipleChoiceOptionValue: mcData.options[i],
-                multipleChoiceOptionTextContent: mcData.options[i]
-            };
-            const divSinglChoiceWrapper: HTMLDivElement = Utilities.CreateMultipleChoiceOption(mcOptionData);
-            multipleChoicelEl.appendChild(divSinglChoiceWrapper);
-        }
     }
     //#endregion
 

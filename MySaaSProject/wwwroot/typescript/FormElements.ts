@@ -58,48 +58,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementMultipleChoice(): HTMLDivElement {
-        const formElementName: string = "multipleChoice";
-        const divMultipleChoiceWrapper = this.CreateFormElementWrapper(formElementName);
-
-        const divTextStart = document.createElement("div") as HTMLDivElement;
-        divTextStart.classList.add("text-start");
-        divMultipleChoiceWrapper.appendChild(divTextStart);
-
-        const multipleChoiceLabel = document.createElement("label") as HTMLLabelElement;
-        multipleChoiceLabel.classList.add("form-label");
-        multipleChoiceLabel.innerText = "Type a question";
-        divTextStart.appendChild(multipleChoiceLabel);
-
-        const divCheckboxBtnsContainer = document.createElement("div") as HTMLDivElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        divCheckboxBtnsContainer.id = formId;
-        divCheckboxBtnsContainer.setAttribute("name", formElementName)
-        divCheckboxBtnsContainer.ariaLabel = "Multiple Choice"
-        divCheckboxBtnsContainer.setAttribute("data-property-reference", "Multiple Choice");
-        divMultipleChoiceWrapper.appendChild(divCheckboxBtnsContainer);
-
-        const defaultCreateNumber = 3 as number;
-        const multipleChoicelElNumber: string = formId.substring(14);
-        for (var i = 0; i < defaultCreateNumber; i++) {
-            const itemNum = i + 1;
-            const multipleChoiceOptionNum = i;
-            const multipleChoiceOptionId: string = `multiple_choice_${multipleChoicelElNumber}_option_${multipleChoiceOptionNum}`;
-
-            const mcOptionData: MultipleChoiceOptionDTO = {
-                multipleChoiceOptionId: multipleChoiceOptionId,
-                multipleChoiceElName: multipleChoiceOptionId,
-                multipleChoiceOptionValue: `Option ${itemNum}`,
-                multipleChoiceOptionTextContent: `Option ${itemNum}`
-            };
-            const divMultipleChoiceWrapper: HTMLDivElement = Utilities.CreateMultipleChoiceOption(mcOptionData);
-            divCheckboxBtnsContainer.appendChild(divMultipleChoiceWrapper);
-        }
-
-        return divMultipleChoiceWrapper;
-    }
-
     private FormElementDatePicker(): HTMLDivElement {
         const formElementName: string = "datePicker";
         const divDatePickerWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
