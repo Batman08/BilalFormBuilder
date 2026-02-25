@@ -1,6 +1,6 @@
 ﻿/// <reference types="./FormBuilder" />
 /// <reference path="./FormElements.ts" />
-/// <reference path="./Utilities.ts" />
+/// <reference path="./Utilities/Utilities.ts" />
 
 class FormBuilder {
     private _customFormWrapper: HTMLDivElement = document.querySelector('#customFormWrapper') as HTMLDivElement

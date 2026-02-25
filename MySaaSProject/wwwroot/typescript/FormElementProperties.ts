@@ -1,5 +1,5 @@
 ﻿/// <reference types="./FormBuilder" />
-/// <reference path="./Utilities.ts" />
+/// <reference path="./Utilities/Utilities.ts" />
 
 class FormElementProperties {
     private readonly rightDesigner = document.querySelector('#rightDesigner') as HTMLDivElement;
