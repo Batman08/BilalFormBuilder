@@ -26,9 +26,6 @@ class FormElementProperties {
     public GetElementProperties2(elementType: string, element: HTMLElement) {
 
         switch (elementType) {
-            case "timeWrapper":
-                this.TimeProperties(element);
-                break;
             case "numberWrapper":
                 this.NumberProperties(element);
                 break;
@@ -144,27 +141,6 @@ class FormElementProperties {
         //split data into array
         const options = textarea.value.split(/[\n,]+/);
         return options;
-    }
-    //#endregion
-
-    //#region Time Properties
-    private TimeProperties(timeElement: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-
-        const timeLabelEl = timeElement.querySelector(".form-label") as HTMLParagraphElement;
-        const timeLabelText: string = timeLabelEl.textContent;
-
-        //#region Time Label Property
-        const fieldLabelPropertyData: FieldLabelPropertyData = {
-            PlaceHolder: "Time",
-            InputVal: timeLabelText,
-            AriaRoleDesc: "Edit Time",
-            ElementToUpdate: timeLabelEl
-        }
-        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
-
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
     }
     //#endregion
 
