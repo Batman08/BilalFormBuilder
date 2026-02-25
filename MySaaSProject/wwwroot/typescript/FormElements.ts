@@ -58,33 +58,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementDatePicker(): HTMLDivElement {
-        const formElementName: string = "datePicker";
-        const divDatePickerWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
-
-        const divTextStart = document.createElement("div") as HTMLDivElement;
-        divTextStart.classList.add("text-start");
-        divDatePickerWrapper.appendChild(divTextStart);
-
-        const datePickerLabel = document.createElement("label") as HTMLLabelElement;
-        datePickerLabel.classList.add("form-label");
-        datePickerLabel.innerText = "Date";
-        divTextStart.appendChild(datePickerLabel);
-
-        const datePicker = document.createElement("input") as HTMLInputElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        datePicker.id = formId;
-        datePicker.type = "date";
-        datePicker.classList.add("form-control");
-        datePicker.setAttribute("name", formElementName)
-        datePicker.setAttribute("data-property-reference", "Date Picker");
-        datePicker.disabled = true;
-        divDatePickerWrapper.appendChild(datePicker);
-
-        return divDatePickerWrapper;
-    }
-
     private FormElementTime(): HTMLDivElement {
         const formElementName: string = "datePicker";
         const divTimeWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);

@@ -5,6 +5,7 @@
         "Dropdown": DropdownElement,
         "SingleChoice": SingleChoiceElement,
         "MultipleChoice": MultipleChoiceElement,
+        "DatePicker": DatePickerElement,
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };

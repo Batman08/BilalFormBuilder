@@ -26,9 +26,6 @@ class FormElementProperties {
     public GetElementProperties2(elementType: string, element: HTMLElement) {
 
         switch (elementType) {
-            case "datePickerWrapper":
-                this.DatePickerProperties(element);
-                break;
             case "timeWrapper":
                 this.TimeProperties(element);
                 break;
@@ -147,27 +144,6 @@ class FormElementProperties {
         //split data into array
         const options = textarea.value.split(/[\n,]+/);
         return options;
-    }
-    //#endregion
-
-    //#region Date Picker Properties
-    private DatePickerProperties(datePickerElement: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-
-        const datePickerLabelEl = datePickerElement.querySelector(".form-label") as HTMLParagraphElement;
-        const datePickerLabelText: string = datePickerLabelEl.textContent;
-
-        //#region Date Picker Label Property
-        const fieldLabelPropertyData: FieldLabelPropertyData = {
-            PlaceHolder: "Date",
-            InputVal: datePickerLabelText,
-            AriaRoleDesc: "Edit Date Picker",
-            ElementToUpdate: datePickerLabelEl
-        }
-        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
-
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
     }
     //#endregion
 
