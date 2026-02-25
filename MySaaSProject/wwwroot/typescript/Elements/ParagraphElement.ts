@@ -29,7 +29,7 @@
 
     //#region RenderPropertiesPanel
 
-    public RenderPropertiesPanel(paragraphElement: HTMLElement, rightDesigner: HTMLDivElement): void {
+    public RenderPropertiesPanel(paragraphElement: HTMLElement): HTMLElement[] {
         const elementToUpdateText = paragraphElement.querySelector("[data-property-reference]") as HTMLParagraphElement;
         const currentText: string = elementToUpdateText.textContent;
 
@@ -39,7 +39,7 @@
         textArea.value = currentText;
         this.UpdateParagraph(elementToUpdateText, textArea);
 
-        rightDesigner.appendChild(textArea);
+        return [textArea];
     }
 
     private UpdateParagraph(elementToUpdateText: HTMLElement, inputEl: HTMLTextAreaElement): void {

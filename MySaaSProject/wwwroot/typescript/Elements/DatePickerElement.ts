@@ -39,11 +39,9 @@
 
     //#region RenderPropertiesPanel
 
-    public RenderPropertiesPanel(paragraphElement: HTMLElement, rightDesigner: HTMLDivElement): void {
+    public RenderPropertiesPanel(paragraphElement: HTMLElement): HTMLElement[] {
         const datePickerLabelEl = paragraphElement.querySelector(".form-label") as HTMLParagraphElement;
         const datePickerLabelText: string = datePickerLabelEl.textContent;
-
-        //#region Date Picker Label Property
         const fieldLabelPropertyData: FieldLabelPropertyData = {
             PlaceHolder: "Date",
             InputVal: datePickerLabelText,
@@ -51,9 +49,8 @@
             ElementToUpdate: datePickerLabelEl
         }
         const editLabelFieldWrapper: HTMLDivElement = Utilities.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
 
-        rightDesigner.appendChild(editLabelFieldWrapper);
+        return [editLabelFieldWrapper];
     }
 
     //#endregion

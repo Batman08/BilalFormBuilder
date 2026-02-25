@@ -45,5 +45,5 @@
     public abstract RenderElement(): HTMLDivElement;
 
     // Optional - may not exist on all elements
-    public RenderPropertiesPanel?(paragraphElement: HTMLElement, rightDesigner: HTMLDivElement): void;
+    public RenderPropertiesPanel?(element: HTMLElement): HTMLElement[];
 }

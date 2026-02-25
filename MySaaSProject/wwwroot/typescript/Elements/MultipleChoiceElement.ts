@@ -56,13 +56,13 @@
 
     //#region RenderPropertiesPanel
 
-    public RenderPropertiesPanel(multipleChoiceElement: HTMLElement, rightDesigner: HTMLDivElement): void {
+    public RenderPropertiesPanel(multipleChoiceElement: HTMLElement): HTMLElement[] {
         const multipleChoiceLabelEl = multipleChoiceElement.querySelector(".form-label") as HTMLParagraphElement;
         const multipleChoiceLabelText: string = multipleChoiceLabelEl.textContent;
         const optionsFromMultipleChoice = multipleChoiceElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
 
         //Multiple Choice Label Property
-        
+
         const fieldLabelPropertyData: FieldLabelPropertyData = {
             PlaceHolder: "type a question",
             InputVal: multipleChoiceLabelText,
@@ -79,8 +79,7 @@
         const textarea = Utilities.MultiSelectTextAreaProperty(optionsFromMultipleChoice, functionData, this.UpdateMultipleChoiceOptions, "Enter each option on a new line", "optionsTextarea");
         optionsWrapper.appendChild(textarea);
 
-        rightDesigner.appendChild(editLabelFieldWrapper);
-        rightDesigner.appendChild(optionsWrapper);
+        return [editLabelFieldWrapper, optionsWrapper];
     }
 
     private UpdateMultipleChoiceOptions(mcData: MCLUpdateFuncDTO): void {

@@ -46,12 +46,13 @@
 
     //#region RenderPropertiesPanel
 
-    public RenderPropertiesPanel(dropdownElement: HTMLElement, rightDesigner: HTMLDivElement): void {
+    public RenderPropertiesPanel(dropdownElement: HTMLElement): HTMLElement[] {
         const dropdownLabelEl = dropdownElement.querySelector(".form-label") as HTMLParagraphElement;
         const dropdownLabelText: string = dropdownLabelEl.textContent;
         const optionsFromDropdown = dropdownElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
 
-        //#region Dropdown Label Property
+        //Dropdown Label Property
+
         const fieldLabelPropertyData: FieldLabelPropertyData = {
             PlaceHolder: "type a question",
             InputVal: dropdownLabelText,
@@ -59,24 +60,16 @@
             ElementToUpdate: dropdownLabelEl
         }
         const editLabelFieldWrapper: HTMLDivElement = Utilities.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
 
-        //#region Dropdown Options
 
-        //#region Label Property Element
+        //Dropdown Options
+
         const optionsWrapper: HTMLDivElement = Utilities.TextareaLabelProperty("ddlOptions", "Dropdown Options");
-        //#endregion
-
-        //#region Textarea Property Element
         const functionData: DDLUpdateFuncDTO = { dropdownElWrapper: dropdownElement }
         const textarea = Utilities.MultiSelectTextAreaProperty(optionsFromDropdown, functionData, this.UpdateDropdownOptions, "Enter each option on a new line", "optionsTextarea");
         optionsWrapper.appendChild(textarea);
-        //#endregion
 
-        //#endregion
-
-        rightDesigner.appendChild(editLabelFieldWrapper);
-        rightDesigner.appendChild(optionsWrapper);
+        return [editLabelFieldWrapper, optionsWrapper];
     }
 
     private UpdateDropdownOptions(dropdownData: DDLUpdateFuncDTO): void {

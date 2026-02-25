@@ -52,12 +52,13 @@
 
     //#region RenderPropertiesPanel
 
-    public RenderPropertiesPanel(singleChoiceElement: HTMLElement, rightDesigner: HTMLDivElement): void {
+    public RenderPropertiesPanel(singleChoiceElement: HTMLElement): HTMLElement[] {
         const singleChoiceLabelEl = singleChoiceElement.querySelector(".form-label") as HTMLLabelElement;
         const dropdownLabelText: string = singleChoiceLabelEl.textContent;
         const optionsFromSingleChoice = singleChoiceElement.querySelector("[data-property-reference]").childNodes as NodeListOf<Node>;
 
-        //#region Single Choice Label Property
+        //Single Choice Label Property
+
         const fieldLabelPropertyData: FieldLabelPropertyData = {
             PlaceHolder: "type a question",
             InputVal: dropdownLabelText,
@@ -65,24 +66,16 @@
             ElementToUpdate: singleChoiceLabelEl
         }
         const editLabelFieldWrapper: HTMLDivElement = Utilities.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
 
-        //#region Single Choice Options
 
-        //#region Label Property Element
+        //Single Choice Options
+
         const optionsWrapper: HTMLDivElement = Utilities.TextareaLabelProperty("scOptions", "Single Choice Options");
-        //#endregion
-
-        //#region Textarea Property Element
         const functionData: SCLUpdateFuncDTO = { singlchoiceElWrapper: singleChoiceElement }
         const textarea = Utilities.MultiSelectTextAreaProperty(optionsFromSingleChoice, functionData, this.UpdateSingleChoiceOptions, "Enter each option on a new line", "optionsTextarea");
         optionsWrapper.appendChild(textarea);
-        //#endregion
 
-        //#endregion
-
-        rightDesigner.appendChild(editLabelFieldWrapper);
-        rightDesigner.appendChild(optionsWrapper);
+        return [editLabelFieldWrapper, optionsWrapper];
     }
 
     private UpdateSingleChoiceOptions(scData: SCLUpdateFuncDTO): void {

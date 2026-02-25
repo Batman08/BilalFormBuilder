@@ -1,3 +1,3 @@
 ﻿type IPropertyEditable = {
-    RenderPropertiesPanel(element: HTMLElement, rightDesigner: HTMLDivElement): void;
+    RenderPropertiesPanel(element: HTMLElement): HTMLElement[];
 }

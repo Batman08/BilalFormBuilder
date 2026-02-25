@@ -40,7 +40,7 @@
 
     //#region RenderPropertiesPanel
 
-    public RenderPropertiesPanel(numberElement: HTMLElement, rightDesigner: HTMLDivElement): void {
+    public RenderPropertiesPanel(numberElement: HTMLElement): HTMLElement[] {
         const numberLabelEl = numberElement.querySelector(".form-label") as HTMLParagraphElement;
         const numberLabelText: string = numberLabelEl.textContent;
         const fieldLabelPropertyData: FieldLabelPropertyData = {
@@ -51,7 +51,7 @@
         }
         const editLabelFieldWrapper: HTMLDivElement = Utilities.FieldLabelProperty(fieldLabelPropertyData);
 
-        rightDesigner.appendChild(editLabelFieldWrapper);
+        return [editLabelFieldWrapper];
     }
 
     //#endregion

@@ -16,8 +16,8 @@ class FormElementProperties {
         // Type guard
         const isPropertyEditable = typeof instance.RenderPropertiesPanel === "function";
         if (isPropertyEditable) {
-            instance.RenderPropertiesPanel(elementWrapper, this.rightDesigner);
-            //this.rightDesigner.appendChild(instance.RenderPropertiesPanel(elementWrapper, this.rightDesigner));
+            var propertiesPanelItems = instance.RenderPropertiesPanel(elementWrapper) as HTMLElement[];
+            propertiesPanelItems.forEach((item: HTMLElement) => this.rightDesigner.appendChild(item));
         }
         else {
             //in the future prevent from opening properties designer draw/panel
