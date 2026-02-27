@@ -166,28 +166,6 @@ class FormElementProperties {
     //#endregion
 
 
-    //#region Divider Properties
-    private DividerProperties(dividerElement: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-
-        const dividerLabelEl = dividerElement.querySelector(".form-label") as HTMLLabelElement;
-        const dividerLabelText: string = dividerLabelEl.textContent;
-
-        //#region Time Label Property
-        const fieldLabelPropertyData: FieldLabelPropertyData = {
-            PlaceHolder: "Time",
-            InputVal: dividerLabelText,
-            AriaRoleDesc: "Edit Time",
-            ElementToUpdate: dividerLabelEl
-        }
-        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
-
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
-    }
-    //#endregion
-
-
     //#region Complex Properties
     private HeadingProperties(headingElement: HTMLElement) {
         this.rightDesigner.innerHTML = '';

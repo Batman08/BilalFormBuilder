@@ -1,5 +1,6 @@
 ﻿type IPropertyEditable = {
     RenderPropertiesPanel(element: HTMLElement): HTMLElement[];
+    //RenderPropertiesPanel?: (element: HTMLElement) => HTMLElement[];
 }
 
 

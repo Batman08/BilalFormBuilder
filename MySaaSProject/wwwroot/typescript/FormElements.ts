@@ -56,25 +56,6 @@
     }
     //#endregion
 
-    //#region Basic Form Elements
-
-    private FormElementDivider(): HTMLDivElement {
-        const formElementName: string = "divider";
-        const divWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
-
-        const div = document.createElement("div") as HTMLDivElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-        div.id = formId;
-        div.classList.add("divider");
-
-        div.setAttribute("name", formElementName)
-        div.setAttribute("data-property-reference", "Divider");
-        divWrapper.appendChild(div);
-
-        return divWrapper;
-    }
-    //#endregion
-
     //#region Complex Form Elements
     private FormElementHeading(): HTMLDivElement {
         const formElementName: string = "heading";
