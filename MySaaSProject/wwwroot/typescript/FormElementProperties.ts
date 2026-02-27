@@ -4,6 +4,18 @@
 class FormElementProperties {
     private readonly rightDesigner = document.querySelector('#rightDesigner') as HTMLDivElement;
 
+    //#region Init
+
+    public static Init(): void {
+        new FormElementProperties().Init();
+    }
+
+    private Init(): void {
+        this.Events();
+    }
+
+    //#endregion
+
     public GetElementProperties(elementType: string, elementWrapper: HTMLElement) {
         const instance = FormElementFactory.GetInstance(elementWrapper);
         if (!instance) {
@@ -30,9 +42,6 @@ class FormElementProperties {
             case "fileUploadWrapper":
                 this.FileUploadProperties(element);
                 break;
-            case "imageWrapper":
-                this.ImageProperties(element);
-                break;
             case "submitWrapper":
                 this.SubmitProperties(element);
                 break;
@@ -51,6 +60,31 @@ class FormElementProperties {
                 break;
         }
     }
+
+    //#region Events
+
+    public Events(): void {
+        this.ConsumeEvent_PropertiesPanel_SetContent();
+        this.ConsumeEvent_PropertiesPanel_Clear();
+    }
+
+    private ConsumeEvent_PropertiesPanel_SetContent(): void {
+        const eventType: PropertiesPanelSetContentEventType = `ba_event_PropertiesPanel_SetContent`;
+        document.addEventListener(eventType, async (ev: CustomEvent) => {
+            const detail: PropertiesPanelSetContentEvent = ev.detail;
+            this.rightDesigner.appendChild(detail.PropertyElement);
+        });
+    }
+
+    private ConsumeEvent_PropertiesPanel_Clear(): void {
+        const eventType: PropertiesPanelClearEventType = `ba_event_PropertiesPanel_Clear`;
+        document.addEventListener(eventType, async (ev: CustomEvent) => {
+            this.rightDesigner.innerHTML = ``;
+        });
+    }
+
+    //#endregion
+
 
     //#region Generic Functions
     private FieldLabelProperty(data: FieldLabelPropertyData): HTMLDivElement {
@@ -160,147 +194,6 @@ class FormElementProperties {
         //#endregion
 
         this.rightDesigner.appendChild(editLabelFieldWrapper);
-    }
-    //#endregion
-
-    //#region Image Properties
-    private ImageProperties(imageElementWrapper: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-        const imageEl = imageElementWrapper.querySelector("img") as HTMLImageElement;
-
-        //#region Image Property
-
-        const imgSizeInputGroupEl: HTMLDivElement = this.ImgSizeInputGroup(imageEl);
-
-        if (imageEl.classList.contains("added")) {
-            const divImagePreview: HTMLDivElement = this.EditImageProperties(imageEl);
-            divImagePreview.appendChild(imgSizeInputGroupEl);
-            this.rightDesigner.appendChild(divImagePreview);
-        }
-        else {
-            const imagePropertyWrapper: HTMLDivElement = this.UpdateImageProperties(imageEl);
-            imagePropertyWrapper.appendChild(imgSizeInputGroupEl);
-            this.rightDesigner.appendChild(imagePropertyWrapper);
-        }
-
-        //#endregion
-
-    }
-
-    private ImgSizeInputGroup(imageEl: HTMLImageElement): HTMLDivElement {
-        const divRow = document.createElement("div") as HTMLDivElement;
-        divRow.classList.add("row", "mt-4");
-
-        const imageWidth: HTMLDivElement = this.ImageSizeInput("imgWidth", "Width", "Image Width", imageEl, "width");
-        const imageHeight: HTMLDivElement = this.ImageSizeInput("imgHeight", "Height", "Image Height", imageEl, "height");
-        divRow.appendChild(imageWidth);
-        divRow.appendChild(imageHeight);
-        return divRow;
-    }
-
-    private ImageSizeInput(id: string, labelText: string, placeholder: string, imageEl: HTMLImageElement, dimensionType: string): HTMLDivElement {
-        const divCol = document.createElement("div") as HTMLDivElement;
-        divCol.classList.add("col-md-6");
-
-        const label = document.createElement("label") as HTMLLabelElement;
-        label.classList.add("form-label");
-        label.htmlFor = id;
-        label.textContent = labelText;
-        divCol.appendChild(label);
-
-        const imageSizeInput = document.createElement("input") as HTMLInputElement;
-        imageSizeInput.id = id;
-        imageSizeInput.type = "number";
-        imageSizeInput.classList.add("form-control");
-        imageSizeInput.placeholder = placeholder;
-        if (dimensionType === "width")
-            imageSizeInput.value = imageEl.naturalWidth.toString();
-        else if (dimensionType === "height")
-            imageSizeInput.value = imageEl.naturalHeight.toString();
-        imageSizeInput.oninput = () => this.UpdateImageSize(imageSizeInput, imageEl, dimensionType);
-        divCol.appendChild(imageSizeInput);
-        return divCol;
-    }
-
-    private UpdateImageSize(sizeInput: HTMLInputElement, targetImageEl: HTMLImageElement, dimensionType: string): void {
-        if (dimensionType === "width")
-            targetImageEl.width = sizeInput.valueAsNumber;
-        else if (dimensionType === "height")
-            targetImageEl.height = sizeInput.valueAsNumber;
-        else
-            return;
-    }
-
-    private UpdateImageProperties(imageEl: HTMLImageElement): HTMLDivElement {
-        const imagePropertyWrapper = document.createElement("div") as HTMLDivElement;
-        imagePropertyWrapper.classList.add("mb-3");
-
-        const imageFieldLabel = document.createElement("label") as HTMLLabelElement;
-        imageFieldLabel.htmlFor = "editImage";
-        imageFieldLabel.classList.add("form-label");
-        imageFieldLabel.textContent = "Image";
-        imagePropertyWrapper.appendChild(imageFieldLabel);
-
-        const fileUploadImageInput = document.createElement("input") as HTMLInputElement;
-        fileUploadImageInput.id = "editImage";
-        fileUploadImageInput.type = "file";
-        fileUploadImageInput.classList.add("form-control");
-        fileUploadImageInput.multiple = true;
-        fileUploadImageInput.onchange = () => this.UpdateImage(fileUploadImageInput, imageEl);
-        imagePropertyWrapper.appendChild(fileUploadImageInput);
-
-        return imagePropertyWrapper;
-    }
-
-    private EditImageProperties(imageEl: HTMLImageElement): HTMLDivElement {
-        const divImagePreview = document.createElement("div") as HTMLDivElement;
-
-        const currentImage = document.createElement("img") as HTMLImageElement;
-        currentImage.src = imageEl.src;
-        currentImage.classList.add("d-block", "rounded");
-        currentImage.style.width = "150px";
-        currentImage.style.height = "150px";
-        divImagePreview.appendChild(currentImage);
-
-        const btnRemoveImage = document.createElement("button") as HTMLButtonElement;
-        btnRemoveImage.classList.add("btn", "btn-danger", "btn-sm", "mt-2");
-        btnRemoveImage.textContent = "Remove Image";
-        btnRemoveImage.onclick = () => this.RemoveImage(imageEl);
-        divImagePreview.appendChild(btnRemoveImage);
-        return divImagePreview;
-    }
-
-    private UpdateImage(imageInputEl: HTMLInputElement, targetImageEl: HTMLImageElement): void {
-        if (imageInputEl.files.length > 0) {
-            const file = imageInputEl.files[0];
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                targetImageEl.src = e.target.result.toString();
-
-                this.rightDesigner.innerHTML = "";
-                targetImageEl.classList.add("added");
-
-                const imgSizeInputGroupEl: HTMLDivElement = this.ImgSizeInputGroup(targetImageEl);
-                const divImagePreview: HTMLDivElement = this.EditImageProperties(targetImageEl);
-                divImagePreview.appendChild(imgSizeInputGroupEl);
-                this.rightDesigner.appendChild(divImagePreview);
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-
-    private RemoveImage(imageEl: HTMLImageElement): void {
-        this.rightDesigner.innerHTML = "";
-        imageEl.src = "";
-        imageEl.src = "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image-300x203.jpg";
-        imageEl.width = 300;
-        imageEl.height = 203;
-        imageEl.classList.remove("added");
-
-        const imgSizeInputGroupEl: HTMLDivElement = this.ImgSizeInputGroup(imageEl);
-        const imagePropertyWrapper: HTMLDivElement = this.UpdateImageProperties(imageEl);
-        imagePropertyWrapper.appendChild(imgSizeInputGroupEl);
-        this.rightDesigner.appendChild(imagePropertyWrapper);
     }
     //#endregion
 
@@ -926,7 +819,6 @@ class FormElementProperties {
     }
     //#endregion
 
-    //#endregion
 
     //#region Complex Properties
     private HeadingProperties(headingElement: HTMLElement) {

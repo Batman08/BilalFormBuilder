@@ -58,27 +58,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementImage(): HTMLDivElement {
-        const formElementName: string = "image";
-        const divImageWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
-
-        const divTextStart = document.createElement("div") as HTMLDivElement;
-        divTextStart.classList.add("text-start");
-        divImageWrapper.appendChild(divTextStart);
-
-        const imageEl = document.createElement("img") as HTMLImageElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        imageEl.id = formId;
-        imageEl.src = "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image-300x203.jpg";
-        imageEl.classList.add("mx-auto", "d-block", "rounded");
-        imageEl.setAttribute("name", formElementName)
-        imageEl.setAttribute("data-property-reference", "Image");
-        divImageWrapper.appendChild(imageEl);
-
-        return divImageWrapper;
-    }
-
     private FormElementFileUpload(): HTMLDivElement {
         const formElementName: string = "fileUpload";
         const divFileUploadWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);

@@ -392,4 +392,22 @@ class Utilities {
     }
 
     //#endregion
+
+
+    //#region Dispatch Events
+
+    public static DispatchEvent_PropertiesPanel_SetContent(propertyElement: HTMLElement): void {
+        const eventType: PropertiesPanelSetContentEventType = `ba_event_PropertiesPanel_SetContent`;
+        const eventData: PropertiesPanelSetContentEvent = { PropertyElement: propertyElement };
+        const baEvent = new CustomEvent(eventType, { bubbles: true, detail: eventData });
+        document.body.dispatchEvent(baEvent);
+    }
+
+    public static DispatchEvent_PropertiesPanel_Clear(): void {
+        const eventType: PropertiesPanelClearEventType = `ba_event_PropertiesPanel_Clear`;
+        const baEvent = new CustomEvent(eventType, { bubbles: true });
+        document.body.dispatchEvent(baEvent);
+    }
+
+    //#endregion
 }

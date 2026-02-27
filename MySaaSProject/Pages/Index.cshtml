@@ -146,6 +146,7 @@
 <script src="/typescript/Elements/DatePickerElement.js"></script>
 <script src="/typescript/Elements/TimeElement.js"></script>
 <script src="/typescript/Elements/NumberElement.js"></script>
+<script src="/typescript/Elements/ImageElement.js"></script>
 <script src="/typescript/Utilities/ElementFactory.js"></script>
 
 <script src="/typescript/FormSidebar.js"></script>
@@ -188,6 +189,7 @@
 
         const componentsToCreateConfig = @Html.Raw(Json.Serialize(Model.ComponentsToCreate));
         FormSidebar.Init(componentsToCreateConfig);
+        FormElementProperties.Init();
         const formBuilder = new FormBuilder();
         formBuilder.Init(sortableFormElements);
     });

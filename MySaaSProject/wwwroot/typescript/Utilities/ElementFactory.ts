@@ -8,6 +8,7 @@
         "DatePicker": DatePickerElement,
         "Time": TimeElement,
         "Number": NumberElement,
+        "Image": ImageElement,
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };
