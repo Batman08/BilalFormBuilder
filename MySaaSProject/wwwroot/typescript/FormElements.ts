@@ -58,30 +58,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementSubmit(): HTMLDivElement {
-        const formElementName: string = "submit";
-        const divSubmitWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
-
-        const divTextCenter = document.createElement("div") as HTMLDivElement;
-        divTextCenter.classList.add("text-center");
-        divSubmitWrapper.appendChild(divTextCenter);
-
-        const btnSubmit = document.createElement("input") as HTMLButtonElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        btnSubmit.id = formId;
-        btnSubmit.type = "submit";
-        btnSubmit.classList.add("btn", "btn-primary", "mx-auto", "btnSubmit");
-        btnSubmit.setAttribute("name", formElementName)
-        btnSubmit.setAttribute("data-property-reference", "Submit");
-        btnSubmit.setAttribute("data-align", "center")
-        btnSubmit.value = "Submit";
-        btnSubmit.disabled = true;
-        divTextCenter.appendChild(btnSubmit);
-
-        return divSubmitWrapper;
-    }
-
     private FormElementTable(): HTMLDivElement {
         const formElementName: string = "table";
         const divTableWrapper = this.CreateFormElementWrapper(formElementName);
