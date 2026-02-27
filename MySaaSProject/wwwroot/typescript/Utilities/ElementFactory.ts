@@ -11,6 +11,7 @@
         "Image": ImageElement,
         "FileUpload": FileUploadElement,
         "Submit": SubmitElement,
+        "Table": TableElement
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };

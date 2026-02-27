@@ -58,34 +58,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementTable(): HTMLDivElement {
-        const formElementName: string = "table";
-        const divTableWrapper = this.CreateFormElementWrapper(formElementName);
-
-        const divTextStart = document.createElement("div") as HTMLDivElement;
-        divTextStart.classList.add("text-start");
-        divTableWrapper.appendChild(divTextStart);
-
-        const tableLabel = document.createElement("label") as HTMLLabelElement;
-        tableLabel.classList.add("form-label");
-        tableLabel.innerText = "Type a question";
-        divTextStart.appendChild(tableLabel);
-
-        const formId = this.GetFormElementId(formElementName) as string;
-        const tableCols: string[] = ["#", "col 1", "col 2"];
-        const tableRows: string[] = ["row 1", "row 2", "row 3"];
-        const tableInputType: string = "Textbox";
-        const table = Utilities.CreateTable(tableCols, tableRows, tableInputType);
-        table.id = formId;
-        table.setAttribute("name", formElementName);
-        table.ariaLabel = "Table";
-        table.setAttribute("data-property-reference", "Table");
-        table.setAttribute("data-input-type", tableInputType);
-        divTableWrapper.appendChild(table);
-
-        return divTableWrapper;
-    }
-
     private FormElementDivider(): HTMLDivElement {
         const formElementName: string = "divider";
         const divWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
