@@ -480,17 +480,17 @@
                 break;
         }
         console.log(optionsFromElement);
-        this.UpdateTextAreaOptions(textarea, optionsFromElement);
+        Utilities.UpdateTextAreaOptions(textarea, optionsFromElement);
 
         textarea.oninput = (ev: KeyboardEvent) => {
             let options: string[] = [];
             const ddlOptions = document.querySelector("#ddlOptions") as HTMLTextAreaElement;
             if (textarea === ddlOptions) {
                 const columnsTextarea = document.querySelector("#columnsTextarea") as HTMLTextAreaElement;
-                options = this.GetOptionsFromTextarea(columnsTextarea);
+                options = Utilities.GetOptionsFromTextarea(columnsTextarea);
             }
             else {
-                options = this.GetOptionsFromTextarea(textarea);
+                options = Utilities.GetOptionsFromTextarea(textarea);
             }
             updateFuncData.options = options;
             updateFunc(updateFuncData);
