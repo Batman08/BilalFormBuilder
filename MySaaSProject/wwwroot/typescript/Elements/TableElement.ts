@@ -291,11 +291,11 @@
         }
 
         const rowsTextarea = document.querySelector("#rowsTextarea") as HTMLTextAreaElement;
-        const options: string[] = this.GetOptionsFromTextarea(rowsTextarea);
+        const options: string[] = Utilities.GetOptionsFromTextarea(rowsTextarea);
 
         const tableTypeData: TableUpdateFuncDTO = {
             elementToUpdate: tableEl,
-            getOptionsFromTextarea: this.GetOptionsFromTextarea,
+            getOptionsFromTextarea: Utilities.GetOptionsFromTextarea,
             updateTableInputs: this.UpdateTableInputs,
             options: options
         };
