@@ -9,6 +9,7 @@
         "Time": TimeElement,
         "Number": NumberElement,
         "Image": ImageElement,
+        "FileUpload": FileUploadElement
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };

@@ -58,34 +58,6 @@
 
     //#region Basic Form Elements
 
-    private FormElementFileUpload(): HTMLDivElement {
-        const formElementName: string = "fileUpload";
-        const divFileUploadWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);
-
-        const divTextStart = document.createElement("div") as HTMLDivElement;
-        divTextStart.classList.add("text-start");
-        divFileUploadWrapper.appendChild(divTextStart);
-
-        const fileUploadLabel = document.createElement("label") as HTMLLabelElement;
-        fileUploadLabel.classList.add("form-label");
-        fileUploadLabel.innerText = "File Upload";
-        divTextStart.appendChild(fileUploadLabel);
-
-        const fileUploadInput = document.createElement("input") as HTMLInputElement;
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        fileUploadInput.id = formId;
-        fileUploadInput.type = "file";
-        fileUploadInput.classList.add("form-control");
-        fileUploadInput.setAttribute("name", formElementName)
-        fileUploadInput.setAttribute("data-property-reference", "File Upload");
-        fileUploadInput.multiple = true;
-        fileUploadInput.disabled = true;
-        divFileUploadWrapper.appendChild(fileUploadInput);
-
-        return divFileUploadWrapper;
-    }
-
     private FormElementSubmit(): HTMLDivElement {
         const formElementName: string = "submit";
         const divSubmitWrapper: HTMLDivElement = this.CreateFormElementWrapper(formElementName);

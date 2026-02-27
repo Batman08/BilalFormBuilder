@@ -39,9 +39,6 @@ class FormElementProperties {
     public GetElementProperties2(elementType: string, element: HTMLElement) {
 
         switch (elementType) {
-            case "fileUploadWrapper":
-                this.FileUploadProperties(element);
-                break;
             case "submitWrapper":
                 this.SubmitProperties(element);
                 break;
@@ -176,26 +173,6 @@ class FormElementProperties {
     }
     //#endregion
 
-    //#region File Upload Properties
-    private FileUploadProperties(fileUploadElement: HTMLElement): void {
-        this.rightDesigner.innerHTML = '';
-
-        const fileUploadLabelEl = fileUploadElement.querySelector(".form-label") as HTMLParagraphElement;
-        const fileUploadLabelText: string = fileUploadLabelEl.textContent;
-
-        //#region File Upload Label Property
-        const fieldLabelPropertyData: FieldLabelPropertyData = {
-            PlaceHolder: "File Upload",
-            InputVal: fileUploadLabelText,
-            AriaRoleDesc: "Edit File Upload",
-            ElementToUpdate: fileUploadLabelEl
-        }
-        const editLabelFieldWrapper: HTMLDivElement = this.FieldLabelProperty(fieldLabelPropertyData);
-        //#endregion
-
-        this.rightDesigner.appendChild(editLabelFieldWrapper);
-    }
-    //#endregion
 
     //#region Submit Properties
     private SubmitProperties(submitElementWrapper: HTMLElement): void {
