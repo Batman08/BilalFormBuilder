@@ -57,22 +57,6 @@
     //#endregion
 
     //#region Complex Form Elements
-    private FormElementHeading(): HTMLDivElement {
-        const formElementName: string = "heading";
-        const divHeadingWrapper = this.CreateFormElementWrapper(formElementName);
-
-        const h2Heading = document.createElement("h2") as HTMLHeadingElement
-        const formId = this.GetFormElementId(formElementName) as string;
-
-        h2Heading.id = formId;
-        h2Heading.setAttribute("name", formElementName)
-        h2Heading.setAttribute("data-property-reference", "Heading");
-        h2Heading.innerText = "Heading";
-        divHeadingWrapper.appendChild(h2Heading);
-        console.log("created header");
-
-        return divHeadingWrapper;
-    }
 
     private FormElementFullName(): HTMLDivElement {
         const formElementName: string = "fullName";

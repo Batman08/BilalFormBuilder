@@ -310,7 +310,7 @@ class Utilities {
         const fieldLabel = document.createElement("label") as HTMLLabelElement;
         fieldLabel.htmlFor = "editField";
         fieldLabel.classList.add("form-label");
-        fieldLabel.textContent = "Field Label";
+        fieldLabel.textContent = data.Title ?? "Field Label";
 
         const fieldLabelInput = document.createElement("input") as HTMLInputElement;
         fieldLabelInput.id = "editField";

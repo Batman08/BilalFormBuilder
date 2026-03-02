@@ -13,6 +13,7 @@
         "Submit": SubmitElement,
         "Table": TableElement,
         "Divider": DividerElement,
+        "Heading": HeadingElement,
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };
