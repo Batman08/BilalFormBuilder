@@ -58,53 +58,6 @@
 
     //#region Complex Form Elements
 
-    private FormElementFullName(): HTMLDivElement {
-        const formElementName: string = "fullName";
-        const divFullNameWrapper = this.CreateFormElementWrapper(formElementName);
-
-        const divFullNameRow = document.createElement("div") as HTMLDivElement;
-        divFullNameRow.classList.add("row");
-        divFullNameWrapper.appendChild(divFullNameRow);
-
-        /*First Name*/
-        const divFirstNameColumn = document.createElement("div") as HTMLDivElement;
-        divFirstNameColumn.classList.add("col-md-6", "text-start");
-        divFullNameRow.appendChild(divFirstNameColumn);
-
-        const labelFirstName = document.createElement("label") as HTMLLabelElement;
-        labelFirstName.classList.add("form-label");
-        labelFirstName.innerText = "First Name";
-        divFirstNameColumn.appendChild(labelFirstName);
-
-        const inputFirstName = document.createElement("input") as HTMLInputElement;
-        inputFirstName.setAttribute("data-element-value", "");
-        inputFirstName.type = "text";
-        inputFirstName.classList.add("form-control");
-        inputFirstName.placeholder = "First Name";
-        inputFirstName.ariaLabel = "First Name";
-        divFirstNameColumn.appendChild(inputFirstName);
-
-        /*Last Name*/
-        const divLastNameColumn = document.createElement("div") as HTMLDivElement;
-        divLastNameColumn.classList.add("col-md-6", "text-start");
-        divFullNameRow.appendChild(divLastNameColumn);
-
-        const labelLastName = document.createElement("label") as HTMLLabelElement;
-        labelLastName.classList.add("form-label");
-        labelLastName.innerText = "Last Name";
-        divLastNameColumn.appendChild(labelLastName);
-
-        const inputLastName = document.createElement("input") as HTMLInputElement;
-        inputLastName.setAttribute("data-element-value", "");
-        inputLastName.type = "text";
-        inputLastName.classList.add("form-control");
-        inputLastName.placeholder = "Last Name";
-        inputLastName.ariaLabel = "Last Name";
-        divLastNameColumn.appendChild(inputLastName);
-
-        return divFullNameWrapper;
-    }
-
     private FormElementEmail(): HTMLDivElement {
         const formElementName: string = "email";
         const divEmailWrapper = this.CreateFormElementWrapper(formElementName);

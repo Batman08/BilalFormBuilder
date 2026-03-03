@@ -14,6 +14,7 @@
         "Table": TableElement,
         "Divider": DividerElement,
         "Heading": HeadingElement,
+        "FullName": FullNameElement,
         //"Email": Elements.EmailElement,
         // Add new ones here...
     };
