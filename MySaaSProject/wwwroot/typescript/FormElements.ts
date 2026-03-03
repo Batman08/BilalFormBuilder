@@ -1,6 +1,4 @@
 ﻿class FormElements {
-    //#region Components
-
     public FindFormElementToCreate(formElementToCreate: string): HTMLDivElement | null {
         return FormElementFactory.Create(formElementToCreate);
     }
@@ -24,35 +22,4 @@
 
         return divSelectedControls;
     }
-    //#endregion
-
-    //#region Generic Form Element Functions
-    private GetFormElementId(elementName: string): string {
-        //remove spaces form elementName
-        const trimmedElementName = elementName.split(" ").join("") as string;
-
-
-        const allElementsWithWrapperClass = document.querySelectorAll(`[name=${trimmedElementName}]`);
-        console.log(allElementsWithWrapperClass);
-
-        //find the highest number from ids
-        let highestNumber = 0;
-        allElementsWithWrapperClass.forEach((element: Element) => {
-            const elementNumber = parseInt(element.id.replace(trimmedElementName, ''));
-            if (elementNumber > highestNumber) {
-                highestNumber = elementNumber;
-            }
-        });
-
-        return `${trimmedElementName}${highestNumber + 1}` as string;
-    }
-
-    private CreateFormElementWrapper(elementName: string): HTMLDivElement {
-        const divWrapper = document.createElement("div") as HTMLDivElement;
-        divWrapper.classList.add("createdFormElement", "pad15", "position-relative", "text-start");
-        divWrapper.setAttribute("data-wrapper-type", `${elementName}Wrapper`);
-
-        return divWrapper
-    }
-    //#endregion
 }

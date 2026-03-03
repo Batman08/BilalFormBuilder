@@ -38,7 +38,6 @@
         inputEmail.ariaLabel = `Email`;
         divEmailColumn.appendChild(inputEmail);
 
-
         return divWrapper;
     }
 
