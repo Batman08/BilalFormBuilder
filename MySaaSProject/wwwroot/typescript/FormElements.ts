@@ -55,35 +55,4 @@
         return divWrapper
     }
     //#endregion
-
-    //#region Complex Form Elements
-
-    private FormElementEmail(): HTMLDivElement {
-        const formElementName: string = "email";
-        const divEmailWrapper = this.CreateFormElementWrapper(formElementName);
-
-        const divEmailRow = document.createElement("div") as HTMLDivElement;
-        divEmailRow.classList.add("row");
-        divEmailWrapper.appendChild(divEmailRow);
-
-        const divEmailColumn = document.createElement("div") as HTMLDivElement;
-        divEmailColumn.classList.add("col-md-6", "text-start");
-        divEmailRow.appendChild(divEmailColumn);
-
-        const labelEmail = document.createElement("label") as HTMLLabelElement;
-        labelEmail.classList.add("form-label");
-        labelEmail.innerText = "Email";
-        divEmailColumn.appendChild(labelEmail);
-
-        const inputEmail = document.createElement("input") as HTMLInputElement;
-        inputEmail.type = "email";
-        inputEmail.setAttribute("data-element-value", "");
-        inputEmail.classList.add("form-control");
-        inputEmail.placeholder = "Email";
-        inputEmail.ariaLabel = "Wmaili";
-        divEmailColumn.appendChild(inputEmail);
-
-        return divEmailWrapper;
-    }
-    //#endregion
 }
